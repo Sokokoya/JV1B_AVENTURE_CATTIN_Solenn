@@ -79,12 +79,15 @@ class ville_scene extends Phaser.Scene {
         // Update de l'ui (objets/ croquettes/ fatigue)
 
         // changement de scene
-        sceneParc(player) {
+        /*sceneParc(player) {
             this.scene.start("parc_scene", {
-                x : 0,
+                x = 0,
                 y = 0
             });
-        }
+        }*/
+
+        // interaction avec les pnj
+        //parlerNpc1(player, npc) {}
     }
 
 }
