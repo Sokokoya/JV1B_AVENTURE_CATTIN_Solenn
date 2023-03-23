@@ -13,13 +13,59 @@ class ville_scene extends Phaser.Scene {
     
     }
 
+
+    // -----------------------------------------------------------------------------------------
+    // ---------------------------------- FONCTION PRELOAD -------------------------------------
+    // -----------------------------------------------------------------------------------------
     preload() {
-        // ici preloead toutes les spritesheet, images et tileset
+
+        // Tileset et map
+        this.preload.image('tileset', 'assets/tileset_exterieur.png');
+        this.preload.tilemapTiledJSON('map', 'assets/map_1.json');
+
+        // Interface
+
+        // Heros et ennemis
     }
 
 
+
+    // -----------------------------------------------------------------------------------------
+    // ----------------------------------- FONCTION CREATE -------------------------------------
+    // -----------------------------------------------------------------------------------------
     create() {
 
+        // ----- AFFICHAGE DE LA SCENE -----
+
+        // Chargement des calques
+        const gameMap = this.add.tilemap('map');
+
+        const gameTileset = gameMap.addTilesetImage(
+            "tileset_exterieur",
+            "tileset"
+        );
+
+        const houseLayer = gameMap.createLayer(
+            "maisons",
+            gameTileset
+        );
+
+        const collisionLayer = gameMap.createLayer(
+            "collisions",
+            gameTileset
+        );
+
+        const pathLayer = gameMap.createLayer(
+            "path",
+            gameTileset
+        );
+
+        const grassLayer = gameMap.createLayer(
+            "herbe",
+            gameTileset
+        );
+
+/*
         // E pour interagir avec quelqu'un, Z pour utiliser la canne
         this.keyE = this.keyE = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.E);
         this.keyZ = this.keyE = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.Z);
@@ -61,7 +107,7 @@ class ville_scene extends Phaser.Scene {
 
 
         // ----- INTERFACE UTILISATEUR -----
-
+*/
 
     }
 
