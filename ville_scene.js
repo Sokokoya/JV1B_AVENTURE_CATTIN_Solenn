@@ -1,17 +1,17 @@
-class ville_scene extends Phaser.Scene {
+export default class ville_scene extends Phaser.Scene {
 
     constructor() {
-        super("ville_scene");
+        super({key : "ville_scene"});
     }
 
     // Initialisation de la scene après avoir changé de scène
-    init(data) {
+ /*   init(data) {
 
         // Position du sprite joueur
         this.positionX = data.x;
         this.positionY = data.y; 
     
-    }
+    }*/
 
 
     // -----------------------------------------------------------------------------------------
@@ -20,8 +20,8 @@ class ville_scene extends Phaser.Scene {
     preload() {
 
         // Tileset et map
-        this.preload.image('tileset', 'assets/tileset_exterieur.png');
-        this.preload.tilemapTiledJSON('map', 'assets/map_1.json');
+        this.load.image('tileset', 'assets/tileset_exterieur.png');
+        this.load.tilemapTiledJSON('map', 'assets/map_1.json');
 
         // Interface
 
@@ -45,13 +45,8 @@ class ville_scene extends Phaser.Scene {
             "tileset"
         );
 
-        const houseLayer = gameMap.createLayer(
-            "maisons",
-            gameTileset
-        );
-
-        const collisionLayer = gameMap.createLayer(
-            "collisions",
+        const grassLayer = gameMap.createLayer(
+            "herbe",
             gameTileset
         );
 
@@ -60,10 +55,26 @@ class ville_scene extends Phaser.Scene {
             gameTileset
         );
 
-        const grassLayer = gameMap.createLayer(
-            "herbe",
+        const collisionLayer = gameMap.createLayer(
+            "collisions",
             gameTileset
         );
+
+        const houseLayer = gameMap.createLayer(
+            "maisons",
+            gameTileset
+        );
+
+        const detailsLayer = gameMap.createLayer(
+            "details",
+            gameTileset
+        );
+
+        
+
+        
+
+        
 
 /*
         // E pour interagir avec quelqu'un, Z pour utiliser la canne

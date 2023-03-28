@@ -1,22 +1,22 @@
-export default class parc_scene extends Phaser.Scene {
+export default class foret_scene extends Phaser.Scene {
 
     constructor() {
-        super({key : "parc_scene"});
+        super({key : "foret_scene"});
     }
 
     // Initialisation de la scene après avoir changé de scène
-    init(data) {
+ /*   init(data) {
 
         // Position du sprite joueur
         this.positionX = data.x;
         this.positionY = data.y; 
     
-    }
+    }*/
 
     preload() {
         // ici preloead toutes les spritesheet, images et tileset
-        this.load.image('tileset', 'assets/tileset_exterieur.png');
-        this.load.tilemapTiledJSON('map', 'assets/map_2.json');
+        this.load.image('tileset', 'assets/tileset_foret.png');
+        this.load.tilemapTiledJSON('map', 'assets/map_3.json');
     }
 
 
@@ -28,9 +28,10 @@ export default class parc_scene extends Phaser.Scene {
         const gameMap = this.add.tilemap('map');
 
         const gameTileset = gameMap.addTilesetImage(
-            "tileset_exterieur",
+            "tileset_foret",
             "tileset"
         );
+
 
         const grassLayer = gameMap.createLayer(
             "herbe",
