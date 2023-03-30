@@ -1,7 +1,7 @@
-class parc_scene extends Phaser.Scene {
+class Parc extends Phaser.Scene {
 
     constructor() {
-        super("parc_scene");
+        super("Parc");
     }
 
     // Initialisation de la scene après avoir changé de scène

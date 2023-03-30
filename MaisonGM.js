@@ -1,7 +1,7 @@
-class maison_joueur_scene extends Phaser.Scene {
+class MaisonGM extends Phaser.Scene {
 
     constructor() {
-        super("maison_joueur_scene");
+        super("MaisonGM");
     }
 
     // Initialisation de la scene après avoir changé de scène
