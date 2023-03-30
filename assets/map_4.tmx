@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <map version="1.9" tiledversion="1.9.2" orientation="orthogonal" renderorder="right-down" width="28" height="25" tilewidth="32" tileheight="32" infinite="0" nextlayerid="4" nextobjectid="1">
- <tileset firstgid="1" name="tileset_interieur" tilewidth="32" tileheight="32" tilecount="210" columns="14">
+ <tileset firstgid="1" name="tileset_interieur" tilewidth="32" tileheight="32" tilecount="196" columns="14">
   <image source="tileset_interieur.png" width="448" height="448"/>
   <tile id="0">
    <properties>
@@ -357,7 +357,7 @@
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,103,104,105,0,0,0,0,0,0,0,0,
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,117,118,119,0,0,0,0,0,0,0,0,
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,131,132,133,0,0,0,0,0,0,0,0,
-0,0,0,0,0,0,0,0,0,0,0,0,169,170,171,172,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,169,170,171,172,0,145,146,147,0,0,0,0,0,0,0,0,
 0,0,0,0,0,0,0,0,78,77,0,0,183,184,185,186,0,0,0,0,0,0,0,0,0,0,0,0,
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
