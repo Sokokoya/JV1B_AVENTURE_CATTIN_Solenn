@@ -7,18 +7,22 @@ export default class Menu extends Phaser.Scene {
 
     preload() {
 
-        //this.preload.image('imageMenu', 'assets/imageMenu.png');
+        this.load.image('image_menu', 'assets/image_menu.png');
     }
 
     create() {
-        //this.add.image(0, 0, "imageMenu");
+
+        this.clavier = this.input.keyboard.createCursorKeys();
+
+        this.add.image(540, 360, "image_menu");
 
         //this.add.text();
     }
 
     update() {
-/*
-        if (Phaser.Input.Keyboard.JustDown(this.clavier.space) == true) {
+
+        if (Phaser.Input.Keyboard.JustDown(this.clavier.space)) {
+            //#TODO: changer ici pour mettre la scene de depart dans la maison du joueur
             this.scene.start("Ville", {
                 x: 0,
                 y: 0,
@@ -27,7 +31,7 @@ export default class Menu extends Phaser.Scene {
                 aCanne: false,
                 aCle: false
             });
-        }*/
+        }
     }
 
 

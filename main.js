@@ -1,14 +1,17 @@
-import Menu from '/Menu.js';
-import Ville from "/Ville.js";
-import Parc from "/Parc.js";
-//import maison_grandmere_scene from "maison_grandmere_scene.js";
-//import maison_joueur_scene from "maison_joueur_scene.js";
-//import chambre_fille_scene from "chambre_fille_scene.js";
+
+// Import de toutes les scènes utilisées dans le jeu
+import Menu from '/niveaux/Menu.js';
+import Ville from "/niveaux/Ville.js";
+import Parc from "/niveaux/Parc.js";
+import MaisonJoueur from "/niveaux/MaisonJoueur.js";
+import MaisonGM from "/niveaux/MaisonGM.js";
+import ChambreFille from "/niveaux/ChambreFille.js";
+
 
 // Configuration initiale
 var config = {
     type: Phaser.AUTO,
-    width: 1600, height: 1600,
+    width: 1280, height: 720,
     physics: {
         default: 'arcade',
         arcade: {
@@ -18,9 +21,10 @@ var config = {
     },
 
     // Ajout des differentes scenes dans le jeu
-    scene: [Menu, Ville, Parc]
+    scene: [Menu, Ville, Parc, MaisonJoueur, MaisonGM, ChambreFille]
 };
 
 
+// Début du jeu, lancé sur la scène Menu
 var game = new Phaser.Game(config);
-game.scene.start("Ville"); 
+game.scene.start("Menu"); 
