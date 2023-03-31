@@ -1,4 +1,4 @@
-class Parc extends Phaser.Scene {
+export default class Parc extends Phaser.Scene {
 
     constructor() {
         super("Parc");
@@ -6,11 +6,11 @@ class Parc extends Phaser.Scene {
 
     // Initialisation de la scene après avoir changé de scène
     init(data) {
-
+/*
         // Position du sprite joueur
         this.positionX = data.x;
         this.positionY = data.y; 
-    
+    */
     }
 
     preload() {

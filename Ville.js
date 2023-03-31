@@ -1,12 +1,12 @@
-class Ville extends Phaser.Scene {
+export default class Ville extends Phaser.Scene {
 
     constructor() {
-        super("Ville");
+        super({key: "Ville"});
     }
 
     // Initialisation de la scene après avoir changé de scène
     init(data) {
-
+/*
         // Position du sprite joueur
         this.positionX = data.x;
         this.positionY = data.y; 
@@ -16,7 +16,7 @@ class Ville extends Phaser.Scene {
         this.croquettes = data.croquettes;
         this.aCanne = data.aCanne;
         this.aCle = data.aCle;
-   
+   */
     }
 
 
@@ -26,11 +26,15 @@ class Ville extends Phaser.Scene {
     preload() {
 
         // Tileset et map
-        this.preload.image('tileset', 'assets/tileset_exterieur.png');
-        this.preload.tilemapTiledJSON('map', 'assets/map_1.json');
+        this.load.image('tileset', 'assets/tileset_exterieur.png');
+        this.load.tilemapTiledJSON('map', 'assets/map_1.json');
 
-        // Interface
+        // Chargement de l'interface et des objets
         this.load.spritesheet('spr_fatigue', 'assets/spr_fatigue.png', {frameWidth: 64, frameHeight: 32});
+        this.load.image('ui_dialogue', 'assets/boite_dialogue.png');
+        this.load.image('ui_inventaire', 'assets/boite_inventaire.png');
+
+        this.load.spritesheet('spr_cle', 'assets/spr_cle.png', {frameWidth: 32, frameHeight: 32});
 
         // Chargement de tous les sprite du joueur
         this.load.spritesheet('idlePersoDroite', 'assets/spr_idle_perso_droite.png', {frameWidth: 64, frameHeight: 96});
@@ -61,13 +65,8 @@ class Ville extends Phaser.Scene {
             "tileset"
         );
 
-        const houseLayer = gameMap.createLayer(
-            "maisons",
-            gameTileset
-        );
-
-        const collisionLayer = gameMap.createLayer(
-            "collisions",
+        const grassLayer = gameMap.createLayer(
+            "herbe",
             gameTileset
         );
 
@@ -76,10 +75,19 @@ class Ville extends Phaser.Scene {
             gameTileset
         );
 
-        const grassLayer = gameMap.createLayer(
-            "herbe",
+        
+        const collisionLayer = gameMap.createLayer(
+            "collisions",
             gameTileset
         );
+
+
+        const houseLayer = gameMap.createLayer(
+            "maisons",
+            gameTileset
+        );
+
+        
 
 
         // ----- PROPRIETES DU JEU -----
@@ -115,12 +123,20 @@ class Ville extends Phaser.Scene {
         this.player.aCanne = this.aCanne;
         this.player.aCle = this. aCle;
 
+
+
         // ----- AJOUT DES ENNEMIS ET DES OBJETS -----
+
+        // Cle
+        this.sprCle = this.physics.add.sprite(464, 1168, 'spr_cle');
+
+
 
         // ----- AJOUT DES PERSONNAGES NON JOUEURS -----
 
         this.pnj = this.physics.add.group();
         this.pnj1 = this.pnj.create(0, 0, 'spr_pnj1');
+
 
 
         // ----- COLLIDERS -----
@@ -131,8 +147,9 @@ class Ville extends Phaser.Scene {
 
         // ----- DIALOGUES ENTRE LE JOUEUR ET LES PNJ -----
 
-        this.dialogue = false;
+        this.dialogueActif = false;
         this.dialogueCourant = ["", ""];
+        this.stepDialogue = 0;
 
         // Tableau contenant tous les dialogues du joueur
         this.player.dialogue = [
@@ -161,6 +178,7 @@ class Ville extends Phaser.Scene {
         
 
         // ----- ANIMATIONS -----
+
         // Animations personnages
         this.anims.create({
             key: 'idle_perso_droite',
@@ -199,8 +217,19 @@ class Ville extends Phaser.Scene {
             repeat: -1
         });
 
-        // Animations objets
 
+        // Animations objets
+        this.anims.create({
+            key: 'cle_inventaire',
+            frames: [{key: 'spr_cle', frame: 0}],
+            frameRate: -1
+        });
+
+        this.anims.create({
+            key: 'cle_ingame',
+            frames: [{key: 'spr_cle', frame: 1}],
+            frameRate: -1
+        });
         
 
 
@@ -215,6 +244,7 @@ class Ville extends Phaser.Scene {
         this.cameras.main.startFollow(this.player);
 
 
+
         // ----- AFFICHAGE DE L'INTERFACE UTILISATEUR -----
 
         // Affichage de la jauge de fatigue et des differentes frames a afficher
@@ -223,54 +253,65 @@ class Ville extends Phaser.Scene {
         this.anims.create({
             key: 'fatigue7',
             frames: [{key: 'uiFatigue', frame: 0}],
-            frameRate: 1
+            frameRate: -1
         });
 
         this.anims.create({
             key: 'fatigue6',
             frames: [{key: 'uiFatigue', frame: 1}],
-            frameRate: 1
+            frameRate: -1
         });
 
         this.anims.create({
             key: 'fatigue5',
             frames: [{key: 'uiFatigue', frame: 2}],
-            frameRate: 1
+            frameRate: -1
         });
 
         this.anims.create({
             key: 'fatigue4',
             frames: [{key: 'uiFatigue', frame: 3}],
-            frameRate: 1
+            frameRate: -1
         });
 
         this.anims.create({
             key: 'fatigue3',
             frames: [{key: 'uiFatigue', frame: 4}],
-            frameRate: 1
+            frameRate: -1
         });
 
         this.anims.create({
             key: 'fatigue2',
             frames: [{key: 'uiFatigue', frame: 5}],
-            frameRate: 1
+            frameRate: -1
         });
 
         this.anims.create({
             key: 'fatigue1',
             frames: [{key: 'uiFatigue', frame: 6}],
-            frameRate: 1
+            frameRate: -1
         });
 
         this.anims.create({
             key: 'fatigue0',
             frames: [{key: 'uiFatigue', frame: 7}],
-            frameRate: 1
+            frameRate: -1
         });
 
         // Affichage du nombre de croquettes
+
         // Affichage de l'inventaire si le joueur a l'objet
+        this.inventaire = this.add.image(300, 650, "ui_inventaire");
+        //#TODO: afficher les objets si le joueur les a deja (grace aux aCle, aCanne)
+
         // Affichage de la zone de dialogue
+        this.boiteDialogue = this.add.image(220, 650, "ui_dialogue");
+        this.boiteDialogue.setScrollFactor(0);
+
+        this.texteDialogue = this.add.text(250, 700, "dialogue");
+        this.texteDialogue.setScrollFactor(0);
+
+        //#TODO: faire toutes les fonctions de dialogue dans update
 
     }
 

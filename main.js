@@ -1,5 +1,6 @@
-import ville_scene from "/ville_scene.js";
-import parc_scene from "/parc_scene.js";
+import Menu from '/Menu.js';
+import Ville from "/Ville.js";
+import Parc from "/Parc.js";
 //import maison_grandmere_scene from "maison_grandmere_scene.js";
 //import maison_joueur_scene from "maison_joueur_scene.js";
 //import chambre_fille_scene from "chambre_fille_scene.js";
@@ -17,9 +18,9 @@ var config = {
     },
 
     // Ajout des differentes scenes dans le jeu
-    scene: [Ville, Parc]
+    scene: [Menu, Ville, Parc]
 };
 
 
 var game = new Phaser.Game(config);
-game.scene.start("Menu"); 
+game.scene.start("Ville"); 

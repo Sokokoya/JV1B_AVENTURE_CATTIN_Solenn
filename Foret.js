@@ -1,7 +1,7 @@
-export default class foret_scene extends Phaser.Scene {
+export default class Foret extends Phaser.Scene {
 
     constructor() {
-        super({key : "foret_scene"});
+        super({key : "Foret"});
     }
 
     // Initialisation de la scene après avoir changé de scène

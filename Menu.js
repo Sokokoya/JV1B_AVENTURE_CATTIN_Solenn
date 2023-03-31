@@ -17,7 +17,7 @@ export default class Menu extends Phaser.Scene {
     }
 
     update() {
-
+/*
         if (Phaser.Input.Keyboard.JustDown(this.clavier.space) == true) {
             this.scene.start("Ville", {
                 x: 0,
@@ -27,7 +27,7 @@ export default class Menu extends Phaser.Scene {
                 aCanne: false,
                 aCle: false
             });
-        }
+        }*/
     }
 
 
