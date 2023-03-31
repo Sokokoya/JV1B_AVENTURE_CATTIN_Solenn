@@ -1,3 +1,5 @@
+import Player from "../Player.js";
+
 export default class Ville extends Phaser.Scene {
 
     constructor() {
@@ -48,6 +50,37 @@ export default class Ville extends Phaser.Scene {
 
     }
 
+    //#TODO: Fonctions changement de scene
+    //#TODO: Fonctions interactions avec pnj
+
+    updateFatigue() {
+
+        if (this.player.fatigue() >= 7) {
+            fatigue = 7;
+            coeurs.anims.play('fatigue7', true);
+
+        } else if (this.player.fatigue() == 6) {
+            coeurs.anims.play('fatigue6', true);
+
+        } else if (this.player.fatigue() == 5) {
+            coeurs.anims.play('fatigue5', true);
+
+        } else if (this.player.fatigue() == 4) {
+            coeurs.anims.play('fatigue4', true);
+
+        } else if (this.player.fatigue() == 3) {
+            coeurs.anims.play('fatigue3', true);
+
+        } else if (this.player.fatigue() == 2) {
+            coeurs.anims.play('fatigue2', true);
+
+        } else if (this.player.fatigue() == 1) {
+            coeurs.anims.play('fatigue1', true);
+
+        } else if (this.player.fatigue() == 0) {
+            coeurs.anims.play('fatigue0', true);
+        }
+    }
 
 
     // -----------------------------------------------------------------------------------------
@@ -89,7 +122,6 @@ export default class Ville extends Phaser.Scene {
 
         
 
-
         // ----- PROPRIETES DU JEU -----
 
         // E pour interagir avec quelqu'un, Z pour utiliser la canne
@@ -113,11 +145,10 @@ export default class Ville extends Phaser.Scene {
         // ----- CREATION DU JOUEUR ET DE SES PROPRIETES -----
 
         // Ajout du sprite joueur
-        this.player = this.physics.add.sprite(this.positionX, this.positionY, 'spr_personnage');
+        this.player = new Player(this.positionX, this.positionY, 'spr_personnage');
 
         // Prporiétés du joueur
-        this.player.speed = 500;
-
+        //#TODO: changer ici pour faire en sorte que ca prenne en compte la prog objet
         this.player.fatigue = this.fatigue;
         this.player.croquettes = this.croquettes;
         this.player.aCanne = this.aCanne;
@@ -127,8 +158,19 @@ export default class Ville extends Phaser.Scene {
 
         // ----- AJOUT DES ENNEMIS ET DES OBJETS -----
 
-        // Cle
+        // Clé cachée dans un buisson
         this.sprCle = this.physics.add.sprite(464, 1168, 'spr_cle');
+
+        //#TODO: mettre ca au bon endroit
+        // Si le joueur a déjà trouvé la clé, on cache le sprite et on l'ajoute dans son inventaire
+        if (this.this.player.aCle) {
+            //#TODO: changer la position de la clé
+            this.anims.play("cle_inventaire", true);
+        
+        // Sinon, il ne l'a pas trouvée et elle se trouve cachée dans un buisson
+        } else {
+            this.anims.play("cle_ingame", true);
+        }
 
 
 
@@ -297,6 +339,9 @@ export default class Ville extends Phaser.Scene {
             frames: [{key: 'uiFatigue', frame: 7}],
             frameRate: -1
         });
+
+
+        
 
         // Affichage du nombre de croquettes
 

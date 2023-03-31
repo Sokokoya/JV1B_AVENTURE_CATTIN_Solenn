@@ -15,8 +15,6 @@ export default class Menu extends Phaser.Scene {
         this.clavier = this.input.keyboard.createCursorKeys();
 
         this.add.image(540, 360, "image_menu");
-
-        //this.add.text();
     }
 
     update() {
