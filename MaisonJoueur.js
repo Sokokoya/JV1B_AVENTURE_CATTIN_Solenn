@@ -1,7 +1,7 @@
-class maison_joueur_scene extends Phaser.Scene {
+class MaisonJoueur extends Phaser.Scene {
 
     constructor() {
-        super("maison_joueur_scene");
+        super("MaisonJoueur");
     }
 
     // Initialisation de la scene après avoir changé de scène
@@ -15,6 +15,8 @@ class maison_joueur_scene extends Phaser.Scene {
 
     preload() {
         // ici preloead toutes les spritesheet, images et tileset
+        this.load.image('tileset', 'assets/tileset_interieur.png');
+        this.preload.tilemapTiledJSON('map', 'assets/map_5.json');
     }
 
 

@@ -17,9 +17,9 @@ var config = {
     },
 
     // Ajout des differentes scenes dans le jeu
-    scene: [ville_scene, parc_scene]
+    scene: [Ville, Parc]
 };
 
 
 var game = new Phaser.Game(config);
-game.scene.start("ville_scene"); 
+game.scene.start("Menu"); 
