@@ -12,6 +12,7 @@ export default class Ville extends Phaser.Scene {
         super({key: "Ville"});
     }
 
+    
     // Initialisation de la scene après avoir changé de scène
     init(data) {
         this.posX = data.x;
@@ -44,6 +45,7 @@ export default class Ville extends Phaser.Scene {
         // Chargement des calques
         const gameMap = this.add.tilemap('map');
 
+
         const gameTileset = gameMap.addTilesetImage(
             "tileset_exterieur",
             "tileset_exterieur"
@@ -55,7 +57,7 @@ export default class Ville extends Phaser.Scene {
         );
 
         const pathLayer = gameMap.createLayer(
-            "path",
+            "chemin",
             gameTileset
         );
 
@@ -66,15 +68,6 @@ export default class Ville extends Phaser.Scene {
         );
 
 
-        const houseLayer = gameMap.createLayer(
-            "maisons",
-            gameTileset
-        );
-
-        const sortieLayer = gameMap.createLayer(
-            "sortie",
-            gameTileset
-        );
 
 
         
@@ -85,8 +78,8 @@ export default class Ville extends Phaser.Scene {
         
         // Ajout des collisions avec les calques, utilisation des propriétés propres aux calques
         collisionLayer.setCollisionByProperty({estSolide: true});
-        houseLayer.setCollisionByProperty({estSolide: true});
-        sortieLayer.setCollisionByProperty({sortie: true});
+        //houseLayer.setCollisionByProperty({estSolide: true});
+        //sortieLayer.setCollisionByProperty({sortie: true});
 
 
         

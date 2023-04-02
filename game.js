@@ -8,6 +8,7 @@
 // Import de toutes les scènes utilisées dans le jeu
 import Menu from '/niveaux/Menu.js';
 import MaisonJoueur from '/niveaux/MaisonJoueur.js';
+import Ville from '/niveaux/Ville.js';
 
 
 
@@ -24,7 +25,7 @@ var config = {
     },
 
     // Ajout des differentes scenes dans le jeu
-    scene: [Menu, MaisonJoueur],
+    scene: [Menu, MaisonJoueur, Ville],
 
     // Activation de la possibilité de jouer à la manette
     input: {gamepad: true}
