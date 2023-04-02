@@ -28,7 +28,7 @@ export default class MaisonJoueur extends Phaser.Scene {
 
         // Tileset et map de la scène
         this.load.image('tileset_interieur', 'assets/tileset_interieur.png');
-        this.load.tilemapTiledJSON('map', 'assets/maps/map_maison_joueur.json');
+        this.load.tilemapTiledJSON('map_maison_joueur', 'assets/maps/map_maison_joueur.json');
 
         // Sprites du héros
         this.load.spritesheet('heros_idle_droite', 'assets/spr_idle_perso_droite.png', {frameWidth: 64, frameHeight: 96});
@@ -46,7 +46,7 @@ export default class MaisonJoueur extends Phaser.Scene {
         // ----- AFFICHAGE DU JEU -----
 
         // Chargement des calques
-        const gameMap = this.add.tilemap('map');
+        const gameMap = this.add.tilemap('map_maison_joueur');
 
         const gameTileset = gameMap.addTilesetImage(
             'tileset_interieur',

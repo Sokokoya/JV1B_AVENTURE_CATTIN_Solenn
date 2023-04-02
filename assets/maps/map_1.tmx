@@ -297,72 +297,72 @@
   </tile>
   <tile id="168">
    <properties>
-    <property name="estSolide" type="bool" value="true"/>
+    <property name="estSolide" type="bool" value="false"/>
    </properties>
   </tile>
   <tile id="169">
    <properties>
-    <property name="estSolide" type="bool" value="true"/>
+    <property name="estSolide" type="bool" value="false"/>
    </properties>
   </tile>
   <tile id="170">
    <properties>
-    <property name="estSolide" type="bool" value="true"/>
+    <property name="estSolide" type="bool" value="false"/>
    </properties>
   </tile>
   <tile id="171">
    <properties>
-    <property name="estSolide" type="bool" value="true"/>
+    <property name="estSolide" type="bool" value="false"/>
    </properties>
   </tile>
   <tile id="172">
    <properties>
-    <property name="estSolide" type="bool" value="true"/>
+    <property name="estSolide" type="bool" value="false"/>
    </properties>
   </tile>
   <tile id="173">
    <properties>
-    <property name="estSolide" type="bool" value="true"/>
+    <property name="estSolide" type="bool" value="false"/>
    </properties>
   </tile>
   <tile id="174">
    <properties>
-    <property name="estSolide" type="bool" value="true"/>
+    <property name="estSolide" type="bool" value="false"/>
    </properties>
   </tile>
   <tile id="182">
    <properties>
-    <property name="estSolide" type="bool" value="true"/>
+    <property name="estSolide" type="bool" value="false"/>
    </properties>
   </tile>
   <tile id="183">
    <properties>
-    <property name="estSolide" type="bool" value="true"/>
+    <property name="estSolide" type="bool" value="false"/>
    </properties>
   </tile>
   <tile id="184">
    <properties>
-    <property name="estSolide" type="bool" value="true"/>
+    <property name="estSolide" type="bool" value="false"/>
    </properties>
   </tile>
   <tile id="185">
    <properties>
-    <property name="estSolide" type="bool" value="true"/>
+    <property name="estSolide" type="bool" value="false"/>
    </properties>
   </tile>
   <tile id="186">
    <properties>
-    <property name="estSolide" type="bool" value="true"/>
+    <property name="estSolide" type="bool" value="false"/>
    </properties>
   </tile>
   <tile id="187">
    <properties>
-    <property name="estSolide" type="bool" value="true"/>
+    <property name="estSolide" type="bool" value="false"/>
    </properties>
   </tile>
   <tile id="188">
    <properties>
-    <property name="estSolide" type="bool" value="true"/>
+    <property name="estSolide" type="bool" value="false"/>
    </properties>
   </tile>
  </tileset>
@@ -481,10 +481,10 @@
 0,0,20,6,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,20,
 0,0,20,6,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,20,
 0,0,6,6,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,6,
-0,0,6,20,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,6,
+0,0,6,20,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
 0,0,20,6,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
 0,0,20,20,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
-0,0,20,20,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,6,
+0,0,20,20,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
 0,0,6,20,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,20,
 6,6,20,20,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,20,
 6,20,20,6,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,6,
@@ -643,10 +643,10 @@
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
-0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,2684354569,
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,2684354569,
-0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,2684354569,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,2684354569,
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,

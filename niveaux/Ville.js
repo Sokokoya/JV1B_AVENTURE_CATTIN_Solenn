@@ -28,7 +28,7 @@ export default class Ville extends Phaser.Scene {
 
         // Tileset et map de la scène
         this.load.image('tileset_exterieur', 'assets/tileset_exterieur.png');
-        this.load.tilemapTiledJSON('map', 'assets/maps/map_ville.json');
+        this.load.tilemapTiledJSON('map_ville', 'assets/maps/map_ville.json');
        
 
     }
@@ -43,7 +43,7 @@ export default class Ville extends Phaser.Scene {
         // ----- AFFICHAGE DE LA SCENE -----
 
         // Chargement des calques
-        const gameMap = this.add.tilemap('map');
+        const gameMap = this.add.tilemap('map_ville');
 
 
         const gameTileset = gameMap.addTilesetImage(
@@ -57,13 +57,23 @@ export default class Ville extends Phaser.Scene {
         );
 
         const pathLayer = gameMap.createLayer(
-            "chemin",
+            "path",
             gameTileset
         );
 
         
         const collisionLayer = gameMap.createLayer(
             "collisions",
+            gameTileset
+        );
+
+        const houseLayer = gameMap.createLayer(
+            "maisons",
+            gameTileset
+        );
+
+        const sortieLayer = gameMap.createLayer(
+            "sortie",
             gameTileset
         );
 
@@ -78,8 +88,8 @@ export default class Ville extends Phaser.Scene {
         
         // Ajout des collisions avec les calques, utilisation des propriétés propres aux calques
         collisionLayer.setCollisionByProperty({estSolide: true});
-        //houseLayer.setCollisionByProperty({estSolide: true});
-        //sortieLayer.setCollisionByProperty({sortie: true});
+        houseLayer.setCollisionByProperty({estSolide: true});
+        sortieLayer.setCollisionByProperty({sortie: true});
 
 
         
@@ -89,8 +99,16 @@ export default class Ville extends Phaser.Scene {
         this.player = new Player(this, this.posX, this.posY, 'heros_idle_droite');
 
         // Ajout des collisions entre le personnage et les objets / murs / sortie
-      /*  this.physics.add.collider(this.player, houseLayer);
-        this.physics.add.collider(this.player, collisionLayer);*/
+        this.physics.add.collider(this.player, houseLayer);
+        this.physics.add.collider(this.player, collisionLayer);
+
+        /*
+        this.physics.add.collider(this.player, sortieLayer, function() {
+            this.scene.start("Ville", {
+                x: 640,
+                y: 624
+            });
+        }, null, this);*/
 
 
 
@@ -108,6 +126,8 @@ export default class Ville extends Phaser.Scene {
 
 
     update() {
+
+        this.player.updateMouvement();
 
       
     }
