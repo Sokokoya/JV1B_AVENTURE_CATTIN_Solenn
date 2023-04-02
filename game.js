@@ -9,6 +9,8 @@
 import Menu from '/niveaux/Menu.js';
 import MaisonJoueur from '/niveaux/MaisonJoueur.js';
 import Ville from '/niveaux/Ville.js';
+import Parc from '/niveaux/Parc.js';
+import Foret from '/niveaux/Foret.js';
 
 
 
@@ -25,7 +27,7 @@ var config = {
     },
 
     // Ajout des differentes scenes dans le jeu
-    scene: [Menu, MaisonJoueur, Ville],
+    scene: [Menu, MaisonJoueur, Ville, Parc, Foret],
 
     // Activation de la possibilité de jouer à la manette
     input: {gamepad: true}

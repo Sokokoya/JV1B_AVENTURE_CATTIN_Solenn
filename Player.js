@@ -19,6 +19,8 @@ export default class Player extends Phaser.Physics.Arcade.Sprite {
   
     }
 
+
+    // Fonction permettant au joueur de se déplacer, à placer dans chaque fonction update() de chaque scène
     updateMouvement() {
 
         this.deplacement = new Phaser.Math.Vector2(0, 0);

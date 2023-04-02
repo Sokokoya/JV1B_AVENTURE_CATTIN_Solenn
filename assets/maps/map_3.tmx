@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <map version="1.9" tiledversion="1.9.2" orientation="orthogonal" renderorder="right-down" width="40" height="40" tilewidth="32" tileheight="32" infinite="0" nextlayerid="4" nextobjectid="1">
  <tileset firstgid="1" name="tileset_foret" tilewidth="32" tileheight="32" tilecount="196" columns="14">
-  <image source="tileset_foret.png" width="448" height="448"/>
+  <image source="../tileset_foret.png" width="448" height="448"/>
  </tileset>
  <layer id="1" name="herbe" width="40" height="40">
   <data encoding="csv">

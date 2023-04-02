@@ -72,8 +72,18 @@ export default class Ville extends Phaser.Scene {
             gameTileset
         );
 
-        const sortieLayer = gameMap.createLayer(
-            "sortie",
+        const versMaisonLayer = gameMap.createLayer(
+            "versMaison",
+            gameTileset
+        );
+
+        const versParcLayer = gameMap.createLayer(
+            "versParc",
+            gameTileset
+        );
+
+        const versForetLayer = gameMap.createLayer(
+            "versForet",
             gameTileset
         );
 
@@ -89,7 +99,9 @@ export default class Ville extends Phaser.Scene {
         // Ajout des collisions avec les calques, utilisation des propriétés propres aux calques
         collisionLayer.setCollisionByProperty({estSolide: true});
         houseLayer.setCollisionByProperty({estSolide: true});
-        sortieLayer.setCollisionByProperty({sortie: true});
+        versMaisonLayer.setCollisionByProperty({sortie: true});
+        versForetLayer.setCollisionByProperty({sortie: true});
+        versParcLayer.setCollisionByProperty({sortie: true});
 
 
         
@@ -102,13 +114,31 @@ export default class Ville extends Phaser.Scene {
         this.physics.add.collider(this.player, houseLayer);
         this.physics.add.collider(this.player, collisionLayer);
 
-        /*
-        this.physics.add.collider(this.player, sortieLayer, function() {
-            this.scene.start("Ville", {
+        this.physics.add.collider(this.player, versMaisonLayer, function() {
+            console.log("vers maison joueur");
+            this.scene.start("MaisonJoueur", {
+                x: 448,
+                y: 544
+            });
+        }, null, this);
+
+        this.physics.add.collider(this.player, versParcLayer, function() {
+            console.log("vers parc");
+            //#TODO: rajouter un pnj qui l'empeche de sortir tant qu'il a pas parlé a la mamie
+            this.scene.start("Parc", {
+                x: 64,
+                y: 1136
+            });
+        }, null, this);
+
+        this.physics.add.collider(this.player, versForetLayer, function() {
+            console.log("vers foret");
+            this.scene.start("Foret", {
+                // changer coordonées
                 x: 640,
                 y: 624
             });
-        }, null, this);*/
+        }, null, this);
 
 
 
