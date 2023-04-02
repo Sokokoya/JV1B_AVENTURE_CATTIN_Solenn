@@ -34,6 +34,7 @@ export default class MaisonJoueur extends Phaser.Scene {
         this.load.spritesheet('heros_idle_droite', 'assets/spr_idle_perso_droite.png', {frameWidth: 64, frameHeight: 96});
     }
 
+    
 
 
     // -----------------------------------------------------------------------------------------
@@ -94,10 +95,34 @@ export default class MaisonJoueur extends Phaser.Scene {
         // Ajout du personnage dans le jeu
         this.player = new Player(this, this.posX, this.posY, 'heros_idle_droite');
 
+        // Ajout des collisions entre le personnage et les objets / murs / sortie
+        this.physics.add.collider(this.player, murLayer);
+        this.physics.add.collider(this.player, collisionsLayer);
+        this.physics.add.collider(this.player, sortieLayer, function() {
+            this.scene.start("Ville", {
+                x: 640,
+                y: 624
+            });
+        }, null, this);
+
+
+
+        
+        // ----- CAMERA -----
+
+        // Redimensions du jeu selon le fichier Tiled
+        this.physics.world.setBounds(0, 0, 1600, 1600);
+        this.cameras.main.setBounds(0, 0, 1600, 1600);
+        
+        // Tracking de la caméra sur le joueur
+        this.cameras.main.startFollow(this.player);
+
     }
 
 
     update() {
+
+        this.player.updateMouvement();
 
     }
 
