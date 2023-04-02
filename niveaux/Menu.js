@@ -5,10 +5,20 @@ export default class Menu extends Phaser.Scene {
     }
 
 
+    // -----------------------------------------------------------------------------------------
+    // ---------------------------------- FONCTION PRELOAD -------------------------------------
+    // -----------------------------------------------------------------------------------------
+
     preload() {
 
         this.load.image('image_menu', 'assets/image_menu.png');
     }
+
+
+
+    // -----------------------------------------------------------------------------------------
+    // ----------------------------------- FONCTION CREATE -------------------------------------
+    // -----------------------------------------------------------------------------------------
 
     create() {
 
@@ -20,14 +30,10 @@ export default class Menu extends Phaser.Scene {
     update() {
 
         if (Phaser.Input.Keyboard.JustDown(this.clavier.space)) {
-            //#TODO: changer ici pour mettre la scene de depart dans la maison du joueur
+            //#TODO: changer ici pour mettre la scene de depart dans la maison du joueur puis les bonnes coordonees
             this.scene.start("Ville", {
                 x: 0,
-                y: 0,
-                fatigue: 5,
-                croquettes: 0,
-                aCanne: false,
-                aCle: false
+                y: 0
             });
         }
     }

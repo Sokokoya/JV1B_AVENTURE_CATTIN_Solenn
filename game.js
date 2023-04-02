@@ -22,6 +22,9 @@ var config = {
 
     // Ajout des differentes scenes dans le jeu
     scene: [Menu, Ville, Parc, MaisonJoueur, MaisonGM, ChambreFille]
+
+
+
 };
 
 

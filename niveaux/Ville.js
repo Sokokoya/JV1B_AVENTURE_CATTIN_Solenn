@@ -8,28 +8,32 @@ export default class Ville extends Phaser.Scene {
 
     // Initialisation de la scene après avoir changé de scène
     init(data) {
-/*
-        // Position du sprite joueur
+
+        // Position du sprite joueur au début de la scène
         this.positionX = data.x;
         this.positionY = data.y; 
 
         // Donnees du personnage au debut de la scene
-        this.fatigue = data.fatigue;
-        this.croquettes = data.croquettes;
-        this.aCanne = data.aCanne;
-        this.aCle = data.aCle;
-   */
+      /*  this.fatigueData = data.fatigue;
+        this.croquettesData = data.croquettes;
+        this.aCanneData = data.aCanne;
+        this.aCleData = data.aCle;
+        this.aCroquettePigeonData = data.croquettePigeon;
+        this.queteMamieData = data.queteMamie;*/
+        
+   
     }
 
 
     // -----------------------------------------------------------------------------------------
     // ---------------------------------- FONCTION PRELOAD -------------------------------------
     // -----------------------------------------------------------------------------------------
+
     preload() {
 
         // Tileset et map
         this.load.image('tileset', 'assets/tileset_exterieur.png');
-        this.load.tilemapTiledJSON('map', 'assets/map_1.json');
+        this.load.tilemapTiledJSON('map', 'assets/ville.json');
 
         // Chargement de l'interface et des objets
         this.load.spritesheet('spr_fatigue', 'assets/spr_fatigue.png', {frameWidth: 64, frameHeight: 32});
@@ -53,39 +57,24 @@ export default class Ville extends Phaser.Scene {
     //#TODO: Fonctions changement de scene
     //#TODO: Fonctions interactions avec pnj
 
-    updateFatigue() {
+    dialoguePnj1() {
 
-        if (this.player.fatigue() >= 7) {
-            fatigue = 7;
-            coeurs.anims.play('fatigue7', true);
-
-        } else if (this.player.fatigue() == 6) {
-            coeurs.anims.play('fatigue6', true);
-
-        } else if (this.player.fatigue() == 5) {
-            coeurs.anims.play('fatigue5', true);
-
-        } else if (this.player.fatigue() == 4) {
-            coeurs.anims.play('fatigue4', true);
-
-        } else if (this.player.fatigue() == 3) {
-            coeurs.anims.play('fatigue3', true);
-
-        } else if (this.player.fatigue() == 2) {
-            coeurs.anims.play('fatigue2', true);
-
-        } else if (this.player.fatigue() == 1) {
-            coeurs.anims.play('fatigue1', true);
-
-        } else if (this.player.fatigue() == 0) {
-            coeurs.anims.play('fatigue0', true);
-        }
     }
+
+    dialoguePnj2() {
+        
+    }
+
+    dialoguePnj3() {
+        
+    }
+
 
 
     // -----------------------------------------------------------------------------------------
     // ----------------------------------- FONCTION CREATE -------------------------------------
     // -----------------------------------------------------------------------------------------
+
     create() {
 
         // ----- AFFICHAGE DE LA SCENE -----
@@ -120,57 +109,56 @@ export default class Ville extends Phaser.Scene {
             gameTileset
         );
 
+        const sortieLayer = gameMap.createLayer(
+            "sortie",
+            gameTileset
+        );
+
         
 
         // ----- PROPRIETES DU JEU -----
 
         // E pour interagir avec quelqu'un, Z pour utiliser la canne
-        this.keyE = this.keyE = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.E);
-        this.keyZ = this.keyE = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.Z);
+        this.keyE = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.E);
+        this.keyZ = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.Z);
 
         // Ajout des collisions grace aux propriétés des calques
         collisionLayer.setCollisionByProperty({estSolide: true});
         houseLayer.setCollisionByProperty({estSolide: true});
 
-        this.physics.add.collider(this.player, collisionLayer);
-        this.physics.add.collider(this.player, houseLayer);
-
-
-
-
-
-        // collisions avec tileset
 
 
         // ----- CREATION DU JOUEUR ET DE SES PROPRIETES -----
 
         // Ajout du sprite joueur
-        this.player = new Player(this.positionX, this.positionY, 'spr_personnage');
+        this.player = new Player(this,this.positionX, this.positionY, 'idlePersoDroite');
 
         // Prporiétés du joueur
         //#TODO: changer ici pour faire en sorte que ca prenne en compte la prog objet
-        this.player.fatigue = this.fatigue;
+      /*  this.player.fatigue = this.fatigue;
         this.player.croquettes = this.croquettes;
         this.player.aCanne = this.aCanne;
-        this.player.aCle = this. aCle;
+        this.player.aCle = this.aCle;
+        this.player.aCroquettePigeon = this.aCroquettePigeonData;
+        this.player.queteMamie = this.queteMamieData;*/
 
 
 
         // ----- AJOUT DES ENNEMIS ET DES OBJETS -----
 
-        // Clé cachée dans un buisson
-        this.sprCle = this.physics.add.sprite(464, 1168, 'spr_cle');
-
-        //#TODO: mettre ca au bon endroit
-        // Si le joueur a déjà trouvé la clé, on cache le sprite et on l'ajoute dans son inventaire
-        if (this.this.player.aCle) {
-            //#TODO: changer la position de la clé
-            this.anims.play("cle_inventaire", true);
-        
-        // Sinon, il ne l'a pas trouvée et elle se trouve cachée dans un buisson
-        } else {
+        // Clé cachée dans un buisson si le joueur n'a as déjà trouvé la clé
+        if (window.aCle == false) {     
+            this.sprCle = this.physics.add.sprite(464, 1168, 'spr_cle');
             this.anims.play("cle_ingame", true);
+
+        // Sinon, la clé se trouve dans son inventaire
+        } else {
+            //#TODO: changer la position de la clé
+            this.sprCle = this.physics.add.sprite(464, 1168, 'spr_cle');
+            this.sprCle.setScrollFactor(0);
+            this.anims.play("cle_inventaire", true);
         }
+
 
 
 
@@ -183,6 +171,9 @@ export default class Ville extends Phaser.Scene {
 
         // ----- COLLIDERS -----
         // Avec la map
+        
+        this.physics.add.collider(this.player, collisionLayer);
+        this.physics.add.collider(this.player, houseLayer);
         // Avec les objets
         // Avec les pnj
 
@@ -193,10 +184,6 @@ export default class Ville extends Phaser.Scene {
         this.dialogueCourant = ["", ""];
         this.stepDialogue = 0;
 
-        // Tableau contenant tous les dialogues du joueur
-        this.player.dialogue = [
-            ["Angie ?", "Angie !??", "ANGIE !!!????", "(ou est-ce qu'elle peut bien etre ? je devrais aller voir dehors si quelqu'un l'a vue.)"]    
-        ];
 
         // Tableaux contenant tous les dialogues des PNJ
         this.pnj1.dialogue = [
@@ -295,49 +282,49 @@ export default class Ville extends Phaser.Scene {
         this.anims.create({
             key: 'fatigue7',
             frames: [{key: 'uiFatigue', frame: 0}],
-            frameRate: -1
+            frameRate: 20
         });
 
         this.anims.create({
             key: 'fatigue6',
             frames: [{key: 'uiFatigue', frame: 1}],
-            frameRate: -1
+            frameRate: 20
         });
 
         this.anims.create({
             key: 'fatigue5',
             frames: [{key: 'uiFatigue', frame: 2}],
-            frameRate: -1
+            frameRate: 20
         });
 
         this.anims.create({
             key: 'fatigue4',
             frames: [{key: 'uiFatigue', frame: 3}],
-            frameRate: -1
+            frameRate: 20
         });
 
         this.anims.create({
             key: 'fatigue3',
             frames: [{key: 'uiFatigue', frame: 4}],
-            frameRate: -1
+            frameRate: 20
         });
 
         this.anims.create({
             key: 'fatigue2',
             frames: [{key: 'uiFatigue', frame: 5}],
-            frameRate: -1
+            frameRate: 20
         });
 
         this.anims.create({
             key: 'fatigue1',
             frames: [{key: 'uiFatigue', frame: 6}],
-            frameRate: -1
+            frameRate: 20
         });
 
         this.anims.create({
             key: 'fatigue0',
             frames: [{key: 'uiFatigue', frame: 7}],
-            frameRate: -1
+            frameRate: 20
         });
 
 
@@ -368,6 +355,8 @@ export default class Ville extends Phaser.Scene {
 
 
         // Bouton d'interaction (E/Z)
+        // Si le joueur appuis sur Z
+        // this.player.coupDeCanne(tous les ennemis autour);
 
         // Controles du joueur + canne
 
@@ -376,6 +365,10 @@ export default class Ville extends Phaser.Scene {
         // Systeme de dialogue
 
         // Update de l'ui (objets/ croquettes/ fatigue)
+/*
+        this.player.updateMouvement();
+        this.player.updateFatigue();
+        this.player.updateCroquettes();*/
 
         // changement de scene
         /*sceneParc(player) {

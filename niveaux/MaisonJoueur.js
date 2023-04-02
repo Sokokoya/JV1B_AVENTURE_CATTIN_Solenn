@@ -13,6 +13,11 @@ export default class MaisonJoueur extends Phaser.Scene {
     
     }
 
+
+    // -----------------------------------------------------------------------------------------
+    // ---------------------------------- FONCTION PRELOAD -------------------------------------
+    // -----------------------------------------------------------------------------------------
+
     preload() {
         // ici preloead toutes les spritesheet, images et tileset
         this.load.image('tileset', 'assets/tileset_interieur.png');
@@ -20,8 +25,17 @@ export default class MaisonJoueur extends Phaser.Scene {
     }
 
 
+
+    // -----------------------------------------------------------------------------------------
+    // ----------------------------------- FONCTION CREATE -------------------------------------
+    // -----------------------------------------------------------------------------------------
+    
     create() {
 
+        // Tableau contenant tous les dialogues du joueur
+        this.player.dialogue = [
+            ["Angie ?", "Angie !??", "ANGIE !!!????", "(ou est-ce qu'elle peut bien etre ? je devrais aller voir dehors si quelqu'un l'a vue.)"]    
+        ];
     }
 
 
