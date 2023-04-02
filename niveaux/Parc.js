@@ -6,9 +6,6 @@ export default class Parc extends Phaser.Scene {
 
     // Initialisation de la scene après avoir changé de scène
     init(data) {
-        // Position du sprite joueur
-        this.positionX = data.x;
-        this.positionY = data.y; 
     
     }
 
@@ -18,11 +15,6 @@ export default class Parc extends Phaser.Scene {
     // -----------------------------------------------------------------------------------------
 
     preload() {
-
-        // Chargement de la carte de jeu
-        this.load.tilemapTiledJSON('map', 'assets/map_2.json');
-
-        //#TODO: faire spritesheet petite fille et chien
     }
 
 
@@ -33,39 +25,6 @@ export default class Parc extends Phaser.Scene {
     // -----------------------------------------------------------------------------------------
 
     create() {
-
-        // ----- AFFICHAGE DE LA SCENE -----
-
-        // Chargement des calques
-        const gameMap = this.add.tilemap('map');
-
-        const gameTileset = gameMap.addTilesetImage(
-            "tileset_exterieur",
-            "tileset"
-        );
-
-        const grassLayer = gameMap.createLayer(
-            "herbe",
-            gameTileset
-        );
-
-        const pathLayer = gameMap.createLayer(
-            "path",
-            gameTileset
-        );
-
-        
-        const collisionLayer = gameMap.createLayer(
-            "collisions",
-            gameTileset
-        );
-
-
-
-        // ----- CREATION DU JOUEUR ET DE SES PROPRIETES -----
-
-        // Ajout du sprite joueur
-        this.player = new Player(this.positionX, this.positionY, 'spr_personnage');
 
     }
 

@@ -1,11 +1,7 @@
 
 // Import de toutes les scènes utilisées dans le jeu
 import Menu from '/niveaux/Menu.js';
-import Ville from "/niveaux/Ville.js";
-import Parc from "/niveaux/Parc.js";
-import MaisonJoueur from "/niveaux/MaisonJoueur.js";
-import MaisonGM from "/niveaux/MaisonGM.js";
-import ChambreFille from "/niveaux/ChambreFille.js";
+
 
 
 // Configuration initiale

@@ -31,7 +31,7 @@ export default class Menu extends Phaser.Scene {
 
         if (Phaser.Input.Keyboard.JustDown(this.clavier.space)) {
             //#TODO: changer ici pour mettre la scene de depart dans la maison du joueur puis les bonnes coordonees
-            this.scene.start("Ville", {
+            this.scene.start("---", {
                 x: 0,
                 y: 0
             });

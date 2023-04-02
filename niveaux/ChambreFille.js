@@ -7,9 +7,6 @@ export default class ChambreFille extends Phaser.Scene {
     // Initialisation de la scene après avoir changé de scène
     init(data) {
 
-        // Position du sprite joueur
-        this.positionX = data.x;
-        this.positionY = data.y; 
     
     }
 
