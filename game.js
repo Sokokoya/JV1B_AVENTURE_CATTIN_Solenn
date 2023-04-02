@@ -1,6 +1,13 @@
+/**
+ * game.js --- Solenn Cattin --- JV1B
+ * 
+ * Fichier comportant la configuration du jeu, et lançant la première scène : l'écran d'accueil
+*/
+
 
 // Import de toutes les scènes utilisées dans le jeu
 import Menu from '/niveaux/Menu.js';
+import MaisonJoueur from '/niveaux/MaisonJoueur.js';
 
 
 
@@ -17,9 +24,10 @@ var config = {
     },
 
     // Ajout des differentes scenes dans le jeu
-    scene: [Menu, Ville, Parc, MaisonJoueur, MaisonGM, ChambreFille]
+    scene: [Menu, MaisonJoueur],
 
-
+    // Activation de la possibilité de jouer à la manette
+    input: {gamepad: true}
 
 };
 
