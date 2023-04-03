@@ -29,6 +29,9 @@ export default class Ville extends Phaser.Scene {
         // Tileset et map de la scène
         this.load.image('tileset_exterieur', 'assets/tileset_exterieur.png');
         this.load.tilemapTiledJSON('map_ville', 'assets/maps/map_ville.json');
+
+        // Objets
+        this.load.spritesheet('spr_cle', 'assets/spr_cle.png', {frameWidth: 32, frameHeight: 32});
        
 
     }
@@ -39,6 +42,10 @@ export default class Ville extends Phaser.Scene {
     // -----------------------------------------------------------------------------------------
 
     create() {
+
+
+        this.keyE = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.E);
+        this.keyZ = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.Z);
 
         // ----- AFFICHAGE DE LA SCENE -----
 
@@ -69,6 +76,11 @@ export default class Ville extends Phaser.Scene {
 
         const houseLayer = gameMap.createLayer(
             "maisons",
+            gameTileset
+        );
+
+        const detailsLayer = gameMap.createLayer(
+            "details",
             gameTileset
         );
 
@@ -110,18 +122,22 @@ export default class Ville extends Phaser.Scene {
         // Ajout du personnage dans le jeu
         this.player = new Player(this, this.posX, this.posY, 'heros_idle_droite');
 
-        // Ajout des collisions entre le personnage et les objets / murs / sortie
+        // Ajout des collisions entre le personnage et les objets et les murs
         this.physics.add.collider(this.player, houseLayer);
         this.physics.add.collider(this.player, collisionLayer);
 
+        // Ajout des colisions entre le personnage et les sorties
+        // --> vers la maison du joueur
         this.physics.add.collider(this.player, versMaisonLayer, function() {
             console.log("vers maison joueur");
+            //#TODO: rajouter la condition d'avoir la clé pour rentrer
             this.scene.start("MaisonJoueur", {
                 x: 448,
                 y: 544
             });
         }, null, this);
 
+        // --> vers le Parc
         this.physics.add.collider(this.player, versParcLayer, function() {
             console.log("vers parc");
             //#TODO: rajouter un pnj qui l'empeche de sortir tant qu'il a pas parlé a la mamie
@@ -131,16 +147,50 @@ export default class Ville extends Phaser.Scene {
             });
         }, null, this);
 
+        // --> vers la Forêt
         this.physics.add.collider(this.player, versForetLayer, function() {
             console.log("vers foret");
             this.scene.start("Foret", {
-                // changer coordonées
                 x: 1024,
                 y: 1168
             });
         }, null, this);
 
 
+        // ----- AJOUT DES OBJETS ET INTERACTIONS -----
+
+        // Clé à récupérer dans une buisson
+
+        this.cle = this.physics.add.sprite(464, 1168, 'spr_cle');
+
+        this.anims.create({
+            key: 'cle_ingame',
+            frames: [{ key: 'cle', frame: 1 }],
+            frameRate: 20
+        });
+
+        this.anims.create({
+            key: 'cle_inventaire',
+            frames: [{ key: 'cle', frame: 0 }],
+            frameRate: 20
+        });
+
+
+        //#TODO: ajout hitbox personnage, pour savoir ce qu'il peut toucer ou pas
+        /*this.physics.add.collider(this.player, this.cle, function() {
+            if (this.clavier.keyE.isDown) {
+                window.valeurs.aCle = true;
+            }
+        }, null, this);
+        console.log("aCle", window.valeurs.aCle);*/
+
+        //#TODO: regler le probleme d'animation ici
+        /*if (window.valeurs.aCle == false) {
+            this.cle.anims.play('cle_ingame', true);
+        } else {
+            this.cle.anims.play('cle_inventaire', true);
+        }
+        */
 
         
         // ----- CAMERA -----

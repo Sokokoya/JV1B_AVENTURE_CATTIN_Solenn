@@ -11,6 +11,8 @@ var valeurs = {
     vitesse: 160,
 
     posX: 448,
-    posY: 432
+    posY: 432,
+
+    aCle: false
 
 };

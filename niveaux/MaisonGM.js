@@ -78,9 +78,9 @@ export default class MaisonGM extends Phaser.Scene {
         this.clavier = this.input.keyboard.createCursorKeys();
 
         // Ajout des collisions avec les calques, utilisation des propriétés propres aux calques
-        murLayer.setCollisionByProperty({estSolide: true});
+        murLayer.setCollisionByExclusion(-1, true);
         collisionsLayer.setCollisionByProperty({estSolide: true});
-        versForetLayer.setCollisionByProperty({sortie: true});
+        versForetLayer.setCollisionByExclusion(-1, true);
 
 
         // ----- AFFICHAGE ET PROPRIETES DU PERSONNAGE -----

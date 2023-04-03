@@ -10,6 +10,7 @@ export default class Player extends Phaser.Physics.Arcade.Sprite {
         super(scene, x, y, texture);
 
         this.clavier = scene.input.keyboard.createCursorKeys();
+        
 
         scene.physics.world.enable(this);
         scene.add.existing(this);
@@ -57,6 +58,8 @@ export default class Player extends Phaser.Physics.Arcade.Sprite {
 
 
     }
+
+
     
 
 }
