@@ -8,6 +8,9 @@
 // Toutes les valeurs utilisées tout au long du jeu, qui pourront être facilement modifiées
 var valeurs = {
 
-    vitesse: 160
+    vitesse: 160,
+
+    posX: 448,
+    posY: 432
 
 };

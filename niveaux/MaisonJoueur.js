@@ -9,7 +9,7 @@ import Player from '../Player.js';
 export default class MaisonJoueur extends Phaser.Scene {
 
     constructor() {
-        super("MaisonJoueur");
+        super({key: "MaisonJoueur"});
     }
 
     // Initialisation de la scene après avoir changé de scène
@@ -85,9 +85,9 @@ export default class MaisonJoueur extends Phaser.Scene {
         this.clavier = this.input.keyboard.createCursorKeys();
 
         // Ajout des collisions avec les calques, utilisation des propriétés propres aux calques
-        murLayer.setCollisionByProperty({estSolide: true});
+        murLayer.setCollisionByExclusion(-1, true);
         collisionsLayer.setCollisionByProperty({estSolide: true});
-        sortieLayer.setCollisionByProperty({sortie: true});
+        sortieLayer.setCollisionByExclusion(-1, true);
 
 
         // ----- AFFICHAGE ET PROPRIETES DU PERSONNAGE -----

@@ -55,6 +55,7 @@ export default class Player extends Phaser.Physics.Arcade.Sprite {
         this.y = Math.round(this.y);
 
 
+
     }
     
 

@@ -135,8 +135,8 @@ export default class Ville extends Phaser.Scene {
             console.log("vers foret");
             this.scene.start("Foret", {
                 // changer coordonées
-                x: 640,
-                y: 624
+                x: 1024,
+                y: 1168
             });
         }, null, this);
 

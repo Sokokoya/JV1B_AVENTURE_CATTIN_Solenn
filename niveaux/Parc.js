@@ -9,7 +9,7 @@ import Player from '../Player.js';
 export default class Parc extends Phaser.Scene {
 
     constructor() {
-        super("Parc");
+        super({key: "Parc"});
     }
 
     // Initialisation de la scene après avoir changé de scène
@@ -80,8 +80,8 @@ export default class Parc extends Phaser.Scene {
         this.clavier = this.input.keyboard.createCursorKeys();
         
         // Ajout des collisions avec les calques, utilisation des propriétés propres aux calques
-        collisionLayer.setCollisionByProperty({estSolide: true});
-        versVilleLayer.setCollisionByProperty({sortie: true});
+        collisionLayer.setCollisionByExclusion(-1, true);
+        versVilleLayer.setCollisionByExclusion(-1, true);
 
 
         
@@ -107,8 +107,8 @@ export default class Parc extends Phaser.Scene {
         // ----- CAMERA -----
 
         // Redimensions du jeu selon le fichier Tiled
-        this.physics.world.setBounds(0, 0, 1600, 1600);
-        this.cameras.main.setBounds(0, 0, 1600, 1600);
+        this.physics.world.setBounds(0, 0, 1280, 1280);
+        this.cameras.main.setBounds(0, 0, 1280, 1280);
         
         // Tracking de la caméra sur le joueur
         this.cameras.main.startFollow(this.player);
