@@ -43,10 +43,6 @@ export default class Ville extends Phaser.Scene {
 
     create() {
 
-
-        this.keyE = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.E);
-        this.keyZ = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.Z);
-
         // ----- AFFICHAGE DE LA SCENE -----
 
         // Chargement des calques
@@ -107,6 +103,13 @@ export default class Ville extends Phaser.Scene {
 
         // Prise en charge des touches du clavier
         this.clavier = this.input.keyboard.createCursorKeys();
+
+        this.keyE = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.E);
+        this.keyZ = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.Z);
+
+      //  const toucheE_down = Phaser.input.keyboard.JustDown(this.keyE);
+      //  const toucheZ_down = Phaser.input.keyboard.JustDown(this.keyZ);
+
         
         // Ajout des collisions avec les calques, utilisation des propriétés propres aux calques
         collisionLayer.setCollisionByProperty({estSolide: true});
@@ -165,32 +168,31 @@ export default class Ville extends Phaser.Scene {
 
         this.anims.create({
             key: 'cle_ingame',
-            frames: [{ key: 'cle', frame: 1 }],
+            frames: [{ key: 'spr_cle', frame: 1 }],
             frameRate: 20
         });
 
         this.anims.create({
             key: 'cle_inventaire',
-            frames: [{ key: 'cle', frame: 0 }],
+            frames: [{ key: 'spr_cle', frame: 0 }],
             frameRate: 20
         });
 
+        this.cle.anims.play('cle_ingame', true);
 
-        //#TODO: ajout hitbox personnage, pour savoir ce qu'il peut toucer ou pas
-        /*this.physics.add.collider(this.player, this.cle, function() {
-            if (this.clavier.keyE.isDown) {
-                window.valeurs.aCle = true;
+        //#TODO: ajout hitbox personnage, pour savoir ce qu'il peut toucher ou pas
+        this.physics.add.overlap(this.player, this.cle, function() {
+            if (!this.player.aCle) {
+                if (Phaser.Input.Keyboard.JustDown(this.keyE)) {
+                    window.valeurs.aCle = true;
+                    this.cle.anims.play('cle_inventaire', true);
+                }
             }
+            
         }, null, this);
-        console.log("aCle", window.valeurs.aCle);*/
+        console.log("aCle", window.valeurs.aCle);
 
-        //#TODO: regler le probleme d'animation ici
-        /*if (window.valeurs.aCle == false) {
-            this.cle.anims.play('cle_ingame', true);
-        } else {
-            this.cle.anims.play('cle_inventaire', true);
-        }
-        */
+        
 
         
         // ----- CAMERA -----
