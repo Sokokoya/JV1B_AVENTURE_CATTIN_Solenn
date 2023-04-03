@@ -32,6 +32,9 @@ export default class Ville extends Phaser.Scene {
 
         // Objets
         this.load.spritesheet('spr_cle', 'assets/spr_cle.png', {frameWidth: 32, frameHeight: 32});
+
+        // Ennemis
+        this.load.spritesheet('spr_pigeon_croquette', 'assets/spr_pigeon_croquette.png', {frameWidth: 32, frameHeight: 32});
        
 
     }
@@ -193,8 +196,21 @@ export default class Ville extends Phaser.Scene {
         console.log("aCle", window.valeurs.aCle);
 
         
+        // ----- AJOUT DES ENNEMIS -----
 
+        // Ennemi spécial : pigeon avec sa croquette
+
+        // Si le pigeon n'a toujours pas été attaque, on l'affiche
+        if (window.valeurs.presencePigeonCroquette) {
+            
+            this.pigeonCroquette = this.physics.add.sprite(1232, 1360, 'spr_pigeon_croquette');
+
+            // Si le joueur décide d'attaquer le pigeon, celui ci drop sa croquette, et disparait pour toujours
+        }
         
+
+
+
         // ----- CAMERA -----
 
         // Redimensions du jeu selon le fichier Tiled

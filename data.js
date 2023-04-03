@@ -13,6 +13,7 @@ var valeurs = {
     posX: 448,
     posY: 432,
 
-    aCle: false
+    aCle: false,
+    presencePigeonCroquette: true
 
 };
