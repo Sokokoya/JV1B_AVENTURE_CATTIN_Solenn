@@ -32,6 +32,9 @@ export default class MaisonJoueur extends Phaser.Scene {
 
         // Sprites du héros
         this.load.spritesheet('heros_idle_droite', 'assets/spr_idle_perso_droite.png', {frameWidth: 64, frameHeight: 96});
+
+        // Sprites des objets
+        this.load.spritesheet('spr_croquette', 'assets/spr_croquette.png', {frameWidth: 32, frameHeight: 32});
     }
 
     

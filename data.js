@@ -14,6 +14,10 @@ var valeurs = {
     posY: 432,
 
     aCle: false,
-    presencePigeonCroquette: true
+    presencePigeonCroquette: true,
+
+    nbCroquettes: 0
+
+
 
 };

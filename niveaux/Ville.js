@@ -110,9 +110,6 @@ export default class Ville extends Phaser.Scene {
         this.keyE = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.E);
         this.keyZ = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.Z);
 
-      //  const toucheE_down = Phaser.input.keyboard.JustDown(this.keyE);
-      //  const toucheZ_down = Phaser.input.keyboard.JustDown(this.keyZ);
-
         
         // Ajout des collisions avec les calques, utilisation des propriétés propres aux calques
         collisionLayer.setCollisionByProperty({estSolide: true});
@@ -193,19 +190,55 @@ export default class Ville extends Phaser.Scene {
             }
             
         }, null, this);
-        console.log("aCle", window.valeurs.aCle);
 
         
         // ----- AJOUT DES ENNEMIS -----
 
         // Ennemi spécial : pigeon avec sa croquette
+        // On affiche le pigeon
+        this.pigeonCroquette = this.physics.add.sprite(1232, 1360, 'spr_pigeon_croquette');
 
+        // On ajoute le sprite de la croquette qu'il va drop, mais on la cache
+        this.croquettePigeon = this.physics.add.sprite(1232, 1360, 'spr_croquette');
+        this.croquettePigeon.visible = false;
+        
         // Si le pigeon n'a toujours pas été attaque, on l'affiche
         if (window.valeurs.presencePigeonCroquette) {
             
-            this.pigeonCroquette = this.physics.add.sprite(1232, 1360, 'spr_pigeon_croquette');
 
-            // Si le joueur décide d'attaquer le pigeon, celui ci drop sa croquette, et disparait pour toujours
+            // Si on l'attaque, on detruit le sprite du pigeon, puis on rend visible celui de la croquette
+            this.physics.add.overlap(this.player, this.pigeonCroquette, function() {
+                if (Phaser.Input.Keyboard.JustDown(this.clavier.space)) {
+                    window.valeurs.presencePigeonCroquette = false;
+                    console.log(window.valeurs.presencePigeonCroquette);
+
+                    //#TODO: animation pigeon qui vole
+                    this.pigeonCroquette.visible = false;
+
+                    this.croquettePigeon.visible = true;
+                }
+            
+            }, null, this);
+        } else {
+            this.pigeonCroquette.visible = false;
+        }
+
+        // on peut intéragir avec la croquette seulement si elle est visible
+        //#TODO: regler le bug ici (s'affiche mais ne part pas apres avoir utilisé la touche E)
+        if (this.croquettePigeon.visible) {
+
+            this.physics.add.overlap(this.player, this.croquettePigeon, function() {
+                    if (Phaser.Input.Keyboard.JustDown(this.keyE)) {
+                        window.valeurs.nbCroquettes += 1;
+
+                        this.croquettePigeon.visible = false;
+
+                        console.log("nb croquette", window.valeurs.nbCroquettes);
+
+                        //#TODO: ajout croquette dans UI
+                    }
+                
+            }, null, this);
         }
         
 

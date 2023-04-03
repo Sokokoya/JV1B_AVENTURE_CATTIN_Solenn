@@ -19,7 +19,7 @@ import ChambreFille from '/niveaux/ChambreFille.js';
 // Configuration initiale
 var config = {
     type: Phaser.AUTO,
-    width: 1280, height: 720,
+    width: 1024, height: 576,
     physics: {
         default: 'arcade',
         arcade: {
