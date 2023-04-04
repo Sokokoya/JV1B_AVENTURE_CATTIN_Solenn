@@ -251,7 +251,15 @@ export default class Ville extends Phaser.Scene {
         }, null, this);
         
         
+        // ----- AFFICHAGE DE L'UI
 
+        this.ui_fatigue = this.physics.add.sprite(64, 96, 'ui_fatigue').setScrollFactor(0);
+
+        this.ui_croquette = this.physics.add.sprite(128, 96, 'ui_croquette').setScrollFactor(0);
+
+        this.ui_dialogue = this.physics.add.sprite(512, 460, 'ui_dialogue').setScrollFactor(0);
+
+        this.ui_inventaire = this.physics.add.sprite(922, 300, 'ui_inventaire').setScrollFactor(0);
 
 
         // ----- CAMERA -----
@@ -269,6 +277,7 @@ export default class Ville extends Phaser.Scene {
     update() {
 
         this.player.updateMouvement();
+        this.player.updateUI();
 
       
     }

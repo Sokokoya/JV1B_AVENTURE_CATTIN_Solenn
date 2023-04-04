@@ -27,6 +27,9 @@ export default class Parc extends Phaser.Scene {
         // Tileset et map de la scène
         this.load.image('tileset_exterieur', 'assets/tileset_exterieur.png');
         this.load.tilemapTiledJSON('map_parc', 'assets/maps/map_parc.json');
+
+        // Chargement du sprite de la petite fille
+        this.load.spritesheet('spr_petite_fille', 'assets/spr_petite_fille.png', {frameWidth: 32, frameHeight: 64});
     }
 
 
@@ -101,6 +104,10 @@ export default class Parc extends Phaser.Scene {
             });
         }, null, this);
 
+
+
+
+        this.physics.add.sprite(272, 992, 'spr_petite_fille');
 
 
         

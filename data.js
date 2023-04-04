@@ -17,8 +17,10 @@ var valeurs = {
     aCanne: false,
     aCroquetteMaison: false,
     presencePigeonCroquette: true,
+    queteMamie: false,
 
-    nbCroquettes: 0
+    nbCroquettes: 0,
+    fatigue: 7
 
 
 

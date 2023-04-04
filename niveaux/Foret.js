@@ -29,6 +29,9 @@ export default class Foret extends Phaser.Scene {
         // Tileset et map de la scène
         this.load.image('tileset_foret', 'assets/tileset_foret.png');
         this.load.tilemapTiledJSON('map_foret', 'assets/maps/map_foret.json');
+
+        // Chargement du sprite de la grand mère
+        this.load.spritesheet('spr_grand_mere', 'assets/spr_grand_mere.png', {frameWidth: 64, frameHeight: 96});
     }
 
 
@@ -85,6 +88,8 @@ export default class Foret extends Phaser.Scene {
 
         // Prise en charge des touches du clavier
         this.clavier = this.input.keyboard.createCursorKeys();
+
+        this.keyE = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.E);
         
         // Ajout des collisions avec les calques, utilisation des propriétés propres aux calques
         collisionLayer.setCollisionByProperty({estSolide: true});
@@ -101,6 +106,7 @@ export default class Foret extends Phaser.Scene {
         // Ajout des collisions entre le personnage et les objets / murs / sortie
         this.physics.add.collider(this.player, collisionLayer);
 
+        // --> vers la Ville
         this.physics.add.collider(this.player, versVilleLayer, function() {
             console.log("vers ville");
             this.scene.start("Ville", {
@@ -118,6 +124,16 @@ export default class Foret extends Phaser.Scene {
         }, null, this);
         */
 
+
+        // ----- AFFICHAGE DE LA GRAND MERE -----
+        this.grandmere = this.physics.add.sprite(1024, 960, 'spr_grand_mere');
+
+        this.physics.add.overlap(this.player, this.grandmere, function() {
+            if (Phaser.Input.Keyboard.JustDown(this.keyE) && window.valeurs.aCanne) {
+                window.valeurs.queteMamie = true;
+                
+            }
+        }, null, this);
 
 
         
