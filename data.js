@@ -14,6 +14,8 @@ var valeurs = {
     posY: 432,
 
     aCle: false,
+    aCanne: false,
+    aCroquetteMaison: false,
     presencePigeonCroquette: true,
 
     nbCroquettes: 0

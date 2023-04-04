@@ -35,6 +35,7 @@ export default class MaisonJoueur extends Phaser.Scene {
 
         // Sprites des objets
         this.load.spritesheet('spr_croquette', 'assets/spr_croquette.png', {frameWidth: 32, frameHeight: 32});
+        this.load.spritesheet('spr_canne', 'assets/spr_canne.png', {frameWidth: 32, frameHeight: 64});
     }
 
     
@@ -87,6 +88,9 @@ export default class MaisonJoueur extends Phaser.Scene {
         // Prise en charge des touches du clavier
         this.clavier = this.input.keyboard.createCursorKeys();
 
+        this.keyE = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.E);
+
+
         // Ajout des collisions avec les calques, utilisation des propriétés propres aux calques
         murLayer.setCollisionByExclusion(-1, true);
         collisionsLayer.setCollisionByProperty({estSolide: true});
@@ -107,6 +111,50 @@ export default class MaisonJoueur extends Phaser.Scene {
                 y: 624
             });
         }, null, this);
+
+
+        // ----- AJOUT DES OBJETS ET INTERACTIONS -----
+
+        this.croquette = this.physics.add.sprite(240, 464, 'spr_croquette');
+        this.canne = this.physics.add.sprite(240, 256, 'spr_canne');
+
+        // Si le joueur a déjà les objets, ils ne réaparaissent plus
+        if (window.valeurs.aCroquetteMaison) {
+            this.croquette.visible = false;
+        }
+        if (window.valeurs.aCanne) {
+            this.canne.visible = false;
+        }
+
+
+        // Interaction avec la croquette
+        this.physics.add.overlap(this.player, this.croquette, function() {
+            if (!window.valeurs.aCroquetteMaison) {
+                if (Phaser.Input.Keyboard.JustDown(this.keyE)) {
+                    window.valeurs.aCroquetteMaison = true;
+
+                    this.player.ajoutCroquette();
+                    console.log("nb croquette", window.valeurs.nbCroquettes);
+
+                    this.croquette.visible = false;
+                }
+            }
+        }, null, this);
+
+
+        // Le joueur ne peut intéragir avec la canne que s'il a la clé de sa maison
+        this.physics.add.overlap(this.player, this.canne, function() {
+            if (!window.valeurs.aCanne && window.valeurs.aCle) {
+                if (Phaser.Input.Keyboard.JustDown(this.keyE)) {
+                    window.valeurs.aCanne = true;
+
+                    this.canne.visible = false;
+                }
+            }
+        }, null, this);
+
+
+
 
 
 

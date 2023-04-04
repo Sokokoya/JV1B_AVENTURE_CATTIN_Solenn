@@ -129,16 +129,22 @@ export default class Ville extends Phaser.Scene {
         this.physics.add.collider(this.player, houseLayer);
         this.physics.add.collider(this.player, collisionLayer);
 
-        // Ajout des colisions entre le personnage et les sorties
+        // ----- CHANGEMENTS DE SCENES -----
+
         // --> vers la maison du joueur
         this.physics.add.collider(this.player, versMaisonLayer, function() {
             console.log("vers maison joueur");
-            //#TODO: rajouter la condition d'avoir la clé pour rentrer
-            this.scene.start("MaisonJoueur", {
-                x: 448,
-                y: 544
-            });
+            
+            if (window.valeurs.aCle) {
+                this.scene.start("MaisonJoueur", {
+                    x: 448,
+                    y: 544
+                });
+            }
+            //#TODO: on affiche le message qu'il a perdu ses clés
+            
         }, null, this);
+
 
         // --> vers le Parc
         this.physics.add.collider(this.player, versParcLayer, function() {
@@ -150,6 +156,7 @@ export default class Ville extends Phaser.Scene {
             });
         }, null, this);
 
+
         // --> vers la Forêt
         this.physics.add.collider(this.player, versForetLayer, function() {
             console.log("vers foret");
@@ -158,6 +165,7 @@ export default class Ville extends Phaser.Scene {
                 y: 1168
             });
         }, null, this);
+
 
 
         // ----- AJOUT DES OBJETS ET INTERACTIONS -----
@@ -195,7 +203,6 @@ export default class Ville extends Phaser.Scene {
         // ----- AJOUT DES ENNEMIS -----
 
         // Ennemi spécial : pigeon avec sa croquette
-        // On affiche le pigeon
         this.pigeonCroquette = this.physics.add.sprite(1232, 1360, 'spr_pigeon_croquette');
 
         // On ajoute le sprite de la croquette qu'il va drop, mais on la cache
@@ -205,10 +212,11 @@ export default class Ville extends Phaser.Scene {
         // Si le pigeon n'a toujours pas été attaque, on l'affiche
         if (window.valeurs.presencePigeonCroquette) {
             
-
             // Si on l'attaque, on detruit le sprite du pigeon, puis on rend visible celui de la croquette
             this.physics.add.overlap(this.player, this.pigeonCroquette, function() {
-                if (Phaser.Input.Keyboard.JustDown(this.clavier.space)) {
+
+                // On n'interagit avec le pigeon seulement si on a déjà la canne
+                if (Phaser.Input.Keyboard.JustDown(this.clavier.space) && window.valeurs.aCanne) {
                     window.valeurs.presencePigeonCroquette = false;
                     console.log(window.valeurs.presencePigeonCroquette);
 
@@ -219,27 +227,29 @@ export default class Ville extends Phaser.Scene {
                 }
             
             }, null, this);
-        } else {
-            this.pigeonCroquette.visible = false;
-        }
+        } 
+        
+        
+        // Interaction avec la croquette
+        this.physics.add.overlap(this.player, this.croquettePigeon, function() {
 
-        // on peut intéragir avec la croquette seulement si elle est visible
-        //#TODO: regler le bug ici (s'affiche mais ne part pas apres avoir utilisé la touche E)
-        if (this.croquettePigeon.visible) {
+            // On ne peut interagir avec elle seulement si elle est visible
+            if (!window.valeurs.presencePigeonCroquette) {
+                if (Phaser.Input.Keyboard.JustDown(this.keyE)) {
 
-            this.physics.add.overlap(this.player, this.croquettePigeon, function() {
-                    if (Phaser.Input.Keyboard.JustDown(this.keyE)) {
-                        window.valeurs.nbCroquettes += 1;
+                    console.log("nb croquette", window.valeurs.nbCroquettes);
 
-                        this.croquettePigeon.visible = false;
+                    this.player.ajoutCroquette();
 
-                        console.log("nb croquette", window.valeurs.nbCroquettes);
+                    this.croquettePigeon.visible = false;
 
-                        //#TODO: ajout croquette dans UI
-                    }
-                
-            }, null, this);
-        }
+                    console.log("nb croquette", window.valeurs.nbCroquettes);
+
+                }
+            }   
+            
+        }, null, this);
+        
         
 
 

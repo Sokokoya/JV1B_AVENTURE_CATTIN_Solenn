@@ -21,7 +21,7 @@ export default class Player extends Phaser.Physics.Arcade.Sprite {
     }
 
 
-    // Fonction permettant au joueur de se déplacer, à placer dans chaque fonction update() de chaque scène
+    // ----- DEPLACEMENT DU JOUEUR -----
     updateMouvement() {
 
         this.deplacement = new Phaser.Math.Vector2(0, 0);
@@ -55,11 +55,15 @@ export default class Player extends Phaser.Physics.Arcade.Sprite {
         this.x = Math.round(this.x);
         this.y = Math.round(this.y);
 
-
-
     }
 
 
+    // ----- UPDATE DU NOMBRE DE CROQUETTES DU JOUEUR -----
+    ajoutCroquette() {
+        //#TODO: ajout de la croquette dans l'ui
+
+        window.valeurs.nbCroquettes += 1;
+    }
     
 
 }
