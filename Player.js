@@ -64,6 +64,17 @@ export default class Player extends Phaser.Physics.Arcade.Sprite {
 
         window.valeurs.nbCroquettes += 1;
     }
+
+
+    attaque(ennemi) {
+        if (Phaser.Input.Keyboard.JustDown(Phaser.Input.Keyboard.KeyCodes.E)) {
+            //#TODO: animation canne
+
+            //#TODO: animation pigeon s'envole
+
+            
+        }
+    }
     
 
 }
