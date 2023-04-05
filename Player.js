@@ -61,22 +61,23 @@ export default class Player extends Phaser.Physics.Arcade.Sprite {
 
     // ----- UPDATE DU NOMBRE DE CROQUETTES DU JOUEUR -----
     ajoutCroquette() {
-        //#TODO: ajout de la croquette dans l'ui
 
         window.valeurs.nbCroquettes += 1;
     }
 
 
-    attaque(ennemi) {
-        if (Phaser.Input.Keyboard.JustDown(Phaser.Input.Keyboard.KeyCodes.E)) {
-            //#TODO: animation canne
+    /*attaque() {
+        //#TODO: animation canne
 
-            //#TODO: animation pigeon s'envole
+        //#TODO: animation pigeon s'envole
 
-            
-        }
-    }
+        window.valeurs.fatigue -= 1;
 
+
+    }*/
+
+
+    /*
     updateUI(croquette, fatigue) {
 
         // ----- ANIMATIONS -----
@@ -175,6 +176,6 @@ export default class Player extends Phaser.Physics.Arcade.Sprite {
         if (window.valeurs.nbCroquettes == 1) {
             croquette.play('croquette1');
         }
-    }
+    }*/
 
 }

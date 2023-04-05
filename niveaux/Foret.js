@@ -129,8 +129,9 @@ export default class Foret extends Phaser.Scene {
         this.grandmere = this.physics.add.sprite(1024, 960, 'spr_grand_mere');
 
         this.physics.add.overlap(this.player, this.grandmere, function() {
-            if (Phaser.Input.Keyboard.JustDown(this.keyE) && window.valeurs.aCanne) {
+            if (Phaser.Input.Keyboard.JustDown(this.clavier.space) && window.valeurs.aCanne) {
                 window.valeurs.queteMamie = true;
+                console.log("quete mamie oui");
                 
             }
         }, null, this);

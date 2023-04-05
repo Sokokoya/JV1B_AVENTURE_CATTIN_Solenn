@@ -216,7 +216,9 @@ export default class Ville extends Phaser.Scene {
             this.physics.add.overlap(this.player, this.pigeonCroquette, function() {
 
                 // On n'interagit avec le pigeon seulement si on a déjà la canne
-                if (Phaser.Input.Keyboard.JustDown(this.clavier.space) && window.valeurs.aCanne) {
+                if (Phaser.Input.Keyboard.JustDown(this.keyZ) && window.valeurs.aCanne) {
+                    //this.player.attaque();
+
                     window.valeurs.presencePigeonCroquette = false;
                     console.log(window.valeurs.presencePigeonCroquette);
 
@@ -251,15 +253,102 @@ export default class Ville extends Phaser.Scene {
         }, null, this);
         
         
-        // ----- AFFICHAGE DE L'UI
+        // ----- AFFICHAGE DE L'UI -----
 
         this.ui_fatigue = this.physics.add.sprite(64, 96, 'ui_fatigue').setScrollFactor(0);
-
         this.ui_croquette = this.physics.add.sprite(128, 96, 'ui_croquette').setScrollFactor(0);
-
         this.ui_dialogue = this.physics.add.sprite(512, 460, 'ui_dialogue').setScrollFactor(0);
-
         this.ui_inventaire = this.physics.add.sprite(922, 300, 'ui_inventaire').setScrollFactor(0);
+
+
+        // ----- ANIMATIONS UI -----
+
+        // Croquette
+        this.anims.create({
+            key: 'croquette0',
+            frames: [{ key: 'ui_croquette', frame: 0 }],
+            frameRate: 20
+        });
+
+        this.anims.create({
+            key: 'croquette1',
+            frames: [{ key: 'ui_croquette', frame: 1 }],
+            frameRate: 20
+        });
+
+        this.anims.create({
+            key: 'croquette2',
+            frames: [{ key: 'ui_croquette', frame: 2 }],
+            frameRate: 20
+        });
+
+        this.anims.create({
+            key: 'croquette3',
+            frames: [{ key: 'ui_croquette', frame: 3 }],
+            frameRate: 20
+        });
+
+        this.anims.create({
+            key: 'croquette4',
+            frames: [{ key: 'ui_croquette', frame: 4 }],
+            frameRate: 20
+        });
+
+        this.anims.create({
+            key: 'croquette5',
+            frames: [{ key: 'ui_croquette', frame: 4 }],
+            frameRate: 20
+        });
+
+
+        // Fatigue
+        this.anims.create({
+            key: 'fatigue7',
+            frames: [{ key: 'ui_fatigue', frame: 0 }],
+            frameRate: 20
+        });
+
+        this.anims.create({
+            key: 'fatigue6',
+            frames: [{ key: 'ui_fatigue', frame: 1 }],
+            frameRate: 20
+        });
+
+        this.anims.create({
+            key: 'fatigue5',
+            frames: [{ key: 'ui_fatigue', frame: 2 }],
+            frameRate: 20
+        });
+
+        this.anims.create({
+            key: 'fatigue4',
+            frames: [{ key: 'ui_fatigue', frame: 3 }],
+            frameRate: 20
+        });
+
+        this.anims.create({
+            key: 'fatigue3',
+            frames: [{ key: 'ui_fatigue', frame: 4 }],
+            frameRate: 20
+        });
+
+        this.anims.create({
+            key: 'fatigue2',
+            frames: [{ key: 'ui_fatigue', frame: 5 }],
+            frameRate: 20
+        });
+
+        this.anims.create({
+            key: 'fatigue1',
+            frames: [{ key: 'ui_fatigue', frame: 6 }],
+            frameRate: 20
+        });
+
+        this.anims.create({
+            key: 'fatigue0',
+            frames: [{ key: 'ui_fatigue', frame: 7 }],
+            frameRate: 20
+        });
 
 
         // ----- CAMERA -----
@@ -271,13 +360,84 @@ export default class Ville extends Phaser.Scene {
         // Tracking de la caméra sur le joueur
         this.cameras.main.startFollow(this.player);
 
+
+
+
+        
+
+        this.ui_croquette.play('croquette0');
+        this.ui_fatigue.play('fatigue7');
+
+        if (window.valeurs.nbCroquettes == 1) {
+            this.ui_croquette.play('croquette1');
+        }
+
     }
 
 
     update() {
 
         this.player.updateMouvement();
-        this.player.updateUI();
+        //this.player.updateUI();
+
+        if (window.valeurs.nbCroquettes == 1) {
+            this.ui_croquette.play('croquette1');
+        }
+        if (window.valeurs.nbCroquettes == 2) {
+            this.ui_croquette.play('croquette2');
+        }
+        if (window.valeurs.nbCroquettes == 3) {
+            this.ui_croquette.play('croquette3');
+        }
+        if (window.valeurs.nbCroquettes == 4) {
+            this.ui_croquette.play('croquette4');
+        }
+        if (window.valeurs.nbCroquettes == 5) {
+            this.ui_croquette.play('croquette5');
+        }
+
+
+        if (window.valeurs.fatigue == 7) {
+            this.ui_fatigue.play('fatigue7');
+        }
+        if (window.valeurs.fatigue == 6) {
+            this.ui_fatigue.play('fatigue6');
+        }
+        if (window.valeurs.fatigue == 5) {
+            this.ui_fatigue.play('fatigue5');
+        }
+        if (window.valeurs.fatigue == 4) {
+            this.ui_fatigue.play('fatigue4');
+        }
+        if (window.valeurs.fatigue == 3) {
+            this.ui_fatigue.play('fatigue3');
+        }
+        if (window.valeurs.fatigue == 2) {
+            this.ui_fatigue.play('fatigue2');
+        }
+        if (window.valeurs.fatigue == 1) {
+            this.ui_fatigue.play('fatigue1');
+        }
+        if (window.valeurs.fatigue == 0) {
+            this.ui_fatigue.play('fatigue0');
+            //#TODO: afficher ecran de mort + recommencer
+        }
+
+
+
+        //#TODO: regler le probleme ici !! (ca crash)
+        /*
+        if (Phaser.Input.Keyboard.JustDown(this.keyZ) && window.valeurs.aCanne) {
+
+            window.valeurs.fatigue -= 1;
+        }*/
+
+        /*
+        while(window.valeurs.fatigue < 7) {
+            setTimeout(function() {
+                window.valeurs.fatigue += 1;
+            }, 3000);
+        }*/
 
       
     }

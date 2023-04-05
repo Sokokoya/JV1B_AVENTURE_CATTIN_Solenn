@@ -30,6 +30,8 @@ export default class Parc extends Phaser.Scene {
 
         // Chargement du sprite de la petite fille
         this.load.spritesheet('spr_petite_fille', 'assets/spr_petite_fille.png', {frameWidth: 32, frameHeight: 64});
+
+        this.load.spritesheet('spr_barriere', 'assets/spr_barriere.png', {frameWidth: 96, frameHeight: 32});
     }
 
 
@@ -73,6 +75,11 @@ export default class Parc extends Phaser.Scene {
             gameTileset
         );
 
+        const barriereLayer = gameMap.createLayer(
+            "barriere",
+            gameTileset
+        );
+
 
 
 
@@ -85,6 +92,7 @@ export default class Parc extends Phaser.Scene {
         // Ajout des collisions avec les calques, utilisation des propriétés propres aux calques
         collisionLayer.setCollisionByExclusion(-1, true);
         versVilleLayer.setCollisionByExclusion(-1, true);
+        barriereLayer.setCollisionByExclusion(-1, true);
 
 
         
@@ -95,6 +103,7 @@ export default class Parc extends Phaser.Scene {
 
         // Ajout des collisions entre le personnage et les objets / murs / sortie
         this.physics.add.collider(this.player, collisionLayer);
+        this.physics.add.collider(this.player, barriereLayer);
 
         this.physics.add.collider(this.player, versVilleLayer, function() {
             console.log("vers ville");
@@ -107,7 +116,10 @@ export default class Parc extends Phaser.Scene {
 
 
 
-        this.physics.add.sprite(272, 992, 'spr_petite_fille');
+        this.petite_fille = this.physics.add.sprite(272, 992, 'spr_petite_fille');
+
+
+
 
 
         
