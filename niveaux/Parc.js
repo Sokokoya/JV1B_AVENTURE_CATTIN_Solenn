@@ -77,10 +77,6 @@ export default class Parc extends Phaser.Scene {
             gameTileset
         );
 
-        const barriereLayer = gameMap.createLayer(
-            "barriere",
-            gameTileset
-        );
 
 
 
@@ -94,8 +90,10 @@ export default class Parc extends Phaser.Scene {
         // Ajout des collisions avec les calques, utilisation des propriétés propres aux calques
         collisionLayer.setCollisionByExclusion(-1, true);
         versVilleLayer.setCollisionByExclusion(-1, true);
-        barriereLayer.setCollisionByExclusion(-1, true);
 
+        
+        this.barriere = this.physics.add.sprite(368, 1072, 'spr_barriere');
+        this.barriere.body.setImmovable(true);
 
         
         // ----- AFFICHAGE ET PROPRIETES DU PERSONNAGE -----
@@ -105,7 +103,6 @@ export default class Parc extends Phaser.Scene {
 
         // Ajout des collisions entre le personnage et les objets / murs / sortie
         this.physics.add.collider(this.player, collisionLayer);
-        this.physics.add.collider(this.player, barriereLayer);
 
         this.physics.add.collider(this.player, versVilleLayer, function() {
             console.log("vers ville");
@@ -115,12 +112,29 @@ export default class Parc extends Phaser.Scene {
             });
         }, null, this);
 
+        this.physics.add.collider(this.player, this.barriere, function() {
+            if (!window.valeurs.pfParlee) {
+                console.log("bloqué");
+
+            } else {
+                //#TODO: faire en sorte que la barriere ne soit plus bloquée
+            }
+            
+        }, null, this);
+
 
 
         // ----- AFFICHAGE DES ENNEMIS -----
 
         // La petite fille : le boss
-        this.petite_fille = this.physics.add.sprite(272, 992, 'spr_petite_fille');
+        this.petiteFille = this.physics.add.sprite(272, 992, 'spr_petite_fille');
+
+        this.petiteFille.dialogue = [
+            //#TODO: changer les dialogues
+            ["hahaha jaime les chiens !", "tu dis qu'il est a toi ? NON IL EST A MOI"],
+            ["je ne te le rendrais pas !!", "je vais le dire a mamie"],
+            ["pourquoi tu veux prendre mon chien ?", "LACHE LE"]
+        ]
 
 
         // Les pigeons : les ennemis
@@ -138,10 +152,12 @@ export default class Parc extends Phaser.Scene {
             {x: 15, y: 31}
         ];
 
-        for (let i=1; i>=25; i++) {
+        for (let i=0; i<25; i++) {
 
             let posX = coordoneesEnnemis[i].x * 32;
             let posY = coordoneesEnnemis[i].y * 32;
+
+            console.log(posX, posY);
 
             let ennemi = new Ennemi(this, posX, posY, 'spr_pigeon');
 
@@ -149,7 +165,115 @@ export default class Parc extends Phaser.Scene {
         }
 
 
+        // ----- AFFICHAGE DE L'UI -----
+        this.dialogueActif = false;
 
+        this.ui_cadre = this.physics.add.sprite(512, 32, 'ui_cadre').setScrollFactor(0);
+        this.ui_fatigue = this.physics.add.sprite(64, 32, 'ui_fatigue').setScrollFactor(0);
+        this.ui_croquette = this.physics.add.sprite(128, 32, 'ui_croquette').setScrollFactor(0);
+        this.ui_dialogue = this.physics.add.sprite(512, 460, 'ui_dialogue').setScrollFactor(0);
+        this.ui_inventaire = this.physics.add.sprite(922, 300, 'ui_inventaire').setScrollFactor(0);
+
+        this.ui_dialogue.visible = false;
+
+
+
+        // ----- ANIMATIONS UI -----
+
+        // Croquette
+        this.anims.create({
+            key: 'croquette0',
+            frames: [{ key: 'ui_croquette', frame: 0 }],
+            frameRate: 20
+        });
+
+        this.anims.create({
+            key: 'croquette1',
+            frames: [{ key: 'ui_croquette', frame: 1 }],
+            frameRate: 20
+        });
+
+        this.anims.create({
+            key: 'croquette2',
+            frames: [{ key: 'ui_croquette', frame: 2 }],
+            frameRate: 20
+        });
+
+        this.anims.create({
+            key: 'croquette3',
+            frames: [{ key: 'ui_croquette', frame: 3 }],
+            frameRate: 20
+        });
+
+        this.anims.create({
+            key: 'croquette4',
+            frames: [{ key: 'ui_croquette', frame: 4 }],
+            frameRate: 20
+        });
+
+        this.anims.create({
+            key: 'croquette5',
+            frames: [{ key: 'ui_croquette', frame: 4 }],
+            frameRate: 20
+        });
+
+
+        // Fatigue
+        this.anims.create({
+            key: 'fatigue7',
+            frames: [{ key: 'ui_fatigue', frame: 0 }],
+            frameRate: 20
+        });
+
+        this.anims.create({
+            key: 'fatigue6',
+            frames: [{ key: 'ui_fatigue', frame: 1 }],
+            frameRate: 20
+        });
+
+        this.anims.create({
+            key: 'fatigue5',
+            frames: [{ key: 'ui_fatigue', frame: 2 }],
+            frameRate: 20
+        });
+
+        this.anims.create({
+            key: 'fatigue4',
+            frames: [{ key: 'ui_fatigue', frame: 3 }],
+            frameRate: 20
+        });
+
+        this.anims.create({
+            key: 'fatigue3',
+            frames: [{ key: 'ui_fatigue', frame: 4 }],
+            frameRate: 20
+        });
+
+        this.anims.create({
+            key: 'fatigue2',
+            frames: [{ key: 'ui_fatigue', frame: 5 }],
+            frameRate: 20
+        });
+
+        this.anims.create({
+            key: 'fatigue1',
+            frames: [{ key: 'ui_fatigue', frame: 6 }],
+            frameRate: 20
+        });
+
+        this.anims.create({
+            key: 'fatigue0',
+            frames: [{ key: 'ui_fatigue', frame: 7 }],
+            frameRate: 20
+        });
+
+
+        this.ui_croquette.play('croquette0');
+        this.ui_fatigue.play('fatigue7');
+
+        if (window.valeurs.nbCroquettes == 1) {
+            this.ui_croquette.play('croquette1');
+        }
 
 
         
@@ -167,6 +291,56 @@ export default class Parc extends Phaser.Scene {
     update() {
 
         this.player.updateMouvement();
+        
+
+        if (window.valeurs.nbCroquettes == 1) {
+            this.ui_croquette.play('croquette1');
+        }
+        if (window.valeurs.nbCroquettes == 2) {
+            this.ui_croquette.play('croquette2');
+        }
+        if (window.valeurs.nbCroquettes == 3) {
+            this.ui_croquette.play('croquette3');
+        }
+        if (window.valeurs.nbCroquettes == 4) {
+            this.ui_croquette.play('croquette4');
+        }
+        if (window.valeurs.nbCroquettes == 5) {
+            this.ui_croquette.play('croquette5');
+        }
+
+
+        if (window.valeurs.fatigue == 7) {
+            this.ui_fatigue.play('fatigue7');
+        }
+        if (window.valeurs.fatigue == 6) {
+            this.ui_fatigue.play('fatigue6');
+        }
+        if (window.valeurs.fatigue == 5) {
+            this.ui_fatigue.play('fatigue5');
+        }
+        if (window.valeurs.fatigue == 4) {
+            this.ui_fatigue.play('fatigue4');
+        }
+        if (window.valeurs.fatigue == 3) {
+            this.ui_fatigue.play('fatigue3');
+        }
+        if (window.valeurs.fatigue == 2) {
+            this.ui_fatigue.play('fatigue2');
+        }
+        if (window.valeurs.fatigue == 1) {
+            this.ui_fatigue.play('fatigue1');
+        }
+        if (window.valeurs.fatigue == 0) {
+            this.ui_fatigue.play('fatigue0');
+            //#TODO: afficher ecran de mort + recommencer
+        }
+
+
+        if (this.dialogueActif) {
+            this.ui_dialogue.visible = true;
+        }
+
     }
 
 }

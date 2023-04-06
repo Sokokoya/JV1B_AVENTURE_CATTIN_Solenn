@@ -5,7 +5,7 @@ export default class Ennemi extends Phaser.Physics.Arcade.Sprite {
 
         scene.physics.world.enable(this);
         scene.add.existing(this);
-        this.collideWorldBounds(true);     
+  
 
         this.fuiteEnnemi();
         
@@ -18,6 +18,12 @@ export default class Ennemi extends Phaser.Physics.Arcade.Sprite {
 
     fuiteEnnemi() {
         // animation fuite
+    }
+
+
+    update() {
+        const player = this.scene.player;
+        const ennemis = this.scene.ennemis.getChildren();
     }
 
 

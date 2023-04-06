@@ -100,8 +100,6 @@ export default class Ville extends Phaser.Scene {
         );
 
 
-
-
         
         // ----- PROPRIETES DU JEU -----
 
@@ -129,6 +127,8 @@ export default class Ville extends Phaser.Scene {
         // Ajout des collisions entre le personnage et les objets et les murs
         this.physics.add.collider(this.player, houseLayer);
         this.physics.add.collider(this.player, collisionLayer);
+
+
 
         // ----- CHANGEMENTS DE SCENES -----
 
@@ -172,7 +172,6 @@ export default class Ville extends Phaser.Scene {
         // ----- AJOUT DES OBJETS ET INTERACTIONS -----
 
         // Clé à récupérer dans une buisson
-
         this.cle = this.physics.add.sprite(464, 1168, 'spr_cle');
 
         this.anims.create({
@@ -189,7 +188,7 @@ export default class Ville extends Phaser.Scene {
 
         this.cle.anims.play('cle_ingame', true);
 
-        //#TODO: ajout hitbox personnage, pour savoir ce qu'il peut toucher ou pas
+        
         this.physics.add.overlap(this.player, this.cle, function() {
             if (!this.player.aCle) {
                 if (Phaser.Input.Keyboard.JustDown(this.keyE)) {
@@ -201,6 +200,7 @@ export default class Ville extends Phaser.Scene {
         }, null, this);
 
         
+
         // ----- AJOUT DES ENNEMIS -----
 
         // Ennemi spécial : pigeon avec sa croquette
@@ -218,10 +218,8 @@ export default class Ville extends Phaser.Scene {
 
                 // On n'interagit avec le pigeon seulement si on a déjà la canne
                 if (Phaser.Input.Keyboard.JustDown(this.keyZ) && window.valeurs.aCanne) {
-                    //this.player.attaque();
 
                     window.valeurs.presencePigeonCroquette = false;
-                    console.log(window.valeurs.presencePigeonCroquette);
 
                     //#TODO: animation pigeon qui vole
                     this.pigeonCroquette.visible = false;
@@ -252,14 +250,85 @@ export default class Ville extends Phaser.Scene {
             }   
             
         }, null, this);
+
+
+
+        // ----- AJOUT DES PNJ ET LEURS INTERACTIONS / DIALOGUES -----
+
+        this.dialogueActif = false;
+        this.dialogueCourant = ["", ""];
+        this.stepDialogue = 0; 
+
+        this.pnj = this.physics.add.group();
+
+        // Pnj bloquant l'entrée du parc
+        this.pnjParc = this.pnj.create(1536, 208, 'spr_pnj');
+        this.pnjParc.setPushable(false);
+        //#TODO: changer tous les dialogues
+        this.pnjParc.dialogues = [
+            ["Pk tu veux rentrer la ?", "nn ton chein est pas par la"],
+            ["La petite-fille de la maison dans la foret ?", "oui elle est dans le parc je crois"]
+        ]
+
+        // Pnj se trouvant près des maisons
+        this.pnjMaison = this.pnj.create(416, 624, 'spr_pnj');
+        this.pnjMaison.setPushable(false);
+        //#TODO: changer tous les dialogues
+        this.pnjMaison.dialogues = [
+            ["Tu as perdu ton chein ?", "t'as pensé a l'attirer avec des croquettes ?"],
+            ["Non je n'ai tjrs pas vu ton chien dsl", "je vais continuer de le chercher"]
+        ]
+
+        // Pnj se trouvant près de la rivière
+        this.pnjRiviere = this.pnj.create(1408, 1456, 'spr_pnj');
+        this.pnjRiviere.setPushable(false);
+        //#TODO: changer tous les dialogues
+        this.pnjRiviere.dialogues = [
+            ["De nos jours les pigeons n'ont peur de rien", "peut-etre un objet plus violent serait utile pour les faire fuir", "tiens tu n'as pas ta canne ajd ?"],
+            ["Ton chein ?", "pas vu dsl"]
+        ]
+
+
+        this.physics.add.overlap(this.player, this.pnjParc, function() {
+            if (this.keyE.isDown) {
+
+                if (!window.valeurs.queteMamie) {
+                    console.log("blabla pnj parc");
+
+                } else {
+                    console.log("blabla pnj parc avec quete mamie");
+                }
+
+                
+            }
+        }, null, this);
+
+        this.physics.add.overlap(this.player, this.pnjMaison, function() {
+            if (this.keyE.isDown) {
+
+                console.log("blabla pnj maison");
+            }
+        }, null, this);
+
+        this.physics.add.overlap(this.player, this.pnjRiviere, function() {
+            if (this.keyE.isDown) {
+
+                console.log("blabla pnj riviere");
+            }
+        }, null, this);
         
+
         
         // ----- AFFICHAGE DE L'UI -----
 
-        this.ui_fatigue = this.physics.add.sprite(64, 96, 'ui_fatigue').setScrollFactor(0);
-        this.ui_croquette = this.physics.add.sprite(128, 96, 'ui_croquette').setScrollFactor(0);
+        this.ui_cadre = this.physics.add.sprite(512, 32, 'ui_cadre').setScrollFactor(0);
+        this.ui_fatigue = this.physics.add.sprite(64, 32, 'ui_fatigue').setScrollFactor(0);
+        this.ui_croquette = this.physics.add.sprite(128, 32, 'ui_croquette').setScrollFactor(0);
         this.ui_dialogue = this.physics.add.sprite(512, 460, 'ui_dialogue').setScrollFactor(0);
-        this.ui_inventaire = this.physics.add.sprite(922, 300, 'ui_inventaire').setScrollFactor(0);
+        //this.ui_inventaire = this.physics.add.sprite(922, 300, 'ui_inventaire').setScrollFactor(0);
+
+        this.ui_dialogue.visible = false;
+
 
 
         // ----- ANIMATIONS UI -----
@@ -352,6 +421,15 @@ export default class Ville extends Phaser.Scene {
         });
 
 
+        this.ui_croquette.play('croquette0');
+        this.ui_fatigue.play('fatigue7');
+
+        if (window.valeurs.nbCroquettes == 1) {
+            this.ui_croquette.play('croquette1');
+        }
+
+
+
         // ----- CAMERA -----
 
         // Redimensions du jeu selon le fichier Tiled
@@ -362,24 +440,17 @@ export default class Ville extends Phaser.Scene {
         this.cameras.main.startFollow(this.player);
 
 
-
-
-        
-
-        this.ui_croquette.play('croquette0');
-        this.ui_fatigue.play('fatigue7');
-
-        if (window.valeurs.nbCroquettes == 1) {
-            this.ui_croquette.play('croquette1');
-        }
-
     }
 
 
+
+    // -----------------------------------------------------------------------------------------
+    // ----------------------------------- FONCTION UPDATE -------------------------------------
+    // -----------------------------------------------------------------------------------------
     update() {
 
         this.player.updateMouvement();
-        //this.player.updateUI();
+        
 
         if (window.valeurs.nbCroquettes == 1) {
             this.ui_croquette.play('croquette1');
@@ -425,20 +496,11 @@ export default class Ville extends Phaser.Scene {
         }
 
 
+        if (this.dialogueActif) {
+            this.ui_dialogue.visible = true;
+        }
 
-        //#TODO: regler le probleme ici !! (ca crash)
-        /*
-        if (Phaser.Input.Keyboard.JustDown(this.keyZ) && window.valeurs.aCanne) {
 
-            window.valeurs.fatigue -= 1;
-        }*/
-
-        /*
-        while(window.valeurs.fatigue < 7) {
-            setTimeout(function() {
-                window.valeurs.fatigue += 1;
-            }, 3000);
-        }*/
 
       
     }
