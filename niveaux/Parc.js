@@ -86,14 +86,20 @@ export default class Parc extends Phaser.Scene {
 
         // Prise en charge des touches du clavier
         this.clavier = this.input.keyboard.createCursorKeys();
+
+        this.keyE = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.E);
+        this.keyZ = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.Z);
         
         // Ajout des collisions avec les calques, utilisation des propriétés propres aux calques
         collisionLayer.setCollisionByExclusion(-1, true);
         versVilleLayer.setCollisionByExclusion(-1, true);
 
         
-        this.barriere = this.physics.add.sprite(368, 1072, 'spr_barriere');
-        this.barriere.body.setImmovable(true);
+        if (!window.valeurs.pfParlee) {
+
+            this.barriere = this.physics.add.sprite(368, 1072, 'spr_barriere');
+            this.barriere.body.setImmovable(true);
+        }
 
         
         // ----- AFFICHAGE ET PROPRIETES DU PERSONNAGE -----
@@ -117,7 +123,7 @@ export default class Parc extends Phaser.Scene {
                 console.log("bloqué");
 
             } else {
-                //#TODO: faire en sorte que la barriere ne soit plus bloquée
+                this.barriere.destroy();
             }
             
         }, null, this);
@@ -128,6 +134,7 @@ export default class Parc extends Phaser.Scene {
 
         // La petite fille : le boss
         this.petiteFille = this.physics.add.sprite(272, 992, 'spr_petite_fille');
+        this.petiteFille.body.setImmovable(true);
 
         this.petiteFille.dialogue = [
             //#TODO: changer les dialogues
@@ -136,6 +143,12 @@ export default class Parc extends Phaser.Scene {
             ["pourquoi tu veux prendre mon chien ?", "LACHE LE"]
         ]
 
+        this.physics.add.overlap(this.player, this.petiteFille, function() {
+            if (this.keyE.isDown) {
+                console.log("petite fille parler");
+                window.valeurs.pfParlee = true;
+            }
+        }, null, this);
 
         // Les pigeons : les ennemis
         this.ennemis = this.physics.add.group();
@@ -164,6 +177,17 @@ export default class Parc extends Phaser.Scene {
             this.ennemis.add(ennemi);
         }
 
+        this.physics.add.overlap(this.player, this.ennemis, function() {
+            if (this.keyZ.isDown) {
+                //#TODO: changer ici car erreur
+                window.valeurs.attaque = true;
+                this.ennemis.children.each((ennemi) => {
+                    ennemi.update();
+                });
+            }
+            
+        }, null, this);
+
 
         // ----- AFFICHAGE DE L'UI -----
         this.dialogueActif = false;
@@ -172,7 +196,7 @@ export default class Parc extends Phaser.Scene {
         this.ui_fatigue = this.physics.add.sprite(64, 32, 'ui_fatigue').setScrollFactor(0);
         this.ui_croquette = this.physics.add.sprite(128, 32, 'ui_croquette').setScrollFactor(0);
         this.ui_dialogue = this.physics.add.sprite(512, 460, 'ui_dialogue').setScrollFactor(0);
-        this.ui_inventaire = this.physics.add.sprite(922, 300, 'ui_inventaire').setScrollFactor(0);
+        //this.ui_inventaire = this.physics.add.sprite(922, 300, 'ui_inventaire').setScrollFactor(0);
 
         this.ui_dialogue.visible = false;
 
@@ -339,6 +363,16 @@ export default class Parc extends Phaser.Scene {
 
         if (this.dialogueActif) {
             this.ui_dialogue.visible = true;
+        }
+
+        if (this.keyZ.isDown && !window.valeurs.invincible && window.valeurs.aCanne) {
+            window.valeurs.invincible = true;
+            window.valeurs.fatigue -= 1;
+            this.player.attaque();
+            setTimeout(function() {
+                window.valeurs.invincible = false;
+            }, 300);
+            
         }
 
     }

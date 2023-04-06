@@ -89,6 +89,7 @@ export default class MaisonJoueur extends Phaser.Scene {
         this.clavier = this.input.keyboard.createCursorKeys();
 
         this.keyE = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.E);
+        this.keyZ = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.Z);
 
 
         // Ajout des collisions avec les calques, utilisation des propriétés propres aux calques
@@ -162,7 +163,7 @@ export default class MaisonJoueur extends Phaser.Scene {
         this.ui_fatigue = this.physics.add.sprite(64, 32, 'ui_fatigue').setScrollFactor(0);
         this.ui_croquette = this.physics.add.sprite(128, 32, 'ui_croquette').setScrollFactor(0);
         this.ui_dialogue = this.physics.add.sprite(512, 460, 'ui_dialogue').setScrollFactor(0);
-        this.ui_inventaire = this.physics.add.sprite(922, 300, 'ui_inventaire').setScrollFactor(0);
+        //this.ui_inventaire = this.physics.add.sprite(922, 300, 'ui_inventaire').setScrollFactor(0);
 
         this.ui_dialogue.visible = false;
 
@@ -332,6 +333,15 @@ export default class MaisonJoueur extends Phaser.Scene {
             this.ui_dialogue.visible = true;
         }
 
+        if (this.keyZ.isDown && !window.valeurs.invincible && window.valeurs.aCanne) {
+            window.valeurs.invincible = true;
+            window.valeurs.fatigue -= 1;
+            this.player.attaque();
+            setTimeout(function() {
+                window.valeurs.invincible = false;
+            }, 300);
+            
+        }
 
     }
 

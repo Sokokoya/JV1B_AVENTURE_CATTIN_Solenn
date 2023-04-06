@@ -128,6 +128,8 @@ export default class Ville extends Phaser.Scene {
         this.physics.add.collider(this.player, houseLayer);
         this.physics.add.collider(this.player, collisionLayer);
 
+        this.attaque = this.physics.add.sprite(window.valeurs.posX, window.valeurs.posY, 'spr_attaque');
+
 
 
         // ----- CHANGEMENTS DE SCENES -----
@@ -492,7 +494,13 @@ export default class Ville extends Phaser.Scene {
         }
         if (window.valeurs.fatigue == 0) {
             this.ui_fatigue.play('fatigue0');
-            //#TODO: afficher ecran de mort + recommencer
+            //#TODO: changer ici le reload pour le mettre dans sa maison
+            setTimeout(function() {
+                location.reload();
+            }, 450);
+
+            this.physics.pause();
+            this.player.setTint(0xff0000);
         }
 
 
@@ -500,7 +508,15 @@ export default class Ville extends Phaser.Scene {
             this.ui_dialogue.visible = true;
         }
 
-
+        if (this.keyZ.isDown && !window.valeurs.invincible && window.valeurs.aCanne) {
+            window.valeurs.invincible = true;
+            window.valeurs.fatigue -= 1;
+            this.player.attaque();
+            setTimeout(function() {
+                window.valeurs.invincible = false;
+            }, 300);
+            
+        }
 
       
     }

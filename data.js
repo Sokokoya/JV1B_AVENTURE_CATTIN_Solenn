@@ -9,6 +9,9 @@
 var valeurs = {
 
     vitesse: 160,
+    posX: 0,
+    posY: 0,
+    invincible: false,
 
     aCle: false,
     aCanne: false,
@@ -18,6 +21,7 @@ var valeurs = {
     pfParlee: false,
 
     nbCroquettes: 0,
-    fatigue: 7
+    fatigue: 7, 
+    attaque: false
 
 };
