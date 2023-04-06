@@ -4,6 +4,7 @@
  * Fichier contenant la classe Parc, créant la scène du même nom.
 */
 
+import Ennemi from '../Ennemi.js';
 import Player from '../Player.js';
 
 export default class Parc extends Phaser.Scene {
@@ -30,6 +31,7 @@ export default class Parc extends Phaser.Scene {
 
         // Chargement du sprite de la petite fille
         this.load.spritesheet('spr_petite_fille', 'assets/spr_petite_fille.png', {frameWidth: 32, frameHeight: 64});
+        this.load.spritesheet('spr_pigeon', 'assets/spr_pigeon.png', {frameWidth: 32, frameHeight: 32});
 
         this.load.spritesheet('spr_barriere', 'assets/spr_barriere.png', {frameWidth: 96, frameHeight: 32});
     }
@@ -115,8 +117,36 @@ export default class Parc extends Phaser.Scene {
 
 
 
+        // ----- AFFICHAGE DES ENNEMIS -----
 
+        // La petite fille : le boss
         this.petite_fille = this.physics.add.sprite(272, 992, 'spr_petite_fille');
+
+
+        // Les pigeons : les ennemis
+        this.ennemis = this.physics.add.group();
+
+        let coordoneesEnnemis = [
+            {x: 8, y: 10}, {x: 9, y: 11}, {x: 18, y: 9},
+            {x: 17, y: 11}, {x: 12, y: 15}, {x: 10, y: 16},
+            {x: 20, y: 14}, {x: 22, y: 15}, {x: 21, y: 16},
+            {x: 19, y: 16}, {x: 19, y: 17}, {x: 23, y: 17},
+            {x: 22, y: 18}, {x: 28, y: 16}, {x: 29, y: 21},
+            {x: 28, y: 25}, {x: 27, y: 29}, {x: 25, y: 29},
+            {x: 24, y: 26}, {x: 22, y: 29}, {x: 21, y: 24},
+            {x: 20, y: 27}, {x: 19, y: 25}, {x: 17, y: 25},
+            {x: 15, y: 31}
+        ];
+
+        for (let i=1; i>=25; i++) {
+
+            let posX = coordoneesEnnemis[i].x * 32;
+            let posY = coordoneesEnnemis[i].y * 32;
+
+            let ennemi = new Ennemi(this, posX, posY, 'spr_pigeon');
+
+            this.ennemis.add(ennemi);
+        }
 
 
 

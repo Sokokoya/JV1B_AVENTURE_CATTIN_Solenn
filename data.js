@@ -10,9 +10,6 @@ var valeurs = {
 
     vitesse: 160,
 
-    posX: 448,
-    posY: 432,
-
     aCle: false,
     aCanne: false,
     aCroquetteMaison: false,
@@ -21,7 +18,5 @@ var valeurs = {
 
     nbCroquettes: 0,
     fatigue: 7
-
-
 
 };

@@ -89,12 +89,14 @@ export default class MaisonGM extends Phaser.Scene {
         this.player = new Player(this, this.posX, this.posY, 'heros_idle_droite');
 
         // Ajout des collisions entre le personnage et les objets / murs / sortie
+
+        // --> vers la Forêt
         this.physics.add.collider(this.player, murLayer);
         this.physics.add.collider(this.player, collisionsLayer);
         this.physics.add.collider(this.player, versForetLayer, function() {
             this.scene.start("Foret", {
-                x: 640,
-                y: 624
+                x: 368,
+                y: 688
             });
         }, null, this);
 
@@ -116,6 +118,8 @@ export default class MaisonGM extends Phaser.Scene {
 
 
     update() {
+
+        this.player.updateMouvement();
 
     }
 

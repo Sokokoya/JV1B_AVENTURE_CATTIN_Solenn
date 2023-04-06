@@ -74,12 +74,12 @@ export default class Foret extends Phaser.Scene {
             gameTileset
         );
 
-        /*
+        
         const versMaisonLayer = gameMap.createLayer(
-            "versMaison",
+            "versMaisonGM",
             gameTileset
         );
-        */
+        
 
 
 
@@ -94,7 +94,7 @@ export default class Foret extends Phaser.Scene {
         // Ajout des collisions avec les calques, utilisation des propriétés propres aux calques
         collisionLayer.setCollisionByProperty({estSolide: true});
         versVilleLayer.setCollisionByExclusion(-1, true);
-        //versMaisonLayer.setCollisionByProperty({sortie: true});
+        versMaisonLayer.setCollisionByProperty({sortie: true});
 
 
         
@@ -114,22 +114,24 @@ export default class Foret extends Phaser.Scene {
                 y: 112
             });
         }, null, this);
-        /*
+        
+        // --> vers la maison de la grand-mère
         this.physics.add.collider(this.player, versMaisonLayer, function() {
             console.log("vers maison gm");
             this.scene.start("MaisonGM", {
-                x: 1344,
-                y: 112
+                // changer coordonées
+                x: 480,
+                y: 592
             });
         }, null, this);
-        */
+        
 
 
         // ----- AFFICHAGE DE LA GRAND MERE -----
         this.grandmere = this.physics.add.sprite(1024, 960, 'spr_grand_mere');
 
         this.physics.add.overlap(this.player, this.grandmere, function() {
-            if (Phaser.Input.Keyboard.JustDown(this.clavier.space) && window.valeurs.aCanne) {
+            if (this.keyE.isDown) {
                 window.valeurs.queteMamie = true;
                 console.log("quete mamie oui");
                 
@@ -153,6 +155,10 @@ export default class Foret extends Phaser.Scene {
 
     update() {
         this.player.updateMouvement();
+
+        /*if (this.keyE.isDown) {
+            console.log("e actif");
+        }*/
 
     }
 

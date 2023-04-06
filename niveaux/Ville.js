@@ -33,8 +33,9 @@ export default class Ville extends Phaser.Scene {
         // Objets
         this.load.spritesheet('spr_cle', 'assets/spr_cle.png', {frameWidth: 32, frameHeight: 32});
 
-        // Ennemis
+        // Ennemis et amis
         this.load.spritesheet('spr_pigeon_croquette', 'assets/spr_pigeon_croquette.png', {frameWidth: 32, frameHeight: 32});
+        this.load.spritesheet('spr_pnj', 'assets/spr_pnj.png', {frameWidth: 64, frameHeight: 96});
        
 
     }
