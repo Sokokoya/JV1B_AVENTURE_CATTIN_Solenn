@@ -32,6 +32,7 @@ export default class Ville extends Phaser.Scene {
 
         // Objets
         this.load.spritesheet('spr_cle', 'assets/spr_cle.png', {frameWidth: 32, frameHeight: 32});
+        this.load.spritesheet('ui_canne', 'assets/ui_canne.png', {frameWidth: 32, frameHeight: 32});
 
         // Ennemis et amis
         this.load.spritesheet('spr_pigeon_croquette', 'assets/spr_pigeon_croquette.png', {frameWidth: 32, frameHeight: 32});
@@ -195,7 +196,7 @@ export default class Ville extends Phaser.Scene {
             if (!this.player.aCle) {
                 if (Phaser.Input.Keyboard.JustDown(this.keyE)) {
                     window.valeurs.aCle = true;
-                    this.cle.anims.play('cle_inventaire', true);
+                    this.cle.visible = false;
                 }
             }
             
@@ -257,65 +258,112 @@ export default class Ville extends Phaser.Scene {
 
         // ----- AJOUT DES PNJ ET LEURS INTERACTIONS / DIALOGUES -----
 
-        this.dialogueActif = false;
-        this.dialogueCourant = ["", ""];
-        this.stepDialogue = 0; 
-
         this.pnj = this.physics.add.group();
 
-        // Pnj bloquant l'entrée du parc
+        // --> PNJ bloquant l'entrée du parc
         this.pnjParc = this.pnj.create(1536, 208, 'spr_pnj');
         this.pnjParc.setPushable(false);
-        //#TODO: changer tous les dialogues
-        this.pnjParc.dialogues = [
-            ["Pk tu veux rentrer la ?", "nn ton chein est pas par la"],
-            ["La petite-fille de la maison dans la foret ?", "oui elle est dans le parc je crois"]
-        ]
 
-        // Pnj se trouvant près des maisons
+        this.dial_pnjParc_1 = this.add.image(512, 460,'dial_pnjParc_1').setAlpha(0);
+        this.dial_pnjParc_2 = this.add.image(512, 460,'dial_pnjParc_2').setAlpha(0);
+        this.dial_pnjParc_3 = this.add.image(512, 460,'dial_pnjParc_3').setAlpha(0);
+        this.dial_pnjParc_4 = this.add.image(512, 460,'dial_pnjParc_4').setAlpha(0);
+
+
+        // --> PNJ se trouvant près des maisons
         this.pnjMaison = this.pnj.create(416, 624, 'spr_pnj');
         this.pnjMaison.setPushable(false);
-        //#TODO: changer tous les dialogues
-        this.pnjMaison.dialogues = [
-            ["Tu as perdu ton chein ?", "t'as pensé a l'attirer avec des croquettes ?"],
-            ["Non je n'ai tjrs pas vu ton chien dsl", "je vais continuer de le chercher"]
-        ]
 
-        // Pnj se trouvant près de la rivière
+        this.dial_pnjMaison_1 = this.add.image(512, 460,'dial_pnjMaison_1').setAlpha(0);
+        this.dial_pnjMaison_2 = this.add.image(512, 460,'dial_pnjMaison_2').setAlpha(0);
+        
+
+        // --> PNJ se trouvant près de la rivière
         this.pnjRiviere = this.pnj.create(1408, 1456, 'spr_pnj');
         this.pnjRiviere.setPushable(false);
-        //#TODO: changer tous les dialogues
-        this.pnjRiviere.dialogues = [
-            ["De nos jours les pigeons n'ont peur de rien", "peut-etre un objet plus violent serait utile pour les faire fuir", "tiens tu n'as pas ta canne ajd ?"],
-            ["Ton chein ?", "pas vu dsl"]
-        ]
+        
+        this.dial_pnjRiviere_1 = this.add.image(512, 460,'dial_pnjRiviere_1').setAlpha(0);
+        this.dial_pnjRiviere_2 = this.add.image(512, 460,'dial_pnjRiviere_2').setAlpha(0);
+        this.dial_pnjRiviere_3 = this.add.image(512, 460,'dial_pnjRiviere_3').setAlpha(0);
+        
 
 
+        // --> Dialogues entre le joueur et le PNJ à côté du parc
         this.physics.add.overlap(this.player, this.pnjParc, function() {
-            if (this.keyE.isDown) {
+            //#TODO: rajouter le bouton d'interaction (le e qui s'appuie)
+                if (this.keyE.isDown) {
 
-                if (!window.valeurs.queteMamie) {
-                    console.log("blabla pnj parc");
+                    if (!window.valeurs.queteMamie && !window.valeurs.pnjParcParle) {
+                        window.valeurs.pnjParcParle = true;
+                        console.log("parle pnj parc");
 
-                } else {
-                    console.log("blabla pnj parc avec quete mamie");
+                        this.dial_pnjParc_1.setAlpha(1);
+
+                        if (this.keyE.isDown) {
+                            this.dial_pnjParc_1.setAlpha(0);
+                            this.dial_pnjParc_2.setAlpha(1);
+
+                            if (this.keyE.isDown) {
+                                this.dial_pnjParc_2.setAlpha(0);
+                            }
+                        }
+
+                    } else if (!window.valeurs.queteMamie && window.valeurs.pnjParcParle ) {
+                        this.pnjParc.dialogues[2].visible = true;
+
+                        if (this.keyE.isDown) {
+                            this.pnjParc.dialogues[2].visible = false;
+                        }
+
+                    } else {
+                        this.pnjParc.dialogues[3].visible = true;
+
+                            if (this.keyE.isDown) {
+                                this.pnjParc.dialogues[3].visible = false;
+                            }
+                    }
                 }
-
-                
-            }
         }, null, this);
 
+
+        // --> Dialogues entre le joueur et le PNJ à côté des maisons
         this.physics.add.overlap(this.player, this.pnjMaison, function() {
-            if (this.keyE.isDown) {
+            //#TODO: rajouter le bouton d'interaction (le e qui s'appuie)
+            if (!this.dialogueActif) {
+                if (this.keyE.isDown) {
 
-                console.log("blabla pnj maison");
+                    if (!window.valeurs.pnjMaisonParle) {
+                        window.valeurs.pnjMaisonParle = true;
+
+                        this.discussion(this.pnjMaison.dialogues[0]);
+                        console.log("blabla pnj maison 1");
+
+                    } else {
+                        this.discussion(this.pnjMaison.dialogues[1]);
+                        console.log("blabla pnj maison 2");
+                    }
+                }
             }
         }, null, this);
 
-        this.physics.add.overlap(this.player, this.pnjRiviere, function() {
-            if (this.keyE.isDown) {
 
-                console.log("blabla pnj riviere");
+        // --> Dialogues entre le joueur et le PNJ à côté de la rivière
+        this.physics.add.overlap(this.player, this.pnjRiviere, function() {
+            //#TODO: rajouter le bouton d'interaction (le e qui s'appuie)
+            if (!this.dialogueActif) {
+                if (this.keyE.isDown) {
+
+                    if (!window.valeurs.pnjRiviereParle) {
+                        window.valeurs.pnjRiviereParle = true;
+
+                        this.discussion(this.pnjRiviere.dialogues[0]);
+                        console.log("blabla pnj riviere 1");
+
+                    } else {
+                        this.discussion(this.pnjRiviere.dialogues[1]);
+                        console.log("blabla pnj riviere 2");
+                    }
+                }
             }
         }, null, this);
         
@@ -327,9 +375,18 @@ export default class Ville extends Phaser.Scene {
         this.ui_fatigue = this.physics.add.sprite(64, 32, 'ui_fatigue').setScrollFactor(0);
         this.ui_croquette = this.physics.add.sprite(128, 32, 'ui_croquette').setScrollFactor(0);
         this.ui_dialogue = this.physics.add.sprite(512, 460, 'ui_dialogue').setScrollFactor(0);
-        //this.ui_inventaire = this.physics.add.sprite(922, 300, 'ui_inventaire').setScrollFactor(0);
+        this.ui_cle = this.physics.add.sprite(192, 32, 'spr_cle').setScrollFactor(0);
+        this.ui_canne = this.physics.add.sprite(256, 32, 'ui_canne').setScrollFactor(0);
+
+        this.ui_cle.anims.play('cle_inventaire');
 
         this.ui_dialogue.visible = false;
+        this.ui_cle.visible = false;
+        this.ui_canne.visible = false;
+
+        this.texteDialogue = this.add.text(512, 460, "Dialogue");
+        this.texteDialogue.visible = false;
+        
 
 
 
@@ -442,8 +499,14 @@ export default class Ville extends Phaser.Scene {
         this.cameras.main.startFollow(this.player);
 
 
+
     }
 
+
+    discussion(dialogue) {
+        this.dialogueCourant = dialogue;
+        this.dialogueActif = true;
+    }
 
 
     // -----------------------------------------------------------------------------------------
@@ -516,6 +579,42 @@ export default class Ville extends Phaser.Scene {
                 window.valeurs.invincible = false;
             }, 300);
             
+        }
+
+
+        // ----- DIALOGUES -----
+        //#TODO: a supprimer pour mettre les images
+
+
+        if (this.dialogueActif) {
+            this.ui_dialogue.visible = true;
+            this.texteDialogue.visible = true;
+
+            this.texteDialogue.setText(this.dialogueCourant[this.stepDialogue]);
+
+            if (this.keyE.isDown) {
+
+                if (this.stepDialogue < this.dialogueCourant.length -1) {
+                    this.stepDialogue ++;
+
+                } else {
+                    this.dialogueActif = false;
+                    this.stepDialogue = 0;
+                }
+
+            } else {
+                this.ui_dialogue.visible = false;
+                this.texteDialogue.visible = false;
+            }
+
+
+        }
+
+        if (window.valeurs.aCle) {
+            this.ui_cle.visible = true;
+        }
+        if (window.valeurs.aCanne) {
+            this.ui_canne.visible = true;
         }
 
       

@@ -31,6 +31,31 @@ export default class Menu extends Phaser.Scene {
 
 
         this.load.spritesheet('spr_attaque', 'assets/spr_attaque.png', {frameWidth: 64, frameHeight: 64});
+
+
+        // Chargement de toutes les images de dialogue
+        this.load.image('dial_grandMere_1', 'assets/dialogues/dial_grandMere_1.png');
+        this.load.image('dial_grandMere_2', 'assets/dialogues/dial_grandMere_2.png');
+        this.load.image('dial_grandMere_3', 'assets/dialogues/dial_grandMere_3.png');
+        this.load.image('dial_grandMere_4', 'assets/dialogues/dial_grandMere_4.png');
+        this.load.image('dial_grandMere_5', 'assets/dialogues/dial_grandMere_5.png');
+        this.load.image('dial_grandMere_6', 'assets/dialogues/dial_grandMere_6.png');
+
+        this.load.image('dial_petiteFille_1', 'assets/dialogues/dial_petiteFille_1.png');
+        this.load.image('dial_petiteFille_2', 'assets/dialogues/dial_petiteFille_2.png');
+        this.load.image('dial_petiteFille_3', 'assets/dialogues/dial_petiteFille_3.png');
+        this.load.image('dial_petiteFille_4', 'assets/dialogues/dial_petiteFille_4.png');
+
+        this.load.image('dial_pnjMaison_1', 'assets/dialogues/dial_pnjMaison_1.png');
+        this.load.image('dial_pnjMaison_2', 'assets/dialogues/dial_pnjMaison_2.png');
+        this.load.image('dial_pnjParc_1', 'assets/dialogues/dial_pnjParc_1.png');
+        this.load.image('dial_pnjParc_2', 'assets/dialogues/dial_pnjParc_2.png');
+        this.load.image('dial_pnjParc_3', 'assets/dialogues/dial_pnjParc_3.png');
+        this.load.image('dial_pnjParc_4', 'assets/dialogues/dial_pnjParc_4.png');
+        this.load.image('dial_pnjRiviere_1', 'assets/dialogues/dial_pnjRiviere_1.png');
+        this.load.image('dial_pnjRiviere_2', 'assets/dialogues/dial_pnjRiviere_2.png');
+        this.load.image('dial_pnjRiviere_3', 'assets/dialogues/dial_pnjRiviere_3.png');
+        
     }
 
 

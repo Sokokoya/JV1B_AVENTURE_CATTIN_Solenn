@@ -132,16 +132,15 @@ export default class Parc extends Phaser.Scene {
 
         // ----- AFFICHAGE DES ENNEMIS -----
 
-        // La petite fille : le boss
+        // --> La petite fille : le boss
         this.petiteFille = this.physics.add.sprite(272, 992, 'spr_petite_fille');
         this.petiteFille.body.setImmovable(true);
 
-        this.petiteFille.dialogue = [
-            //#TODO: changer les dialogues
-            ["hahaha jaime les chiens !", "tu dis qu'il est a toi ? NON IL EST A MOI"],
-            ["je ne te le rendrais pas !!", "je vais le dire a mamie"],
-            ["pourquoi tu veux prendre mon chien ?", "LACHE LE"]
-        ]
+        this.dial_petiteFille_1 = this.add.image(512, 460,'dial_petiteFille_1').setAlpha(0);
+        this.dial_petiteFille_2 = this.add.image(512, 460,'dial_petiteFille_2').setAlpha(0);
+        this.dial_petiteFille_3 = this.add.image(512, 460,'dial_petiteFille_3').setAlpha(0);
+        this.dial_petiteFille_4 = this.add.image(512, 460,'dial_petiteFille_4').setAlpha(0);
+
 
         this.physics.add.overlap(this.player, this.petiteFille, function() {
             if (this.keyE.isDown) {
@@ -150,9 +149,11 @@ export default class Parc extends Phaser.Scene {
             }
         }, null, this);
 
-        // Les pigeons : les ennemis
+
+        // --> Les pigeons : les ennemis
         this.ennemis = this.physics.add.group();
 
+        // Coordonées des cases sur lesquelles se trouvent des pigeons
         let coordoneesEnnemis = [
             {x: 8, y: 10}, {x: 9, y: 11}, {x: 18, y: 9},
             {x: 17, y: 11}, {x: 12, y: 15}, {x: 10, y: 16},
@@ -167,16 +168,16 @@ export default class Parc extends Phaser.Scene {
 
         for (let i=0; i<25; i++) {
 
+            // Multiplication de chaque coordonée par 32 pour obtenir les coordonées en pixels
             let posX = coordoneesEnnemis[i].x * 32;
             let posY = coordoneesEnnemis[i].y * 32;
-
-            console.log(posX, posY);
 
             let ennemi = new Ennemi(this, posX, posY, 'spr_pigeon');
 
             this.ennemis.add(ennemi);
         }
 
+        // Coup de canne sur les pigeons
         this.physics.add.overlap(this.player, this.ennemis, function() {
             if (this.keyZ.isDown) {
                 //#TODO: changer ici car erreur
@@ -197,8 +198,18 @@ export default class Parc extends Phaser.Scene {
         this.ui_croquette = this.physics.add.sprite(128, 32, 'ui_croquette').setScrollFactor(0);
         this.ui_dialogue = this.physics.add.sprite(512, 460, 'ui_dialogue').setScrollFactor(0);
         //this.ui_inventaire = this.physics.add.sprite(922, 300, 'ui_inventaire').setScrollFactor(0);
+        this.ui_cle = this.physics.add.sprite(192, 32, 'spr_cle').setScrollFactor(0);
+        this.ui_canne = this.physics.add.sprite(256, 32, 'ui_canne').setScrollFactor(0);
+
+        this.ui_cle.anims.play('cle_inventaire');
 
         this.ui_dialogue.visible = false;
+        this.ui_cle.visible = false;
+        this.ui_canne.visible = false;
+
+        this.texteDialogue = this.add.text(512, 460, "Dialogue");
+        this.texteDialogue.visible = false;
+        
 
 
 
@@ -373,6 +384,13 @@ export default class Parc extends Phaser.Scene {
                 window.valeurs.invincible = false;
             }, 300);
             
+        }
+
+        if (window.valeurs.aCle) {
+            this.ui_cle.visible = true;
+        }
+        if (window.valeurs.aCanne) {
+            this.ui_canne.visible = true;
         }
 
     }

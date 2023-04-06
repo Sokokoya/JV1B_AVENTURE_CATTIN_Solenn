@@ -164,8 +164,18 @@ export default class MaisonJoueur extends Phaser.Scene {
         this.ui_croquette = this.physics.add.sprite(128, 32, 'ui_croquette').setScrollFactor(0);
         this.ui_dialogue = this.physics.add.sprite(512, 460, 'ui_dialogue').setScrollFactor(0);
         //this.ui_inventaire = this.physics.add.sprite(922, 300, 'ui_inventaire').setScrollFactor(0);
+        this.ui_cle = this.physics.add.sprite(192, 32, 'spr_cle').setScrollFactor(0);
+        this.ui_canne = this.physics.add.sprite(256, 32, 'ui_canne').setScrollFactor(0);
+
+        this.ui_cle.anims.play('cle_inventaire');
 
         this.ui_dialogue.visible = false;
+        this.ui_cle.visible = false;
+        this.ui_canne.visible = false;
+
+        this.texteDialogue = this.add.text(512, 460, "Dialogue");
+        this.texteDialogue.visible = false;
+        
 
 
 
@@ -343,6 +353,15 @@ export default class MaisonJoueur extends Phaser.Scene {
             
         }
 
+        if (window.valeurs.aCle) {
+            this.ui_cle.visible = true;
+        }
+        if (window.valeurs.aCanne) {
+            this.ui_canne.visible = true;
+        }
+
     }
+
+    
 
 }
