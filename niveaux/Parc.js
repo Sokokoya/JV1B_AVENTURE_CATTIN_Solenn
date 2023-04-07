@@ -179,7 +179,7 @@ export default class Parc extends Phaser.Scene {
 
         // Coup de canne sur les pigeons
         this.physics.add.overlap(this.player, this.ennemis, function() {
-            if (this.keyZ.isDown) {
+            if (this.keyZ.isDown && window.valeurs.aCanne) {
                 //#TODO: changer ici car erreur
                 window.valeurs.attaque = true;
                 this.ennemis.children.each((ennemi) => {

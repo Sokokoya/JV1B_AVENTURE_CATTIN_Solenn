@@ -297,29 +297,29 @@ export default class Ville extends Phaser.Scene {
                         window.valeurs.pnjParcParle = true;
                         console.log("parle pnj parc");
 
-                        this.dial_pnjParc_1.setAlpha(1);
+                        this.dial_pnjParc_1 = this.add.image(512, 460,'dial_pnjParc_1');
 
                         if (this.keyE.isDown) {
-                            this.dial_pnjParc_1.setAlpha(0);
-                            this.dial_pnjParc_2.setAlpha(1);
+                            this.dial_pnjParc_1.destroy();
+                            this.dial_pnjParc_2 = this.add.image(512, 460,'dial_pnjParc_2');
 
                             if (this.keyE.isDown) {
-                                this.dial_pnjParc_2.setAlpha(0);
+                                this.dial_pnjParc_2.destroy();
                             }
                         }
 
                     } else if (!window.valeurs.queteMamie && window.valeurs.pnjParcParle ) {
-                        this.pnjParc.dialogues[2].visible = true;
+                        this.dial_pnjParc_3 = this.add.image(512, 460,'dial_pnjParc_3');
 
                         if (this.keyE.isDown) {
-                            this.pnjParc.dialogues[2].visible = false;
+                            this.dial_pnjParc_3.destroy();
                         }
 
                     } else {
-                        this.pnjParc.dialogues[3].visible = true;
+                        this.dial_pnjParc_4 = this.add.image(512, 460,'dial_pnjParc_4');
 
                             if (this.keyE.isDown) {
-                                this.pnjParc.dialogues[3].visible = false;
+                                this.dial.pnjParc.destroy();
                             }
                     }
                 }
@@ -335,11 +335,11 @@ export default class Ville extends Phaser.Scene {
                     if (!window.valeurs.pnjMaisonParle) {
                         window.valeurs.pnjMaisonParle = true;
 
-                        this.discussion(this.pnjMaison.dialogues[0]);
+                       // this.discussion(this.pnjMaison.dialogues[0]);
                         console.log("blabla pnj maison 1");
 
                     } else {
-                        this.discussion(this.pnjMaison.dialogues[1]);
+                       // this.discussion(this.pnjMaison.dialogues[1]);
                         console.log("blabla pnj maison 2");
                     }
                 }
@@ -356,11 +356,11 @@ export default class Ville extends Phaser.Scene {
                     if (!window.valeurs.pnjRiviereParle) {
                         window.valeurs.pnjRiviereParle = true;
 
-                        this.discussion(this.pnjRiviere.dialogues[0]);
+                       // this.discussion(this.pnjRiviere.dialogues[0]);
                         console.log("blabla pnj riviere 1");
 
                     } else {
-                        this.discussion(this.pnjRiviere.dialogues[1]);
+                       // this.discussion(this.pnjRiviere.dialogues[1]);
                         console.log("blabla pnj riviere 2");
                     }
                 }
@@ -376,7 +376,7 @@ export default class Ville extends Phaser.Scene {
         this.ui_croquette = this.physics.add.sprite(128, 32, 'ui_croquette').setScrollFactor(0);
         this.ui_dialogue = this.physics.add.sprite(512, 460, 'ui_dialogue').setScrollFactor(0);
         this.ui_cle = this.physics.add.sprite(192, 32, 'spr_cle').setScrollFactor(0);
-        this.ui_canne = this.physics.add.sprite(256, 32, 'ui_canne').setScrollFactor(0);
+        this.ui_canne = this.physics.add.sprite(230, 32, 'ui_canne').setScrollFactor(0);
 
         this.ui_cle.anims.play('cle_inventaire');
 
