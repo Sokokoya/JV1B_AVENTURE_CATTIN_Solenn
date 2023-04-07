@@ -189,7 +189,12 @@ export default class Ville extends Phaser.Scene {
             frameRate: 20
         });
 
-        this.cle.anims.play('cle_ingame', true);
+        if (!window.valeurs.aCle) {
+            this.cle.anims.play('cle_ingame', true);
+        } else {
+            this.cle.visible = false;
+        }
+        
 
         
         this.physics.add.overlap(this.player, this.cle, function() {
@@ -264,10 +269,10 @@ export default class Ville extends Phaser.Scene {
         this.pnjParc = this.pnj.create(1536, 208, 'spr_pnj');
         this.pnjParc.setPushable(false);
 
-        this.dial_pnjParc_1 = this.add.image(512, 460,'dial_pnjParc_1').setAlpha(0);
-        this.dial_pnjParc_2 = this.add.image(512, 460,'dial_pnjParc_2').setAlpha(0);
-        this.dial_pnjParc_3 = this.add.image(512, 460,'dial_pnjParc_3').setAlpha(0);
-        this.dial_pnjParc_4 = this.add.image(512, 460,'dial_pnjParc_4').setAlpha(0);
+        //this.dial_pnjParc_1 = this.add.image(512, 460,'dial_pnjParc_1').setAlpha(0);
+        //this.dial_pnjParc_2 = this.add.image(512, 460,'dial_pnjParc_2').setAlpha(0);
+        //this.dial_pnjParc_3 = this.add.image(512, 460,'dial_pnjParc_3').setAlpha(0);
+        //this.dial_pnjParc_4 = this.add.image(512, 460,'dial_pnjParc_4').setAlpha(0);
 
 
         // --> PNJ se trouvant près des maisons
@@ -293,33 +298,68 @@ export default class Ville extends Phaser.Scene {
             //#TODO: rajouter le bouton d'interaction (le e qui s'appuie)
                 if (this.keyE.isDown) {
 
-                    if (!window.valeurs.queteMamie && !window.valeurs.pnjParcParle) {
+                    if (!this.dialogueActif && !window.valeurs.queteMamie && !window.valeurs.pnjParcParle) {
+                        this.dialogueActif = true;
                         window.valeurs.pnjParcParle = true;
-                        console.log("parle pnj parc");
+                        console.log("parle pnj parc 1");
 
-                        this.dial_pnjParc_1 = this.add.image(512, 460,'dial_pnjParc_1');
+                        this.dial_pnjParc_1 = this.add.image(512, 460,'dial_pnjParc_1').setScrollFactor(0);
+
+                        setTimeout(function() {
+                            this.dialogueActif = false;
+                        }, 500);
 
                         if (this.keyE.isDown) {
+                            this.dialogueActif = true;
+                            console.log("parle pnj parc 2");
                             this.dial_pnjParc_1.destroy();
-                            this.dial_pnjParc_2 = this.add.image(512, 460,'dial_pnjParc_2');
+                            this.dial_pnjParc_2 = this.add.image(512, 460,'dial_pnjParc_2').setScrollFactor(0);
+
+                            setTimeout(function() {
+                                this.dialogueActif = false;
+                            }, 500);
 
                             if (this.keyE.isDown) {
+                                this.dialogueActif = true;
                                 this.dial_pnjParc_2.destroy();
+
+                                setTimeout(function() {
+                                    this.dialogueActif = false;
+                                }, 500);
                             }
                         }
 
-                    } else if (!window.valeurs.queteMamie && window.valeurs.pnjParcParle ) {
-                        this.dial_pnjParc_3 = this.add.image(512, 460,'dial_pnjParc_3');
+                    } else if (!this.dialogueActif && !window.valeurs.queteMamie && window.valeurs.pnjParcParle ) {
+                        console.log("parle pnj parc 3");
+                        this.dialogueActif = true;
+                        this.dial_pnjParc_3 = this.add.image(512, 460,'dial_pnjParc_3').setScrollFactor(0);
+
+                        setTimeout(function() {
+                            this.dialogueActif = false;
+                        }, 300);
 
                         if (this.keyE.isDown) {
+                            this.dialogueActif = true;
                             this.dial_pnjParc_3.destroy();
+
+                            setTimeout(function() {
+                                this.dialogueActif = false;
+                            }, 300);
                         }
 
-                    } else {
-                        this.dial_pnjParc_4 = this.add.image(512, 460,'dial_pnjParc_4');
+                    } else if (!this.dialogueActif && window.valeurs.queteMamie) {
+                        this.dialogueActif = true;
+                        this.dial_pnjParc_4 = this.add.image(512, 460,'dial_pnjParc_4').setScrollFactor(0);
 
+                        setTimeout(function() {
+                            this.dialogueActif = false;
+                        }, 300);
                             if (this.keyE.isDown) {
                                 this.dial.pnjParc.destroy();
+
+                                setTimeout(function() {
+                                    this.dialogueActif = false;
+                                }, 300);
                             }
                     }
                 }
@@ -335,11 +375,11 @@ export default class Ville extends Phaser.Scene {
                     if (!window.valeurs.pnjMaisonParle) {
                         window.valeurs.pnjMaisonParle = true;
 
-                       // this.discussion(this.pnjMaison.dialogues[0]);
+                        this.dial_pnjMaison_1 = this.add.image(512, 460,'dial_pnjMaison_1').setScrollFactor(0);
                         console.log("blabla pnj maison 1");
 
                     } else {
-                       // this.discussion(this.pnjMaison.dialogues[1]);
+                        this.dial_pnjMaison_2 = this.add.image(512, 460,'dial_pnjMaison_2').setScrollFactor(0);
                         console.log("blabla pnj maison 2");
                     }
                 }
@@ -374,13 +414,13 @@ export default class Ville extends Phaser.Scene {
         this.ui_cadre = this.physics.add.sprite(512, 32, 'ui_cadre').setScrollFactor(0);
         this.ui_fatigue = this.physics.add.sprite(64, 32, 'ui_fatigue').setScrollFactor(0);
         this.ui_croquette = this.physics.add.sprite(128, 32, 'ui_croquette').setScrollFactor(0);
-        this.ui_dialogue = this.physics.add.sprite(512, 460, 'ui_dialogue').setScrollFactor(0);
+        //this.ui_dialogue = this.physics.add.sprite(512, 460, 'ui_dialogue').setScrollFactor(0);
         this.ui_cle = this.physics.add.sprite(192, 32, 'spr_cle').setScrollFactor(0);
         this.ui_canne = this.physics.add.sprite(230, 32, 'ui_canne').setScrollFactor(0);
 
         this.ui_cle.anims.play('cle_inventaire');
 
-        this.ui_dialogue.visible = false;
+        //this.ui_dialogue.visible = false;
         this.ui_cle.visible = false;
         this.ui_canne.visible = false;
 
@@ -567,10 +607,6 @@ export default class Ville extends Phaser.Scene {
         }
 
 
-        if (this.dialogueActif) {
-            this.ui_dialogue.visible = true;
-        }
-
         if (this.keyZ.isDown && !window.valeurs.invincible && window.valeurs.aCanne) {
             window.valeurs.invincible = true;
             window.valeurs.fatigue -= 1;
@@ -581,34 +617,6 @@ export default class Ville extends Phaser.Scene {
             
         }
 
-
-        // ----- DIALOGUES -----
-        //#TODO: a supprimer pour mettre les images
-
-
-        if (this.dialogueActif) {
-            this.ui_dialogue.visible = true;
-            this.texteDialogue.visible = true;
-
-            this.texteDialogue.setText(this.dialogueCourant[this.stepDialogue]);
-
-            if (this.keyE.isDown) {
-
-                if (this.stepDialogue < this.dialogueCourant.length -1) {
-                    this.stepDialogue ++;
-
-                } else {
-                    this.dialogueActif = false;
-                    this.stepDialogue = 0;
-                }
-
-            } else {
-                this.ui_dialogue.visible = false;
-                this.texteDialogue.visible = false;
-            }
-
-
-        }
 
         if (window.valeurs.aCle) {
             this.ui_cle.visible = true;
