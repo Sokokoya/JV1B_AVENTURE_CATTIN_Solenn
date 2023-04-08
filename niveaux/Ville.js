@@ -150,12 +150,77 @@ export default class Ville extends Phaser.Scene {
 
 
         // --> vers le Parc
+        this.commencerSceneParc = false;
         this.physics.add.collider(this.player, versParcLayer, function() {
-            //#TODO: rajouter un pnj qui l'empeche de sortir tant qu'il a pas parlé a la mamie
-            this.scene.start("Parc", {
-                x: 64,
-                y: 1136
-            });
+
+
+            // Si le joueur essaie d'aller dans le parc sans être allé parler à la grand-mère auparavant
+            if (!this.dialogueActif && !window.valeurs.queteMamie && !window.valeurs.pnjParcParle1) {
+                this.dialogueActif = true;
+                window.valeurs.pnjParcParle1 = true;
+    
+                this.dial_pnjParc.visible = true;
+                this.dial_pnjParc.play('dial_pnjParc_1'); 
+    
+                setTimeout(() => {
+                    this.dialogueActif = false;
+                }, 500);
+    
+            } else if (!this.dialogueActif && window.valeurs.pnjParcParle1 && !window.valeurs.pnjParcParle2 && this.keyE.isDown) {
+                this.dialogueActif = true;
+                window.valeurs.pnjParcParle2 = true;
+
+                this.dial_pnjParc.play('dial_pnjParc_2'); 
+
+                setTimeout(() => {
+                    this.dialogueActif = false;
+                }, 500);
+    
+            } else if (!this.dialogueActif && window.valeurs.pnjParcParle2 && !window.valeurs.pnjParcParle3 && this.keyE.isDown) {
+                this.dialogueActif = true;
+
+                this.dial_pnjParc.visible = false;
+                window.valeurs.pnjParcParle3 = true;
+
+                setTimeout(() => {
+                    this.dialogueActif = false;
+                }, 500);
+
+
+            } else if (!this.dialogueActif && !window.valeurs.queteMamie && window.valeurs.pnjParcParle3) {
+                this.dialogueActif = true;
+                window.valeurs.pnjParcParle4 = true;
+                window.valeurs.pnjParcParle3 = false;
+
+                this.dial_pnjParc.play('dial_pnjParc_3');
+                this.dial_pnjParc.visible = true;
+
+                setTimeout(() => {
+                    this.dialogueActif = false;
+                }, 500);
+
+
+            } else if(!this.dialogueActif && !window.valeurs.queteMamie && window.valeurs.pnjParcParle4 && this.keyE.isDown) {
+                this.dialogueActif = true;
+
+                this.dial_pnjParc.visible = false;
+
+                setTimeout(() => {
+                    this.dialogueActif = false;
+                }, 500);
+
+
+            // Si le joueur est allé parler à la mamie
+            //#TODO: regler le probleme de blocague d'entree ici
+            } else {
+                this.scene.start("Parc", {
+                    x: 64,
+                    y: 1136
+                });
+            }
+            
+            
+
         }, null, this);
 
 
@@ -258,7 +323,7 @@ export default class Ville extends Phaser.Scene {
         this.pnj = this.physics.add.group();
 
         // --> PNJ bloquant l'entrée du parc
-        this.pnjParc = this.pnj.create(1536, 208, 'spr_pnj');
+        this.pnjParc = this.pnj.create(1536, 112, 'spr_pnj');
         this.pnjParc.setPushable(false);
 
         this.dial_pnjParc = this.physics.add.sprite(512, 460, 'dial_pnjParc').setScrollFactor(0);
@@ -567,11 +632,11 @@ export default class Ville extends Phaser.Scene {
         
         // ----- AFFICHAGE DE L'UI -----
 
-        this.ui_cadre = this.physics.add.sprite(512, 32, 'ui_cadre').setScrollFactor(0);
-        this.ui_fatigue = this.physics.add.sprite(64, 32, 'ui_fatigue').setScrollFactor(0);
-        this.ui_croquette = this.physics.add.sprite(128, 32, 'ui_croquette').setScrollFactor(0);
-        this.ui_cle = this.physics.add.sprite(192, 32, 'spr_cle').setScrollFactor(0);
-        this.ui_canne = this.physics.add.sprite(230, 32, 'ui_canne').setScrollFactor(0);
+        //this.ui_cadre = this.physics.add.sprite(512, 32, 'ui_cadre').setScrollFactor(0);
+        this.ui_fatigue = this.physics.add.sprite(96, 32, 'ui_fatigue').setScrollFactor(0);
+        this.ui_croquette = this.physics.add.sprite(64, 80, 'ui_croquette').setScrollFactor(0);
+        this.ui_cle = this.physics.add.sprite(128, 80, 'spr_cle').setScrollFactor(0);
+        this.ui_canne = this.physics.add.sprite(160, 80, 'ui_canne').setScrollFactor(0);
 
         this.ui_cle.visible = false;
         this.ui_canne.visible = false;

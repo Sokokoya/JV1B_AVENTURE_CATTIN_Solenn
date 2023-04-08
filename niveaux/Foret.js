@@ -98,6 +98,36 @@ export default class Foret extends Phaser.Scene {
         versMaisonLayer.setCollisionByProperty({sortie: true});
 
 
+        // ----- AFFICHAGE DE LA GRAND MERE -----
+        this.grandmere = this.physics.add.sprite(1024, 960, 'spr_grand_mere');
+        this.grandmere.visible = false;
+
+        this.dial_grandMere = this.physics.add.sprite(512, 460, 'dial_grandMere').setScrollFactor(0);
+
+        this.anims.create({
+            key: 'dial_grandMere_1',
+            frames: [{ key: 'dial_grandMere', frame: 0 }],
+            frameRate: 20
+        });
+        this.anims.create({
+            key: 'dial_grandMere_2',
+            frames: [{ key: 'dial_grandMere', frame: 1 }],
+            frameRate: 20
+        });
+        this.anims.create({
+            key: 'dial_grandMere_3',
+            frames: [{ key: 'dial_grandMere', frame: 2 }],
+            frameRate: 20
+        });
+        this.anims.create({
+            key: 'dial_grandMere_4',
+            frames: [{ key: 'dial_grandMere', frame: 3 }],
+            frameRate: 20
+        });
+
+        this.dial_grandMere.play('dial_grandMere_1');
+        this.dial_grandMere.visible = false;
+
         
         // ----- AFFICHAGE ET PROPRIETES DU PERSONNAGE -----
 
@@ -109,35 +139,50 @@ export default class Foret extends Phaser.Scene {
 
         // --> vers la Ville
         this.physics.add.collider(this.player, versVilleLayer, function() {
-            console.log("vers ville");
+
+
+
             this.scene.start("Ville", {
                 x: 1344,
                 y: 112
             });
         }, null, this);
         
+
+
         // --> vers la maison de la grand-mère
         this.physics.add.collider(this.player, versMaisonLayer, function() {
-            console.log("vers maison gm");
-            this.scene.start("MaisonGM", {
-                // changer coordonées
-                x: 480,
-                y: 592
-            });
+
+            //#TODO: regler bug de dialogue ici (peut etre enlever le dialogue en ouvrant la porte et en le mettant direct dans la scene maison ?)
+            if (this.keyE.isDown) {
+                if (window.valeurs.pfParle) {
+                    this.interactionGM();
+                }
+            } else {
+                this.scene.start("MaisonGM", {
+                    x: 480,
+                    y: 592
+                });
+            }
+           
+            
         }, null, this);
         
 
 
-        // ----- AFFICHAGE DE LA GRAND MERE -----
-        this.grandmere = this.physics.add.sprite(1024, 960, 'spr_grand_mere');
+        
 
         this.physics.add.overlap(this.player, this.grandmere, function() {
             if (this.keyE.isDown) {
+                this.interactionGM();
                 window.valeurs.queteMamie = true;
                 console.log("quete mamie oui");
                 
             }
         }, null, this);
+
+
+
 
 
         // ----- AFFICHAGE DE L'UI -----
@@ -146,19 +191,12 @@ export default class Foret extends Phaser.Scene {
         this.ui_cadre = this.physics.add.sprite(512, 32, 'ui_cadre').setScrollFactor(0);
         this.ui_fatigue = this.physics.add.sprite(64, 32, 'ui_fatigue').setScrollFactor(0);
         this.ui_croquette = this.physics.add.sprite(128, 32, 'ui_croquette').setScrollFactor(0);
-        this.ui_dialogue = this.physics.add.sprite(512, 460, 'ui_dialogue').setScrollFactor(0);
-        //this.ui_inventaire = this.physics.add.sprite(922, 300, 'ui_inventaire').setScrollFactor(0);
         this.ui_cle = this.physics.add.sprite(192, 32, 'spr_cle').setScrollFactor(0);
         this.ui_canne = this.physics.add.sprite(256, 32, 'ui_canne').setScrollFactor(0);
 
-        this.ui_cle.anims.play('cle_inventaire');
-
-        this.ui_dialogue.visible = false;
         this.ui_cle.visible = false;
         this.ui_canne.visible = false;
 
-        this.texteDialogue = this.add.text(512, 460, "Dialogue");
-        this.texteDialogue.visible = false;
         
 
 
@@ -274,6 +312,86 @@ export default class Foret extends Phaser.Scene {
 
     }
 
+    interactionGM() {
+
+        if (this.keyE.isDown) {
+            this.grandmere.visible = true;
+
+            if (!this.dialogueActif && !window.valeurs.queteMamie && !window.valeurs.gmParle1) {
+                this.dialogueActif = true;
+                window.valeurs.gmParle1 = true;
+    
+                this.dial_grandMere.visible = true;
+                this.dial_grandMere.play('dial_grandMere_1'); 
+    
+                setTimeout(() => {
+                    this.dialogueActif = false;
+                }, 500);
+    
+            } else if (!this.dialogueActif && !window.valeurs.queteMamie && window.valeurs.gmParle1 && !window.valeurs.gmParle2) {
+                this.dialogueActif = true;
+                window.valeurs.gmParle2 = true;
+
+                this.dial_grandMere.play('dial_grandMere_2'); 
+
+                setTimeout(() => {
+                    this.dialogueActif = false;
+                }, 500);
+    
+            } else if (!this.dialogueActif && !window.valeurs.queteMamie && window.valeurs.gmParle2 && !window.valeurs.gmParle3) {
+                this.dialogueActif = true;
+                window.valeurs.gmParle3 = true;
+                window.valeurs.gmParle4 = false;
+
+                this.dial_grandMere.play('dial_grandMere_3'); 
+
+                setTimeout(() => {
+                    this.dialogueActif = false;
+                }, 500);
+
+            } else if (!this.dialogueActif && !window.valeurs.queteMamie && window.valeurs.gmParle3 && !window.valeurs.gmParle4) {
+                this.dialogueActif = true;
+
+                this.dial_grandMere.visible = false;
+                window.valeurs.gmParle4 = true;
+                window.valeurs.gmParle3 = false;
+
+                window.valeurs.queteMamie = true;
+
+                setTimeout(() => {
+                    this.dialogueActif = false;
+                }, 500);
+
+            // --- Deuxieme dialogue (n'apparait que si on a parlé une première fois avec le pnj)
+            } else if (!this.dialogueActif && window.valeurs.queteMamie && window.valeurs.pfParlee && !window.valeurs.gmParle5) {
+                this.dialogueActif = true;
+                window.valeurs.gmParle5 = true;
+
+                this.dial_grandMere.play('dial_grandMere_4');
+                this.dial_grandMere.visible = true;
+
+                setTimeout(() => {
+                    this.dialogueActif = false;
+                }, 500);
+
+
+            } else if(!this.dialogueActif && window.valeurs.queteMamie && window.valeurs.pfParlee && window.valeurs.gmParle5) {
+                this.dialogueActif = true;
+                window.valeurs.gmParle5 = false;
+
+                this.dial_grandMere.visible = false;
+
+                setTimeout(() => {
+                    this.dialogueActif = false;
+                }, 500);
+            } 
+        }
+        
+        
+
+
+
+    }
 
     update() {
        
