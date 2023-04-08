@@ -137,7 +137,6 @@ export default class Ville extends Phaser.Scene {
 
         // --> vers la maison du joueur
         this.physics.add.collider(this.player, versMaisonLayer, function() {
-            console.log("vers maison joueur");
             
             if (window.valeurs.aCle) {
                 this.scene.start("MaisonJoueur", {
@@ -152,7 +151,6 @@ export default class Ville extends Phaser.Scene {
 
         // --> vers le Parc
         this.physics.add.collider(this.player, versParcLayer, function() {
-            console.log("vers parc");
             //#TODO: rajouter un pnj qui l'empeche de sortir tant qu'il a pas parlé a la mamie
             this.scene.start("Parc", {
                 x: 64,
@@ -163,7 +161,6 @@ export default class Ville extends Phaser.Scene {
 
         // --> vers la Forêt
         this.physics.add.collider(this.player, versForetLayer, function() {
-            console.log("vers foret");
             this.scene.start("Foret", {
                 x: 1024,
                 y: 1168
@@ -246,14 +243,9 @@ export default class Ville extends Phaser.Scene {
             if (!window.valeurs.presencePigeonCroquette) {
                 if (Phaser.Input.Keyboard.JustDown(this.keyE)) {
 
-                    console.log("nb croquette", window.valeurs.nbCroquettes);
-
                     this.player.ajoutCroquette();
 
                     this.croquettePigeon.visible = false;
-
-                    console.log("nb croquette", window.valeurs.nbCroquettes);
-
                 }
             }   
             
@@ -269,142 +261,306 @@ export default class Ville extends Phaser.Scene {
         this.pnjParc = this.pnj.create(1536, 208, 'spr_pnj');
         this.pnjParc.setPushable(false);
 
-        //this.dial_pnjParc_1 = this.add.image(512, 460,'dial_pnjParc_1').setAlpha(0);
-        //this.dial_pnjParc_2 = this.add.image(512, 460,'dial_pnjParc_2').setAlpha(0);
-        //this.dial_pnjParc_3 = this.add.image(512, 460,'dial_pnjParc_3').setAlpha(0);
-        //this.dial_pnjParc_4 = this.add.image(512, 460,'dial_pnjParc_4').setAlpha(0);
+        this.dial_pnjParc = this.physics.add.sprite(512, 460, 'dial_pnjParc').setScrollFactor(0);
+
+        this.anims.create({
+            key: 'dial_pnjParc_1',
+            frames: [{ key: 'dial_pnjParc', frame: 0 }],
+            frameRate: 20
+        });
+        this.anims.create({
+            key: 'dial_pnjParc_2',
+            frames: [{ key: 'dial_pnjParc', frame: 1 }],
+            frameRate: 20
+        });
+        this.anims.create({
+            key: 'dial_pnjParc_3',
+            frames: [{ key: 'dial_pnjParc', frame: 2 }],
+            frameRate: 20
+        });
+        this.anims.create({
+            key: 'dial_pnjParc_4',
+            frames: [{ key: 'dial_pnjParc', frame: 3 }],
+            frameRate: 20
+        });
+
+        this.dial_pnjParc.play('dial_pnjParc_1');
+        this.dial_pnjParc.visible = false;
+
 
 
         // --> PNJ se trouvant près des maisons
         this.pnjMaison = this.pnj.create(416, 624, 'spr_pnj');
         this.pnjMaison.setPushable(false);
 
-        this.dial_pnjMaison_1 = this.add.image(512, 460,'dial_pnjMaison_1').setAlpha(0);
-        this.dial_pnjMaison_2 = this.add.image(512, 460,'dial_pnjMaison_2').setAlpha(0);
+        this.dial_pnjMaison = this.physics.add.sprite(512, 460, 'dial_pnjMaison').setScrollFactor(0);
+
+        this.anims.create({
+            key: 'dial_pnjMaison_1',
+            frames: [{ key: 'dial_pnjMaison', frame: 0 }],
+            frameRate: 20
+        });
+        this.anims.create({
+            key: 'dial_pnjMaison_2',
+            frames: [{ key: 'dial_pnjMaison', frame: 1 }],
+            frameRate: 20
+        });
+
+        this.dial_pnjMaison.play('dial_pnjMaison_1');
+        this.dial_pnjMaison.visible = false;
         
 
         // --> PNJ se trouvant près de la rivière
         this.pnjRiviere = this.pnj.create(1408, 1456, 'spr_pnj');
         this.pnjRiviere.setPushable(false);
         
-        this.dial_pnjRiviere_1 = this.add.image(512, 460,'dial_pnjRiviere_1').setAlpha(0);
-        this.dial_pnjRiviere_2 = this.add.image(512, 460,'dial_pnjRiviere_2').setAlpha(0);
-        this.dial_pnjRiviere_3 = this.add.image(512, 460,'dial_pnjRiviere_3').setAlpha(0);
+        this.dial_pnjRiviere = this.physics.add.sprite(512, 460, 'dial_pnjRiviere').setScrollFactor(0);
+
+        this.anims.create({
+            key: 'dial_pnjRiviere_1',
+            frames: [{ key: 'dial_pnjRiviere', frame: 0 }],
+            frameRate: 20
+        });
+        this.anims.create({
+            key: 'dial_pnjRiviere_2',
+            frames: [{ key: 'dial_pnjRiviere', frame: 1 }],
+            frameRate: 20
+        });
+        this.anims.create({
+            key: 'dial_pnjRiviere_3',
+            frames: [{ key: 'dial_pnjRiviere', frame: 2 }],
+            frameRate: 20
+        });
+
+        this.dial_pnjRiviere.play('dial_pnjRiviere_1');
+        this.dial_pnjRiviere.visible = false;
         
 
 
         // --> Dialogues entre le joueur et le PNJ à côté du parc
-        this.physics.add.overlap(this.player, this.pnjParc, function() {
-            //#TODO: rajouter le bouton d'interaction (le e qui s'appuie)
-                if (this.keyE.isDown) {
+        this.physics.add.overlap(this.player, this.pnjParc, () => {
+            if (this.keyE.isDown) {
+        
+                // --- Premier dialogue
+                if (!this.dialogueActif && !window.valeurs.queteMamie && !window.valeurs.pnjParcParle1) {
+                    this.dialogueActif = true;
+                    window.valeurs.pnjParcParle1 = true;
+        
+                    this.dial_pnjParc.visible = true;
+                    this.dial_pnjParc.play('dial_pnjParc_1'); 
+        
+                    setTimeout(() => {
+                        this.dialogueActif = false;
+                    }, 500);
+        
+                } else if (!this.dialogueActif && window.valeurs.pnjParcParle1 && !window.valeurs.pnjParcParle2) {
+                    this.dialogueActif = true;
+                    window.valeurs.pnjParcParle2 = true;
+    
+                    this.dial_pnjParc.play('dial_pnjParc_2'); 
+    
+                    setTimeout(() => {
+                        this.dialogueActif = false;
+                    }, 500);
+        
+                } else if (!this.dialogueActif && window.valeurs.pnjParcParle2 && !window.valeurs.pnjParcParle3) {
+                    this.dialogueActif = true;
 
-                    if (!this.dialogueActif && !window.valeurs.queteMamie && !window.valeurs.pnjParcParle) {
-                        this.dialogueActif = true;
-                        window.valeurs.pnjParcParle = true;
-                        console.log("parle pnj parc 1");
+                    this.dial_pnjParc.visible = false;
+                    window.valeurs.pnjParcParle3 = true;
 
-                        this.dial_pnjParc_1 = this.add.image(512, 460,'dial_pnjParc_1').setScrollFactor(0);
+                    setTimeout(() => {
+                        this.dialogueActif = false;
+                    }, 500);
 
-                        setTimeout(function() {
-                            this.dialogueActif = false;
-                        }, 500);
+                // --- Deuxieme dialogue (n'apparait que si on a parlé une première fois avec le pnj)
+                } else if (!this.dialogueActif && !window.valeurs.queteMamie && window.valeurs.pnjParcParle3) {
+                    this.dialogueActif = true;
+                    window.valeurs.pnjParcParle4 = true;
+                    window.valeurs.pnjParcParle3 = false;
 
-                        if (this.keyE.isDown) {
-                            this.dialogueActif = true;
-                            console.log("parle pnj parc 2");
-                            this.dial_pnjParc_1.destroy();
-                            this.dial_pnjParc_2 = this.add.image(512, 460,'dial_pnjParc_2').setScrollFactor(0);
+                    this.dial_pnjParc.play('dial_pnjParc_3');
+                    this.dial_pnjParc.visible = true;
 
-                            setTimeout(function() {
-                                this.dialogueActif = false;
-                            }, 500);
+                    setTimeout(() => {
+                        this.dialogueActif = false;
+                    }, 500);
 
-                            if (this.keyE.isDown) {
-                                this.dialogueActif = true;
-                                this.dial_pnjParc_2.destroy();
 
-                                setTimeout(function() {
-                                    this.dialogueActif = false;
-                                }, 500);
-                            }
-                        }
+                } else if(!this.dialogueActif && !window.valeurs.queteMamie && window.valeurs.pnjParcParle4) {
+                    this.dialogueActif = true;
 
-                    } else if (!this.dialogueActif && !window.valeurs.queteMamie && window.valeurs.pnjParcParle ) {
-                        console.log("parle pnj parc 3");
-                        this.dialogueActif = true;
-                        this.dial_pnjParc_3 = this.add.image(512, 460,'dial_pnjParc_3').setScrollFactor(0);
+                    this.dial_pnjParc.visible = false;
 
-                        setTimeout(function() {
-                            this.dialogueActif = false;
-                        }, 300);
+                    setTimeout(() => {
+                        this.dialogueActif = false;
+                    }, 500);
 
-                        if (this.keyE.isDown) {
-                            this.dialogueActif = true;
-                            this.dial_pnjParc_3.destroy();
 
-                            setTimeout(function() {
-                                this.dialogueActif = false;
-                            }, 300);
-                        }
+                // --- Dialogue lorsque le joueur est allé parlé à la grand-mère
+                } else if (!this.dialogueActif && window.valeurs.queteMamie && !window.valeurs.pnjParcPassage) {
 
-                    } else if (!this.dialogueActif && window.valeurs.queteMamie) {
-                        this.dialogueActif = true;
-                        this.dial_pnjParc_4 = this.add.image(512, 460,'dial_pnjParc_4').setScrollFactor(0);
+                    this.dialogueActif = true;
+                    window.valeurs.pnjParcPassage = true;
 
-                        setTimeout(function() {
-                            this.dialogueActif = false;
-                        }, 300);
-                            if (this.keyE.isDown) {
-                                this.dial.pnjParc.destroy();
+                    this.dial_pnjParc.play('dial_pnjParc_4');
+                    this.dial_pnjParc.visible = true;
 
-                                setTimeout(function() {
-                                    this.dialogueActif = false;
-                                }, 300);
-                            }
-                    }
+                    setTimeout(() => {
+                        this.dialogueActif = false;
+                    }, 500);
+
+                } else if (!this.dialogueActif && window.valeurs.queteMamie && window.valeurs.pnjParcPassage) {
+                    this.dialogueActif = true;
+                    window.valeurs.pnjParcPassage = false;
+
+                    this.dial_pnjParc.visible = false;
+
+                    setTimeout(() => {
+                        this.dialogueActif = false;
+                    }, 500);
+
                 }
-        }, null, this);
+            }
+        }, null, this)
 
+        
 
         // --> Dialogues entre le joueur et le PNJ à côté des maisons
         this.physics.add.overlap(this.player, this.pnjMaison, function() {
             //#TODO: rajouter le bouton d'interaction (le e qui s'appuie)
-            if (!this.dialogueActif) {
-                if (this.keyE.isDown) {
+            
+            if (this.keyE.isDown) {
 
-                    if (!window.valeurs.pnjMaisonParle) {
-                        window.valeurs.pnjMaisonParle = true;
+                // --- Premier dialogue
+                if (!this.dialogueActif && !window.valeurs.pnjMaisonParle1) {
+                    this.dialogueActif = true;
+                    window.valeurs.pnjMaisonParle1 = true;
+        
+                    this.dial_pnjMaison.visible = true;
+                    this.dial_pnjMaison.play('dial_pnjMaison_1');
+        
+                    setTimeout(() => {
+                        this.dialogueActif = false;
+                    }, 500);
+        
+                }  else if (!this.dialogueActif && window.valeurs.pnjMaisonParle1 && !window.valeurs.pnjMaisonParle2) {
+                    this.dialogueActif = true;
+                    window.valeurs.pnjMaisonParle2 = true;
 
-                        this.dial_pnjMaison_1 = this.add.image(512, 460,'dial_pnjMaison_1').setScrollFactor(0);
-                        console.log("blabla pnj maison 1");
+                    this.dial_pnjMaison.visible = false;
 
-                    } else {
-                        this.dial_pnjMaison_2 = this.add.image(512, 460,'dial_pnjMaison_2').setScrollFactor(0);
-                        console.log("blabla pnj maison 2");
-                    }
+                    setTimeout(() => {
+                        this.dialogueActif = false;
+                    }, 500);
+
+
+                // --- Deuxième dialogue (que si le premier a déjà été lu)
+                } else if(!this.dialogueActif && window.valeurs.pnjMaisonParle2 && !window.valeurs.pnjMaisonParle3) {
+                    this.dialogueActif = true;
+                    window.valeurs.pnjMaisonParle3 = true;
+        
+                    this.dial_pnjMaison.visible = true;
+                    this.dial_pnjMaison.play('dial_pnjMaison_2');
+        
+                    setTimeout(() => {
+                        this.dialogueActif = false;
+                    }, 500);
+
+                } else if (!this.dialogueActif && window.valeurs.pnjMaisonParle3) {
+                    this.dialogueActif = true;
+                    window.valeurs.pnjMaisonParle3 = false;
+
+                    this.dial_pnjMaison.visible = false;
+
+                    setTimeout(() => {
+                        this.dialogueActif = false;
+                    }, 500);
+
                 }
             }
+            
         }, null, this);
+
 
 
         // --> Dialogues entre le joueur et le PNJ à côté de la rivière
         this.physics.add.overlap(this.player, this.pnjRiviere, function() {
             //#TODO: rajouter le bouton d'interaction (le e qui s'appuie)
-            if (!this.dialogueActif) {
-                if (this.keyE.isDown) {
+            
+            if (this.keyE.isDown) {
 
-                    if (!window.valeurs.pnjRiviereParle) {
-                        window.valeurs.pnjRiviereParle = true;
+                // --- Premier dialogue
+                if (!this.dialogueActif && !window.valeurs.pnjRiviereParle1) {
+                    this.dialogueActif = true;
+                    window.valeurs.pnjRiviereParle1 = true;
+        
+                    this.dial_pnjRiviere.visible = true;
+                    this.dial_pnjRiviere.play('dial_pnjRiviere_1');
+        
+                    setTimeout(() => {
+                        this.dialogueActif = false;
+                    }, 500);
+        
+                // Si le joueur n'a pas trouvé sa canne, le PNJ lui indique qu'il en a besoin
+                }  else if (!this.dialogueActif && window.valeurs.pnjRiviereParle1 && !window.valeurs.pnjRiviereParle2 && !window.valeurs.aCanne) {
+                    this.dialogueActif = true;
+                    window.valeurs.pnjRiviereParle2 = true;
 
-                       // this.discussion(this.pnjRiviere.dialogues[0]);
-                        console.log("blabla pnj riviere 1");
+                    this.dial_pnjRiviere.play('dial_pnjRiviere_2');
 
-                    } else {
-                       // this.discussion(this.pnjRiviere.dialogues[1]);
-                        console.log("blabla pnj riviere 2");
-                    }
+                    setTimeout(() => {
+                        this.dialogueActif = false;
+                    }, 500);
+
+                // Sinon, fin de la discussion
+                } else if (!this.dialogueActif && window.valeurs.pnjRiviereParle1 && !window.valeurs.pnjRiviereParle2 && window.valeurs.aCanne && !window.valeurs.pnjRiviereParle3) {
+                    this.dialogueActif = true;
+                    window.valeurs.pnjRiviereParle3 = true;
+
+                    this.dial_pnjRiviere.visible = false;
+
+                    setTimeout(() => {
+                        this.dialogueActif = false;
+                    }, 500);
+
+                } else if (!this.dialogueActif && window.valeurs.pnjRiviereParle2 && !window.valeurs.pnjRiviereParle3) {
+                    this.dialogueActif = true;
+                    window.valeurs.pnjRiviereParle3 = true;
+
+                    this.dial_pnjRiviere.visible = false;
+
+                    setTimeout(() => {
+                        this.dialogueActif = false;
+                    }, 500);
+
+                
+
+                // --- Deuxième dialogue (que si le premier a déjà été lu)
+                } else if(!this.dialogueActif && window.valeurs.pnjRiviereParle3 && !window.valeurs.pnjRiviereParle4) {
+                    this.dialogueActif = true;
+                    window.valeurs.pnjRiviereParle4 = true;
+        
+                    this.dial_pnjRiviere.visible = true;
+                    this.dial_pnjRiviere.play('dial_pnjRiviere_3');
+        
+                    setTimeout(() => {
+                        this.dialogueActif = false;
+                    }, 500);
+
+                } else if (!this.dialogueActif && window.valeurs.pnjRiviereParle4) {
+                    this.dialogueActif = true;
+                    window.valeurs.pnjRiviereParle4 = false;
+
+                    this.dial_pnjRiviere.visible = false;
+
+                    setTimeout(() => {
+                        this.dialogueActif = false;
+                    }, 500);
+
                 }
             }
+            
         }, null, this);
         
 
@@ -414,21 +570,13 @@ export default class Ville extends Phaser.Scene {
         this.ui_cadre = this.physics.add.sprite(512, 32, 'ui_cadre').setScrollFactor(0);
         this.ui_fatigue = this.physics.add.sprite(64, 32, 'ui_fatigue').setScrollFactor(0);
         this.ui_croquette = this.physics.add.sprite(128, 32, 'ui_croquette').setScrollFactor(0);
-        //this.ui_dialogue = this.physics.add.sprite(512, 460, 'ui_dialogue').setScrollFactor(0);
         this.ui_cle = this.physics.add.sprite(192, 32, 'spr_cle').setScrollFactor(0);
         this.ui_canne = this.physics.add.sprite(230, 32, 'ui_canne').setScrollFactor(0);
 
-        this.ui_cle.anims.play('cle_inventaire');
-
-        //this.ui_dialogue.visible = false;
         this.ui_cle.visible = false;
         this.ui_canne.visible = false;
 
-        this.texteDialogue = this.add.text(512, 460, "Dialogue");
-        this.texteDialogue.visible = false;
         
-
-
 
         // ----- ANIMATIONS UI -----
 

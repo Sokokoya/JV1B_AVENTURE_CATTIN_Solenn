@@ -34,28 +34,14 @@ export default class Menu extends Phaser.Scene {
         this.load.spritesheet('spr_attaque', 'assets/spr_attaque.png', {frameWidth: 64, frameHeight: 64});
 
 
-        // Chargement de toutes les images de dialogue
-        this.load.image('dial_grandMere_1', 'assets/dialogues/dial_grandMere_1.png');
-        this.load.image('dial_grandMere_2', 'assets/dialogues/dial_grandMere_2.png');
-        this.load.image('dial_grandMere_3', 'assets/dialogues/dial_grandMere_3.png');
-        this.load.image('dial_grandMere_4', 'assets/dialogues/dial_grandMere_4.png');
-        this.load.image('dial_grandMere_5', 'assets/dialogues/dial_grandMere_5.png');
-        this.load.image('dial_grandMere_6', 'assets/dialogues/dial_grandMere_6.png');
+        // Chargement de tous les sprites de dialogue
+        this.load.spritesheet('dial_pnjParc', 'assets/dialogues/dial_pnjParc.png', {frameWidth: 608, frameHeight: 192});
+        this.load.spritesheet('dial_pnjMaison', 'assets/dialogues/dial_pnjMaison.png', {frameWidth: 608, frameHeight: 192})
+        this.load.spritesheet('dial_pnjRiviere', 'assets/dialogues/dial_pnjRiviere.png', {frameWidth: 608, frameHeight: 192});
 
-        this.load.image('dial_petiteFille_1', 'assets/dialogues/dial_petiteFille_1.png');
-        this.load.image('dial_petiteFille_2', 'assets/dialogues/dial_petiteFille_2.png');
-        this.load.image('dial_petiteFille_3', 'assets/dialogues/dial_petiteFille_3.png');
-        this.load.image('dial_petiteFille_4', 'assets/dialogues/dial_petiteFille_4.png');
+        this.load.spritesheet('dial_grandMere', 'assets/dialogues/dial_grandMere.png', {frameWidth: 608, frameHeight: 192});
 
-        this.load.image('dial_pnjMaison_1', 'assets/dialogues/dial_pnjMaison_1.png');
-        this.load.image('dial_pnjMaison_2', 'assets/dialogues/dial_pnjMaison_2.png');
-        this.load.image('dial_pnjParc_1', 'assets/dialogues/dial_pnjParc_1.png');
-        this.load.image('dial_pnjParc_2', 'assets/dialogues/dial_pnjParc_2.png');
-        this.load.image('dial_pnjParc_3', 'assets/dialogues/dial_pnjParc_3.png');
-        this.load.image('dial_pnjParc_4', 'assets/dialogues/dial_pnjParc_4.png');
-        this.load.image('dial_pnjRiviere_1', 'assets/dialogues/dial_pnjRiviere_1.png');
-        this.load.image('dial_pnjRiviere_2', 'assets/dialogues/dial_pnjRiviere_2.png');
-        this.load.image('dial_pnjRiviere_3', 'assets/dialogues/dial_pnjRiviere_3.png');
+        this.load.spritesheet('dial_petiteFille', 'assets/dialogues/dial_petiteFille.png', {frameWidth: 608, frameHeight: 192});
         
     }
 

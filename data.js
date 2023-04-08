@@ -19,9 +19,20 @@ var valeurs = {
     presencePigeonCroquette: true,
     queteMamie: false,
     pfParlee: false,
-    pnjMaisonParle: false,
-    pnjRiviereParle: false,
-    pnjParcParle: false,
+
+    pnjMaisonParle1: false,
+    pnjMaisonParle2: false,
+
+    pnjRiviereParle1: false,
+    pnjRiviereParle2: false,
+    pnjRiviereParle3: false,
+    pnjRiviereParle4: false,
+
+    pnjParcParle1: false,
+    pnjParcParle2: false,
+    pnjParcParle3: false,
+    pnjParcParle4: false,
+    pnjParcPassage: false,
 
     nbCroquettes: 0,
     fatigue: 7, 
