@@ -20,10 +20,10 @@ export default class Ville extends Phaser.Scene {
     }
 
 
+
     // -----------------------------------------------------------------------------------------
     // ---------------------------------- FONCTION PRELOAD -------------------------------------
     // -----------------------------------------------------------------------------------------
-
     preload() {
 
         // Tileset et map de la scène
@@ -37,15 +37,13 @@ export default class Ville extends Phaser.Scene {
         // Ennemis et amis
         this.load.spritesheet('spr_pigeon_croquette', 'assets/spr_pigeon_croquette.png', {frameWidth: 32, frameHeight: 32});
         this.load.spritesheet('spr_pnj', 'assets/spr_pnj.png', {frameWidth: 64, frameHeight: 96});
-       
-
     }
+
 
 
     // -----------------------------------------------------------------------------------------
     // ----------------------------------- FONCTION CREATE -------------------------------------
     // -----------------------------------------------------------------------------------------
-
     create() {
 
         // ----- AFFICHAGE DE LA SCENE -----
@@ -69,7 +67,6 @@ export default class Ville extends Phaser.Scene {
             gameTileset
         );
 
-        
         const collisionLayer = gameMap.createLayer(
             "collisions",
             gameTileset
@@ -107,6 +104,7 @@ export default class Ville extends Phaser.Scene {
         // Prise en charge des touches du clavier
         this.clavier = this.input.keyboard.createCursorKeys();
 
+        // Ajout de touches personalisées : E pour les interactions, Z pour les attaques
         this.keyE = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.E);
         this.keyZ = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.Z);
 
@@ -129,17 +127,20 @@ export default class Ville extends Phaser.Scene {
         this.physics.add.collider(this.player, houseLayer);
         this.physics.add.collider(this.player, collisionLayer);
 
-        this.attaque = this.physics.add.sprite(window.valeurs.posX, window.valeurs.posY, 'spr_attaque');
+        // Ajout du sprite qui suivra le joueur et jouera l'animation d'attaque
+        this.attaque = this.physics.add.sprite(this.player.x, this.player.y, 'spr_attaque');
+
+        // Ajout de hitbox pour intéragir avec les sorties sans les toucher
         this.hitbox_parc = this.physics.add.sprite(1552, 224, 'spr_hitbox');
         this.hitbox_maison = this.physics.add.sprite(640, 672, 'spr_hitbox');
 
 
         // Bouton E qui va suivre le joueur
-        this.ui_bouton_e = this.physics.add.sprite(this.player.x + 32, this.player.y - 48, 'ui_bouton_e').setDepth(10);
+        this.ui_bouton_e = this.physics.add.sprite(this.player.x + 32, this.player.y - 48, 'ui_bouton_e').setDepth(11);
         this.ui_bouton_e.visible = false;
 
         // Bouton Z qui va suivre le joueur
-        this.ui_bouton_z = this.physics.add.sprite(this.player.x + 32, this.player.y - 48, 'ui_bouton_z').setDepth(11);
+        this.ui_bouton_z = this.physics.add.sprite(this.player.x + 32, this.player.y - 48, 'ui_bouton_z').setDepth(10);
         this.ui_bouton_z.visible = false;
 
 
@@ -155,13 +156,10 @@ export default class Ville extends Phaser.Scene {
                     y: 544
                 });
             }
-            //#TODO: on affiche le message qu'il a perdu ses clés
-            
         }, null, this);
 
 
         // --> vers le Parc
-        this.commencerSceneParc = false;
         this.physics.add.collider(this.player, versParcLayer, function() {
 
             if (window.valeurs.queteMamie) {
@@ -170,13 +168,12 @@ export default class Ville extends Phaser.Scene {
                     y: 1136
                 });
             }
-
-
         }, null, this);
 
 
         // --> vers la Forêt
         this.physics.add.collider(this.player, versForetLayer, function() {
+
             this.scene.start("Foret", {
                 x: 1024,
                 y: 1168
@@ -187,7 +184,7 @@ export default class Ville extends Phaser.Scene {
 
         // ----- AJOUT DES OBJETS ET INTERACTIONS -----
 
-        // Clé à récupérer dans une buisson
+        // --> Clé à récupérer dans une buisson
         this.cle = this.physics.add.sprite(464, 1168, 'spr_cle');
 
         this.anims.create({
@@ -202,14 +199,16 @@ export default class Ville extends Phaser.Scene {
             frameRate: 20
         });
 
+        // Si le joueur n'a toujours pas trouvé la clé, on l'affiche cachée en jeu
         if (!window.valeurs.aCle) {
             this.cle.anims.play('cle_ingame', true);
+
+        // Sinon, on la cache
         } else {
             this.cle.visible = false;
         }
         
-
-        
+        // Interaction avec la clé
         this.physics.add.overlap(this.player, this.cle, function() {
             this.ui_bouton_e.visible = true;
             if (!this.player.aCle) {
@@ -228,7 +227,7 @@ export default class Ville extends Phaser.Scene {
 
         // ----- AJOUT DES ENNEMIS -----
 
-        // Ennemi spécial : pigeon avec sa croquette
+        // --> Ennemi spécial : pigeon avec sa croquette
         this.pigeonCroquette = this.physics.add.sprite(1232, 1360, 'spr_pigeon_croquette');
 
         // On ajoute le sprite de la croquette qu'il va drop, mais on la cache
@@ -250,12 +249,9 @@ export default class Ville extends Phaser.Scene {
 
                     window.valeurs.presencePigeonCroquette = false;
 
-                    //#TODO: animation pigeon qui vole
                     this.pigeonCroquette.visible = false;
-
                     this.croquettePigeon.visible = true;
                 }
-            
             }, null, this);
         } 
         
@@ -275,7 +271,6 @@ export default class Ville extends Phaser.Scene {
                     this.croquettePigeon.visible = false;
                 }
             }   
-            
         }, null, this);
 
 
@@ -288,9 +283,7 @@ export default class Ville extends Phaser.Scene {
         this.pnjParc = this.pnj.create(1536, 112, 'spr_pnj');
         this.pnjParc.setPushable(false);
 
-
-        
-
+        // Ajout de ses dialogues
         this.dial_pnjParc = this.physics.add.sprite(512, 460, 'dial_pnjParc').setScrollFactor(0);
 
         this.anims.create({
@@ -323,6 +316,7 @@ export default class Ville extends Phaser.Scene {
         this.pnjMaison = this.pnj.create(416, 624, 'spr_pnj');
         this.pnjMaison.setPushable(false);
 
+        // Ajout de ses dialogues
         this.dial_pnjMaison = this.physics.add.sprite(512, 460, 'dial_pnjMaison').setScrollFactor(0);
 
         this.anims.create({
@@ -344,6 +338,7 @@ export default class Ville extends Phaser.Scene {
         this.pnjRiviere = this.pnj.create(1408, 1456, 'spr_pnj');
         this.pnjRiviere.setPushable(false);
         
+        // Ajout de ses dialogues
         this.dial_pnjRiviere = this.physics.add.sprite(512, 460, 'dial_pnjRiviere').setScrollFactor(0);
 
         this.anims.create({
@@ -366,7 +361,7 @@ export default class Ville extends Phaser.Scene {
         this.dial_pnjRiviere.visible = false;
 
 
-        // --> Dialogues avec lui-même
+        // --> Monologue du personnage jouable
         this.dial_pp = this.physics.add.sprite(512, 460, 'dial_pp').setScrollFactor(0);
 
         this.anims.create({
@@ -900,16 +895,8 @@ export default class Ville extends Phaser.Scene {
         
         // Tracking de la caméra sur le joueur
         this.cameras.main.startFollow(this.player);
-
-
-
     }
 
-
-    discussion(dialogue) {
-        this.dialogueCourant = dialogue;
-        this.dialogueActif = true;
-    }
 
 
     // -----------------------------------------------------------------------------------------
@@ -917,6 +904,7 @@ export default class Ville extends Phaser.Scene {
     // -----------------------------------------------------------------------------------------
     update() {
 
+        // Boutons E et Z qui suivent la position du joueur
         this.ui_bouton_e.x = this.player.x + 32;
         this.ui_bouton_e.y = this.player.y - 48;
 
@@ -928,9 +916,11 @@ export default class Ville extends Phaser.Scene {
             this.ui_bouton_z.visible = false;
         }
 
+        // Position du joueur
         this.player.updateMouvement();
         
 
+        // Valeurs de croquettes et de fatigue
         if (window.valeurs.nbCroquettes == 1) {
             this.ui_croquette.play('croquette1');
             this.ui_croquette.visible = true;
@@ -982,6 +972,7 @@ export default class Ville extends Phaser.Scene {
         }
 
 
+        // Attaque
         if (this.keyZ.isDown && !window.valeurs.invincible && window.valeurs.aCanne) {
             window.valeurs.invincible = true;
             window.valeurs.fatigue -= 1;
@@ -993,6 +984,7 @@ export default class Ville extends Phaser.Scene {
         }
 
 
+        // Si le joueur à la clé et/ou la canne, on les affiche dans l'UI
         if (window.valeurs.aCle) {
             this.ui_cle.visible = true;
         }

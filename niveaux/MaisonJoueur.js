@@ -23,7 +23,6 @@ export default class MaisonJoueur extends Phaser.Scene {
     // -----------------------------------------------------------------------------------------
     // ---------------------------------- FONCTION PRELOAD -------------------------------------
     // -----------------------------------------------------------------------------------------
-
     preload() {
 
         // Tileset et map de la scène
@@ -44,7 +43,6 @@ export default class MaisonJoueur extends Phaser.Scene {
     // -----------------------------------------------------------------------------------------
     // ----------------------------------- FONCTION CREATE -------------------------------------
     // -----------------------------------------------------------------------------------------
-    
     create() {
 
         // ----- AFFICHAGE DU JEU -----
@@ -99,6 +97,7 @@ export default class MaisonJoueur extends Phaser.Scene {
         collisionsLayer.setCollisionByProperty({estSolide: true});
         sortieLayer.setCollisionByExclusion(-1, true);
 
+        
 
         // ----- AFFICHAGE ET PROPRIETES DU PERSONNAGE -----
 
@@ -163,7 +162,6 @@ export default class MaisonJoueur extends Phaser.Scene {
 
             if (this.keyE.isDown) {
                 if (!this.dialogueActif && !window.valeurs.quetePrincipale && !window.valeurs.ppParle1) {
-                    console.log("dialogue 1");
                     this.dialogueActif = true;
                     window.valeurs.ppParle1 = true;
         
@@ -238,7 +236,6 @@ export default class MaisonJoueur extends Phaser.Scene {
                     window.valeurs.aCroquetteMaison = true;
 
                     this.player.ajoutCroquette();
-                    console.log("nb croquette", window.valeurs.nbCroquettes);
 
                     this.croquette.visible = false;
                 }

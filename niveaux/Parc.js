@@ -127,7 +127,6 @@ export default class Parc extends Phaser.Scene {
         this.physics.add.collider(this.player, collisionLayer);
 
         this.physics.add.collider(this.player, versVilleLayer, function() {
-            console.log("vers ville");
             this.scene.start("Ville", {
                 x: 1536,
                 y: 208
