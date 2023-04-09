@@ -32,6 +32,7 @@ export default class Menu extends Phaser.Scene {
 
 
         this.load.spritesheet('spr_attaque', 'assets/spr_attaque.png', {frameWidth: 64, frameHeight: 64});
+        this.load.spritesheet('spr_hitbox', 'assets/spr_hitbox.png', {frameWidth: 96, frameHeight: 64});
 
 
         // Chargement de tous les sprites de dialogue
@@ -40,8 +41,8 @@ export default class Menu extends Phaser.Scene {
         this.load.spritesheet('dial_pnjRiviere', 'assets/dialogues/dial_pnjRiviere.png', {frameWidth: 608, frameHeight: 192});
 
         this.load.spritesheet('dial_grandMere', 'assets/dialogues/dial_grandMere.png', {frameWidth: 608, frameHeight: 192});
-
         this.load.spritesheet('dial_petiteFille', 'assets/dialogues/dial_petiteFille.png', {frameWidth: 608, frameHeight: 192});
+        this.load.spritesheet('dial_pp', 'assets/dialogues/dial_pp.png', {frameWidth: 608, frameHeight: 192});
         
     }
 

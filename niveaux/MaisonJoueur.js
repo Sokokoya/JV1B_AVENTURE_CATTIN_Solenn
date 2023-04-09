@@ -106,6 +106,8 @@ export default class MaisonJoueur extends Phaser.Scene {
         // Ajout des collisions entre le personnage et les objets / murs / sortie
         this.physics.add.collider(this.player, murLayer);
         this.physics.add.collider(this.player, collisionsLayer);
+
+        //#TODO: ajout dialogue perdu chien avant sortie
         this.physics.add.collider(this.player, sortieLayer, function() {
             this.scene.start("Ville", {
                 x: 640,
@@ -162,19 +164,13 @@ export default class MaisonJoueur extends Phaser.Scene {
         this.ui_cadre = this.physics.add.sprite(512, 32, 'ui_cadre').setScrollFactor(0);
         this.ui_fatigue = this.physics.add.sprite(64, 32, 'ui_fatigue').setScrollFactor(0);
         this.ui_croquette = this.physics.add.sprite(128, 32, 'ui_croquette').setScrollFactor(0);
-        this.ui_dialogue = this.physics.add.sprite(512, 460, 'ui_dialogue').setScrollFactor(0);
-        //this.ui_inventaire = this.physics.add.sprite(922, 300, 'ui_inventaire').setScrollFactor(0);
         this.ui_cle = this.physics.add.sprite(192, 32, 'spr_cle').setScrollFactor(0);
         this.ui_canne = this.physics.add.sprite(256, 32, 'ui_canne').setScrollFactor(0);
 
-        this.ui_cle.anims.play('cle_inventaire');
 
-        this.ui_dialogue.visible = false;
         this.ui_cle.visible = false;
         this.ui_canne.visible = false;
 
-        this.texteDialogue = this.add.text(512, 460, "Dialogue");
-        this.texteDialogue.visible = false;
         
 
 
@@ -338,10 +334,6 @@ export default class MaisonJoueur extends Phaser.Scene {
             //#TODO: afficher ecran de mort + recommencer
         }
 
-
-        if (this.dialogueActif) {
-            this.ui_dialogue.visible = true;
-        }
 
         if (this.keyZ.isDown && !window.valeurs.invincible && window.valeurs.aCanne) {
             window.valeurs.invincible = true;

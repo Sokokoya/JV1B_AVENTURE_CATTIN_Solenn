@@ -95,10 +95,16 @@ export default class Parc extends Phaser.Scene {
         versVilleLayer.setCollisionByExclusion(-1, true);
 
         
+
+        
         if (!window.valeurs.pfParlee) {
 
             this.barriere = this.physics.add.sprite(368, 1072, 'spr_barriere');
             this.barriere.body.setImmovable(true);
+
+            // Ajout d'une hitbox devant l'entrée fermée du parc
+            this.hitbox = this.physics.add.sprite(368, 1120, 'spr_hitbox');
+            this.hitbox.body.setImmovable(true);
         }
 
         
@@ -128,6 +134,8 @@ export default class Parc extends Phaser.Scene {
             
         }, null, this);
 
+        
+
 
 
         // ----- AFFICHAGE DES ENNEMIS -----
@@ -136,18 +144,106 @@ export default class Parc extends Phaser.Scene {
         this.petiteFille = this.physics.add.sprite(272, 992, 'spr_petite_fille');
         this.petiteFille.body.setImmovable(true);
 
-        this.dial_petiteFille_1 = this.add.image(512, 460,'dial_petiteFille_1').setAlpha(0);
-        this.dial_petiteFille_2 = this.add.image(512, 460,'dial_petiteFille_2').setAlpha(0);
-        this.dial_petiteFille_3 = this.add.image(512, 460,'dial_petiteFille_3').setAlpha(0);
-        this.dial_petiteFille_4 = this.add.image(512, 460,'dial_petiteFille_4').setAlpha(0);
+        // Ajout des dialogues
+        this.dial_petiteFille = this.physics.add.sprite(512, 460, 'dial_petiteFille').setScrollFactor(0);
+        
+
+        this.anims.create({
+            key: 'dial_petiteFille_1',
+            frames: [{ key: 'dial_petiteFille', frame: 0 }],
+            frameRate: 20
+        });
+        this.anims.create({
+            key: 'dial_petiteFille_2',
+            frames: [{ key: 'dial_petiteFille', frame: 1 }],
+            frameRate: 20
+        });
+        this.anims.create({
+            key: 'dial_petiteFille_3',
+            frames: [{ key: 'dial_petiteFille', frame: 2 }],
+            frameRate: 20
+        });
+
+        this.dial_petiteFille.play('dial_petiteFille_1');
+        this.dial_petiteFille.visible = false;
 
 
+        // --> Conversation avec la petite fille lorsqu'on essaie de récuperer le chien
         this.physics.add.overlap(this.player, this.petiteFille, function() {
             if (this.keyE.isDown) {
-                console.log("petite fille parler");
-                window.valeurs.pfParlee = true;
+
+                if (!this.dialogueActif &&  !window.valeurs.pfParle4) {
+                    this.dialogueActif = true;
+                    window.valeurs.pfParle4 = true;
+
+                    window.valeurs.pfParlee = true;
+        
+                    this.dial_petiteFille.visible = true;
+                    this.dial_petiteFille.play('dial_petiteFille_3'); 
+        
+                    setTimeout(() => {
+                        this.dialogueActif = false;
+                    }, 500);
+        
+                } else if (!this.dialogueActif && window.valeurs.pfParle4) {
+                    this.dialogueActif = true;
+                    window.valeurs.pfParle4 = false;
+    
+                    this.dial_petiteFille.visible = false;
+                    this.petiteFille.visible = false;
+    
+                    setTimeout(() => {
+                        this.dialogueActif = false;
+                    }, 500);
+        
+                } 
             }
         }, null, this);
+
+
+        // --> Conversation avec la petite fille lorsque le joueur essaie de rentrer dans le parc
+        this.physics.add.overlap(this.player, this.hitbox, function() {
+            if (this.keyE.isDown && !window.valeurs.pfParlee) {
+
+                if (!this.dialogueActif &&  !window.valeurs.pfParle1) {
+                    this.dialogueActif = true;
+                    window.valeurs.pfParle1 = true;
+        
+                    this.dial_petiteFille.visible = true;
+                    this.dial_petiteFille.play('dial_petiteFille_1'); 
+        
+                    setTimeout(() => {
+                        this.dialogueActif = false;
+                    }, 500);
+        
+                } else if (!this.dialogueActif && window.valeurs.pfParle1 && !window.valeurs.pfParle2) {
+                    this.dialogueActif = true;
+                    window.valeurs.pfParle2 = true;
+    
+                    this.dial_petiteFille.play('dial_petiteFille_2'); 
+    
+                    setTimeout(() => {
+                        this.dialogueActif = false;
+                    }, 500);
+        
+                } else if (!this.dialogueActif && window.valeurs.pfParle2 && !window.valeurs.pfParle3) {
+                    this.dialogueActif = true;
+
+                    this.dial_petiteFille.visible = false;
+                    window.valeurs.pfParle3 = true;
+
+                    setTimeout(() => {
+                        this.dialogueActif = false;
+                    }, 500);
+
+                }
+
+            }
+        }, null, this);
+
+        if (window.valeurs.pfParlee) {
+            this.petiteFille.destroy();
+        }
 
 
         // --> Les pigeons : les ennemis
@@ -196,19 +292,13 @@ export default class Parc extends Phaser.Scene {
         this.ui_cadre = this.physics.add.sprite(512, 32, 'ui_cadre').setScrollFactor(0);
         this.ui_fatigue = this.physics.add.sprite(64, 32, 'ui_fatigue').setScrollFactor(0);
         this.ui_croquette = this.physics.add.sprite(128, 32, 'ui_croquette').setScrollFactor(0);
-        this.ui_dialogue = this.physics.add.sprite(512, 460, 'ui_dialogue').setScrollFactor(0);
         //this.ui_inventaire = this.physics.add.sprite(922, 300, 'ui_inventaire').setScrollFactor(0);
         this.ui_cle = this.physics.add.sprite(192, 32, 'spr_cle').setScrollFactor(0);
         this.ui_canne = this.physics.add.sprite(256, 32, 'ui_canne').setScrollFactor(0);
 
-        this.ui_cle.anims.play('cle_inventaire');
-
-        this.ui_dialogue.visible = false;
         this.ui_cle.visible = false;
         this.ui_canne.visible = false;
 
-        this.texteDialogue = this.add.text(512, 460, "Dialogue");
-        this.texteDialogue.visible = false;
         
 
 
@@ -372,9 +462,6 @@ export default class Parc extends Phaser.Scene {
         }
 
 
-        if (this.dialogueActif) {
-            this.ui_dialogue.visible = true;
-        }
 
         if (this.keyZ.isDown && !window.valeurs.invincible && window.valeurs.aCanne) {
             window.valeurs.invincible = true;

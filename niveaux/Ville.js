@@ -130,6 +130,8 @@ export default class Ville extends Phaser.Scene {
         this.physics.add.collider(this.player, collisionLayer);
 
         this.attaque = this.physics.add.sprite(window.valeurs.posX, window.valeurs.posY, 'spr_attaque');
+        this.hitbox_parc = this.physics.add.sprite(48, 224, 'spr_hitbox');
+        this.hitbox_maison = this.physics.add.sprite(640, 672, 'spr_hitbox');
 
 
 
@@ -153,73 +155,13 @@ export default class Ville extends Phaser.Scene {
         this.commencerSceneParc = false;
         this.physics.add.collider(this.player, versParcLayer, function() {
 
-
-            // Si le joueur essaie d'aller dans le parc sans être allé parler à la grand-mère auparavant
-            if (!this.dialogueActif && !window.valeurs.queteMamie && !window.valeurs.pnjParcParle1) {
-                this.dialogueActif = true;
-                window.valeurs.pnjParcParle1 = true;
-    
-                this.dial_pnjParc.visible = true;
-                this.dial_pnjParc.play('dial_pnjParc_1'); 
-    
-                setTimeout(() => {
-                    this.dialogueActif = false;
-                }, 500);
-    
-            } else if (!this.dialogueActif && window.valeurs.pnjParcParle1 && !window.valeurs.pnjParcParle2 && this.keyE.isDown) {
-                this.dialogueActif = true;
-                window.valeurs.pnjParcParle2 = true;
-
-                this.dial_pnjParc.play('dial_pnjParc_2'); 
-
-                setTimeout(() => {
-                    this.dialogueActif = false;
-                }, 500);
-    
-            } else if (!this.dialogueActif && window.valeurs.pnjParcParle2 && !window.valeurs.pnjParcParle3 && this.keyE.isDown) {
-                this.dialogueActif = true;
-
-                this.dial_pnjParc.visible = false;
-                window.valeurs.pnjParcParle3 = true;
-
-                setTimeout(() => {
-                    this.dialogueActif = false;
-                }, 500);
-
-
-            } else if (!this.dialogueActif && !window.valeurs.queteMamie && window.valeurs.pnjParcParle3) {
-                this.dialogueActif = true;
-                window.valeurs.pnjParcParle4 = true;
-                window.valeurs.pnjParcParle3 = false;
-
-                this.dial_pnjParc.play('dial_pnjParc_3');
-                this.dial_pnjParc.visible = true;
-
-                setTimeout(() => {
-                    this.dialogueActif = false;
-                }, 500);
-
-
-            } else if(!this.dialogueActif && !window.valeurs.queteMamie && window.valeurs.pnjParcParle4 && this.keyE.isDown) {
-                this.dialogueActif = true;
-
-                this.dial_pnjParc.visible = false;
-
-                setTimeout(() => {
-                    this.dialogueActif = false;
-                }, 500);
-
-
-            // Si le joueur est allé parler à la mamie
-            //#TODO: regler le probleme de blocague d'entree ici
-            } else {
+            if (window.valeurs.queteMamie) {
                 this.scene.start("Parc", {
                     x: 64,
                     y: 1136
                 });
             }
-            
-            
+
 
         }, null, this);
 
@@ -514,6 +456,7 @@ export default class Ville extends Phaser.Scene {
                     window.valeurs.pnjMaisonParle2 = true;
 
                     this.dial_pnjMaison.visible = false;
+                    this.ui_croquette.visible = true;
 
                     setTimeout(() => {
                         this.dialogueActif = false;
@@ -627,12 +570,142 @@ export default class Ville extends Phaser.Scene {
             }
             
         }, null, this);
+
+
+        // --> Dialogues avec le PNJ à côté de l'entrée du parc si il overlap la hitbox devant son entrée
+        this.physics.add.overlap(this.player, this.hitbox_parc, function() {
+            if (this.keyE.isDown) {
+        
+                // --- Premier dialogue
+                if (!this.dialogueActif && !window.valeurs.queteMamie && !window.valeurs.pnjParcParle1) {
+                    this.dialogueActif = true;
+                    window.valeurs.pnjParcParle1 = true;
+        
+                    this.dial_pnjParc.visible = true;
+                    this.dial_pnjParc.play('dial_pnjParc_1'); 
+        
+                    setTimeout(() => {
+                        this.dialogueActif = false;
+                    }, 500);
+        
+                } else if (!this.dialogueActif && window.valeurs.pnjParcParle1 && !window.valeurs.pnjParcParle2) {
+                    this.dialogueActif = true;
+                    window.valeurs.pnjParcParle2 = true;
+    
+                    this.dial_pnjParc.play('dial_pnjParc_2'); 
+    
+                    setTimeout(() => {
+                        this.dialogueActif = false;
+                    }, 500);
+        
+                } else if (!this.dialogueActif && window.valeurs.pnjParcParle2 && !window.valeurs.pnjParcParle3) {
+                    this.dialogueActif = true;
+
+                    this.dial_pnjParc.visible = false;
+                    window.valeurs.pnjParcParle3 = true;
+
+                    setTimeout(() => {
+                        this.dialogueActif = false;
+                    }, 500);
+
+                // --- Deuxieme dialogue (n'apparait que si on a parlé une première fois avec le pnj)
+                } else if (!this.dialogueActif && !window.valeurs.queteMamie && window.valeurs.pnjParcParle3) {
+                    this.dialogueActif = true;
+                    window.valeurs.pnjParcParle4 = true;
+                    window.valeurs.pnjParcParle3 = false;
+
+                    this.dial_pnjParc.play('dial_pnjParc_3');
+                    this.dial_pnjParc.visible = true;
+
+                    setTimeout(() => {
+                        this.dialogueActif = false;
+                    }, 500);
+
+
+                } else if(!this.dialogueActif && !window.valeurs.queteMamie && window.valeurs.pnjParcParle4) {
+                    this.dialogueActif = true;
+
+                    this.dial_pnjParc.visible = false;
+
+                    setTimeout(() => {
+                        this.dialogueActif = false;
+                    }, 500);
+
+
+                // --- Dialogue lorsque le joueur est allé parlé à la grand-mère
+                } else if (!this.dialogueActif && window.valeurs.queteMamie && !window.valeurs.pnjParcPassage) {
+
+                    this.dialogueActif = true;
+                    window.valeurs.pnjParcPassage = true;
+
+                    this.dial_pnjParc.play('dial_pnjParc_4');
+                    this.dial_pnjParc.visible = true;
+
+                    setTimeout(() => {
+                        this.dialogueActif = false;
+                    }, 500);
+
+                } else if (!this.dialogueActif && window.valeurs.queteMamie && window.valeurs.pnjParcPassage) {
+                    this.dialogueActif = true;
+                    window.valeurs.pnjParcPassage = false;
+
+                    this.dial_pnjParc.visible = false;
+
+                    setTimeout(() => {
+                        this.dialogueActif = false;
+                    }, 500);
+
+                }
+            }
+        }, null, this);
+
+        
+        this.dial_pp = this.physics.add.sprite(512, 460, 'dial_pp').setScrollFactor(0);
+
+        this.anims.create({
+            key: 'dial_pp_1',
+            frames: [{ key: 'dial_pp', frame: 0 }],
+            frameRate: 20
+        });
+
+        this.dial_pp.play('dial_pp_1');
+        this.dial_pp.visible = false;
+
+        // --> Dialogue avec lui-même s'il overlap la hitbox à côté de sa maison et qu'il n'a pas les clés
+        this.physics.add.overlap(this.player, this.hitbox_maison, function() {
+
+            if (this.keyE.isDown) {
+
+                if (!this.dialogueActif && !window.valeurs.aCle && !window.valeurs.ppParle1) {
+                    this.dialogueActif = true;
+                    window.valeurs.ppParle1 = true;
+
+                    this.dial_pp.play('dial_pp_1');
+                    this.dial_pp.visible = true;
+
+                    setTimeout(() => {
+                        this.dialogueActif = false;
+                    }, 500);
+
+                } else if (!this.dialogueActif && !window.valeurs.aCle && window.valeurs.ppParle1) {
+                    this.dialogueActif = true;
+                    window.valeurs.ppParle1 = false;
+
+                    this.dial_pp.visible = false;
+
+                    setTimeout(() => {
+                        this.dialogueActif = false;
+                    }, 500);
+                }
+            }
+
+        }, null, this);
         
 
         
         // ----- AFFICHAGE DE L'UI -----
 
-        //this.ui_cadre = this.physics.add.sprite(512, 32, 'ui_cadre').setScrollFactor(0);
+        // this.ui_cadre = this.physics.add.sprite(512, 32, 'ui_cadre').setScrollFactor(0);
         this.ui_fatigue = this.physics.add.sprite(96, 32, 'ui_fatigue').setScrollFactor(0);
         this.ui_croquette = this.physics.add.sprite(64, 80, 'ui_croquette').setScrollFactor(0);
         this.ui_cle = this.physics.add.sprite(128, 80, 'spr_cle').setScrollFactor(0);
@@ -640,6 +713,7 @@ export default class Ville extends Phaser.Scene {
 
         this.ui_cle.visible = false;
         this.ui_canne.visible = false;
+        this.ui_croquette.visible = false;
 
         
 
@@ -772,6 +846,7 @@ export default class Ville extends Phaser.Scene {
 
         if (window.valeurs.nbCroquettes == 1) {
             this.ui_croquette.play('croquette1');
+            this.ui_croquette.visible = true;
         }
         if (window.valeurs.nbCroquettes == 2) {
             this.ui_croquette.play('croquette2');
