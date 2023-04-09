@@ -130,8 +130,17 @@ export default class Ville extends Phaser.Scene {
         this.physics.add.collider(this.player, collisionLayer);
 
         this.attaque = this.physics.add.sprite(window.valeurs.posX, window.valeurs.posY, 'spr_attaque');
-        this.hitbox_parc = this.physics.add.sprite(48, 224, 'spr_hitbox');
+        this.hitbox_parc = this.physics.add.sprite(1552, 224, 'spr_hitbox');
         this.hitbox_maison = this.physics.add.sprite(640, 672, 'spr_hitbox');
+
+
+        // Bouton E qui va suivre le joueur
+        this.ui_bouton_e = this.physics.add.sprite(this.player.x + 32, this.player.y - 48, 'ui_bouton_e').setDepth(10);
+        this.ui_bouton_e.visible = false;
+
+        // Bouton Z qui va suivre le joueur
+        this.ui_bouton_z = this.physics.add.sprite(this.player.x + 32, this.player.y - 48, 'ui_bouton_z').setDepth(11);
+        this.ui_bouton_z.visible = false;
 
 
 
@@ -202,12 +211,16 @@ export default class Ville extends Phaser.Scene {
 
         
         this.physics.add.overlap(this.player, this.cle, function() {
+            this.ui_bouton_e.visible = true;
             if (!this.player.aCle) {
+                
+
                 if (Phaser.Input.Keyboard.JustDown(this.keyE)) {
                     window.valeurs.aCle = true;
                     this.cle.visible = false;
                 }
             }
+
             
         }, null, this);
 
@@ -227,6 +240,10 @@ export default class Ville extends Phaser.Scene {
             
             // Si on l'attaque, on detruit le sprite du pigeon, puis on rend visible celui de la croquette
             this.physics.add.overlap(this.player, this.pigeonCroquette, function() {
+
+                if (window.valeurs.aCanne) {
+                    this.ui_bouton_z.visible = true;
+                }
 
                 // On n'interagit avec le pigeon seulement si on a déjà la canne
                 if (Phaser.Input.Keyboard.JustDown(this.keyZ) && window.valeurs.aCanne) {
@@ -248,6 +265,9 @@ export default class Ville extends Phaser.Scene {
 
             // On ne peut interagir avec elle seulement si elle est visible
             if (!window.valeurs.presencePigeonCroquette) {
+
+                this.ui_bouton_e.visible = true;
+
                 if (Phaser.Input.Keyboard.JustDown(this.keyE)) {
 
                     this.player.ajoutCroquette();
@@ -267,6 +287,9 @@ export default class Ville extends Phaser.Scene {
         // --> PNJ bloquant l'entrée du parc
         this.pnjParc = this.pnj.create(1536, 112, 'spr_pnj');
         this.pnjParc.setPushable(false);
+
+
+        
 
         this.dial_pnjParc = this.physics.add.sprite(512, 460, 'dial_pnjParc').setScrollFactor(0);
 
@@ -341,17 +364,38 @@ export default class Ville extends Phaser.Scene {
 
         this.dial_pnjRiviere.play('dial_pnjRiviere_1');
         this.dial_pnjRiviere.visible = false;
-        
 
+
+        // --> Dialogues avec lui-même
+        this.dial_pp = this.physics.add.sprite(512, 460, 'dial_pp').setScrollFactor(0);
+
+        this.anims.create({
+            key: 'dial_pp_ville',
+            frames: [{ key: 'dial_pp', frame: 0 }],
+            frameRate: 20
+        });
+
+        this.dial_pp.play('dial_pp_ville');
+        this.dial_pp.visible = false;
+
+
+        // Bouton E qui va s'afficher lors des dialogues
+        this.dial_bouton_e = this.physics.add.sprite(776, 516, 'ui_bouton_e').setScrollFactor(0);
+        this.dial_bouton_e.visible = false;
+        
 
         // --> Dialogues entre le joueur et le PNJ à côté du parc
         this.physics.add.overlap(this.player, this.pnjParc, () => {
+            this.ui_bouton_e.visible = true;
+
             if (this.keyE.isDown) {
         
                 // --- Premier dialogue
                 if (!this.dialogueActif && !window.valeurs.queteMamie && !window.valeurs.pnjParcParle1) {
                     this.dialogueActif = true;
                     window.valeurs.pnjParcParle1 = true;
+
+                    this.dial_bouton_e.visible = true;
         
                     this.dial_pnjParc.visible = true;
                     this.dial_pnjParc.play('dial_pnjParc_1'); 
@@ -376,6 +420,9 @@ export default class Ville extends Phaser.Scene {
                     this.dial_pnjParc.visible = false;
                     window.valeurs.pnjParcParle3 = true;
 
+                    this.dial_bouton_e.visible = false;
+                    this.ui_bouton_e.visible = false;
+
                     setTimeout(() => {
                         this.dialogueActif = false;
                     }, 500);
@@ -385,6 +432,8 @@ export default class Ville extends Phaser.Scene {
                     this.dialogueActif = true;
                     window.valeurs.pnjParcParle4 = true;
                     window.valeurs.pnjParcParle3 = false;
+
+                    this.dial_bouton_e.visible = true;
 
                     this.dial_pnjParc.play('dial_pnjParc_3');
                     this.dial_pnjParc.visible = true;
@@ -398,6 +447,8 @@ export default class Ville extends Phaser.Scene {
                     this.dialogueActif = true;
 
                     this.dial_pnjParc.visible = false;
+                    this.dial_bouton_e.visible = false;
+                    this.ui_bouton_e.visible = false;
 
                     setTimeout(() => {
                         this.dialogueActif = false;
@@ -409,6 +460,7 @@ export default class Ville extends Phaser.Scene {
 
                     this.dialogueActif = true;
                     window.valeurs.pnjParcPassage = true;
+                    this.dial_bouton_e.visible = true;
 
                     this.dial_pnjParc.play('dial_pnjParc_4');
                     this.dial_pnjParc.visible = true;
@@ -422,6 +474,8 @@ export default class Ville extends Phaser.Scene {
                     window.valeurs.pnjParcPassage = false;
 
                     this.dial_pnjParc.visible = false;
+                    this.dial_bouton_e.visible = false;
+                    this.ui_bouton_e.visible = false;
 
                     setTimeout(() => {
                         this.dialogueActif = false;
@@ -435,7 +489,7 @@ export default class Ville extends Phaser.Scene {
 
         // --> Dialogues entre le joueur et le PNJ à côté des maisons
         this.physics.add.overlap(this.player, this.pnjMaison, function() {
-            //#TODO: rajouter le bouton d'interaction (le e qui s'appuie)
+            this.ui_bouton_e.visible = true;
             
             if (this.keyE.isDown) {
 
@@ -445,6 +499,7 @@ export default class Ville extends Phaser.Scene {
                     window.valeurs.pnjMaisonParle1 = true;
         
                     this.dial_pnjMaison.visible = true;
+                    this.dial_bouton_e.visible = true;
                     this.dial_pnjMaison.play('dial_pnjMaison_1');
         
                     setTimeout(() => {
@@ -456,7 +511,9 @@ export default class Ville extends Phaser.Scene {
                     window.valeurs.pnjMaisonParle2 = true;
 
                     this.dial_pnjMaison.visible = false;
+                    this.dial_bouton_e.visible = false;
                     this.ui_croquette.visible = true;
+                    this.ui_bouton_e.visible = false;
 
                     setTimeout(() => {
                         this.dialogueActif = false;
@@ -469,6 +526,7 @@ export default class Ville extends Phaser.Scene {
                     window.valeurs.pnjMaisonParle3 = true;
         
                     this.dial_pnjMaison.visible = true;
+                    this.dial_bouton_e.visible = true;
                     this.dial_pnjMaison.play('dial_pnjMaison_2');
         
                     setTimeout(() => {
@@ -480,6 +538,8 @@ export default class Ville extends Phaser.Scene {
                     window.valeurs.pnjMaisonParle3 = false;
 
                     this.dial_pnjMaison.visible = false;
+                    this.dial_bouton_e.visible = false;
+                    this.ui_bouton_e.visible = false;
 
                     setTimeout(() => {
                         this.dialogueActif = false;
@@ -494,7 +554,7 @@ export default class Ville extends Phaser.Scene {
 
         // --> Dialogues entre le joueur et le PNJ à côté de la rivière
         this.physics.add.overlap(this.player, this.pnjRiviere, function() {
-            //#TODO: rajouter le bouton d'interaction (le e qui s'appuie)
+            this.ui_bouton_e.visible = true;
             
             if (this.keyE.isDown) {
 
@@ -504,6 +564,7 @@ export default class Ville extends Phaser.Scene {
                     window.valeurs.pnjRiviereParle1 = true;
         
                     this.dial_pnjRiviere.visible = true;
+                    this.dial_bouton_e.visible = true;
                     this.dial_pnjRiviere.play('dial_pnjRiviere_1');
         
                     setTimeout(() => {
@@ -527,6 +588,8 @@ export default class Ville extends Phaser.Scene {
                     window.valeurs.pnjRiviereParle3 = true;
 
                     this.dial_pnjRiviere.visible = false;
+                    this.dial_bouton_e.visible = false;
+                    this.ui_bouton_e.visible = false;
 
                     setTimeout(() => {
                         this.dialogueActif = false;
@@ -537,6 +600,8 @@ export default class Ville extends Phaser.Scene {
                     window.valeurs.pnjRiviereParle3 = true;
 
                     this.dial_pnjRiviere.visible = false;
+                    this.dial_bouton_e.visible = false;
+                    this.ui_bouton_e.visible = false;
 
                     setTimeout(() => {
                         this.dialogueActif = false;
@@ -550,6 +615,7 @@ export default class Ville extends Phaser.Scene {
                     window.valeurs.pnjRiviereParle4 = true;
         
                     this.dial_pnjRiviere.visible = true;
+                    this.dial_bouton_e.visible = true;
                     this.dial_pnjRiviere.play('dial_pnjRiviere_3');
         
                     setTimeout(() => {
@@ -561,6 +627,8 @@ export default class Ville extends Phaser.Scene {
                     window.valeurs.pnjRiviereParle4 = false;
 
                     this.dial_pnjRiviere.visible = false;
+                    this.dial_bouton_e.visible = false;
+                    this.ui_bouton_e.visible = false;
 
                     setTimeout(() => {
                         this.dialogueActif = false;
@@ -574,14 +642,19 @@ export default class Ville extends Phaser.Scene {
 
         // --> Dialogues avec le PNJ à côté de l'entrée du parc si il overlap la hitbox devant son entrée
         this.physics.add.overlap(this.player, this.hitbox_parc, function() {
+            if (!window.valeurs.pfParlee) {
+                this.ui_bouton_e.visible = true;
+            }
+
             if (this.keyE.isDown) {
-        
+                
                 // --- Premier dialogue
                 if (!this.dialogueActif && !window.valeurs.queteMamie && !window.valeurs.pnjParcParle1) {
                     this.dialogueActif = true;
                     window.valeurs.pnjParcParle1 = true;
         
                     this.dial_pnjParc.visible = true;
+                    this.dial_bouton_e.visible = true;
                     this.dial_pnjParc.play('dial_pnjParc_1'); 
         
                     setTimeout(() => {
@@ -603,6 +676,8 @@ export default class Ville extends Phaser.Scene {
 
                     this.dial_pnjParc.visible = false;
                     window.valeurs.pnjParcParle3 = true;
+                    this.dial_bouton_e.visible = false;
+                    this.ui_bouton_e.visible = false;
 
                     setTimeout(() => {
                         this.dialogueActif = false;
@@ -613,6 +688,7 @@ export default class Ville extends Phaser.Scene {
                     this.dialogueActif = true;
                     window.valeurs.pnjParcParle4 = true;
                     window.valeurs.pnjParcParle3 = false;
+                    this.dial_bouton_e.visible = true;
 
                     this.dial_pnjParc.play('dial_pnjParc_3');
                     this.dial_pnjParc.visible = true;
@@ -626,6 +702,8 @@ export default class Ville extends Phaser.Scene {
                     this.dialogueActif = true;
 
                     this.dial_pnjParc.visible = false;
+                    this.dial_bouton_e.visible = false;
+                    this.ui_bouton_e.visible = false;
 
                     setTimeout(() => {
                         this.dialogueActif = false;
@@ -637,6 +715,7 @@ export default class Ville extends Phaser.Scene {
 
                     this.dialogueActif = true;
                     window.valeurs.pnjParcPassage = true;
+                    this.dial_bouton_e.visible = true;
 
                     this.dial_pnjParc.play('dial_pnjParc_4');
                     this.dial_pnjParc.visible = true;
@@ -650,9 +729,11 @@ export default class Ville extends Phaser.Scene {
                     window.valeurs.pnjParcPassage = false;
 
                     this.dial_pnjParc.visible = false;
+                    this.dial_bouton_e.visible = false;
 
                     setTimeout(() => {
                         this.dialogueActif = false;
+                        this.ui_bouton_e.visible = false;
                     }, 500);
 
                 }
@@ -660,27 +741,21 @@ export default class Ville extends Phaser.Scene {
         }, null, this);
 
         
-        this.dial_pp = this.physics.add.sprite(512, 460, 'dial_pp').setScrollFactor(0);
-
-        this.anims.create({
-            key: 'dial_pp_1',
-            frames: [{ key: 'dial_pp', frame: 0 }],
-            frameRate: 20
-        });
-
-        this.dial_pp.play('dial_pp_1');
-        this.dial_pp.visible = false;
 
         // --> Dialogue avec lui-même s'il overlap la hitbox à côté de sa maison et qu'il n'a pas les clés
         this.physics.add.overlap(this.player, this.hitbox_maison, function() {
+            if (!window.valeurs.aCle) {
+                this.ui_bouton_e.visible = true;
+            }
 
             if (this.keyE.isDown) {
 
                 if (!this.dialogueActif && !window.valeurs.aCle && !window.valeurs.ppParle1) {
                     this.dialogueActif = true;
                     window.valeurs.ppParle1 = true;
+                    this.dial_bouton_e.visible = true;
 
-                    this.dial_pp.play('dial_pp_1');
+                    this.dial_pp.play('dial_pp_ville');
                     this.dial_pp.visible = true;
 
                     setTimeout(() => {
@@ -692,6 +767,8 @@ export default class Ville extends Phaser.Scene {
                     window.valeurs.ppParle1 = false;
 
                     this.dial_pp.visible = false;
+                    this.dial_bouton_e.visible = false;
+                    this.ui_bouton_e.visible = false;
 
                     setTimeout(() => {
                         this.dialogueActif = false;
@@ -705,7 +782,6 @@ export default class Ville extends Phaser.Scene {
         
         // ----- AFFICHAGE DE L'UI -----
 
-        // this.ui_cadre = this.physics.add.sprite(512, 32, 'ui_cadre').setScrollFactor(0);
         this.ui_fatigue = this.physics.add.sprite(96, 32, 'ui_fatigue').setScrollFactor(0);
         this.ui_croquette = this.physics.add.sprite(64, 80, 'ui_croquette').setScrollFactor(0);
         this.ui_cle = this.physics.add.sprite(128, 80, 'spr_cle').setScrollFactor(0);
@@ -840,6 +916,17 @@ export default class Ville extends Phaser.Scene {
     // ----------------------------------- FONCTION UPDATE -------------------------------------
     // -----------------------------------------------------------------------------------------
     update() {
+
+        this.ui_bouton_e.x = this.player.x + 32;
+        this.ui_bouton_e.y = this.player.y - 48;
+
+        this.ui_bouton_z.x = this.player.x + 32;
+        this.ui_bouton_z.y = this.player.y - 48;
+
+        if(!this.player.body.wasTouching.none && this.player.body.touching.none){
+            this.ui_bouton_e.visible = false;
+            this.ui_bouton_z.visible = false;
+        }
 
         this.player.updateMouvement();
         

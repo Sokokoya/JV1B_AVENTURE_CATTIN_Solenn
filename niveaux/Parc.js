@@ -113,6 +113,16 @@ export default class Parc extends Phaser.Scene {
         // Ajout du personnage dans le jeu
         this.player = new Player(this, this.posX, this.posY, 'heros_idle_droite');
 
+        // Bouton E qui va suivre le joueur
+        this.ui_bouton_e = this.physics.add.sprite(this.player.x + 32, this.player.y - 48, 'ui_bouton_e');
+        this.ui_bouton_e.visible = false;
+
+        // Bouton Z qui va suivre le joueur
+        this.ui_bouton_z = this.physics.add.sprite(this.player.x + 32, this.player.y - 48, 'ui_bouton_z');
+        this.ui_bouton_z.visible = false;
+
+
+
         // Ajout des collisions entre le personnage et les objets / murs / sortie
         this.physics.add.collider(this.player, collisionLayer);
 
@@ -126,7 +136,7 @@ export default class Parc extends Phaser.Scene {
 
         this.physics.add.collider(this.player, this.barriere, function() {
             if (!window.valeurs.pfParlee) {
-                console.log("bloqué");
+                this.ui_bouton_e.visible = true;
 
             } else {
                 this.barriere.destroy();
@@ -167,9 +177,16 @@ export default class Parc extends Phaser.Scene {
         this.dial_petiteFille.play('dial_petiteFille_1');
         this.dial_petiteFille.visible = false;
 
+        // Bouton E qui va s'afficher lors des dialogues
+        this.dial_bouton_e = this.physics.add.sprite(776, 516, 'ui_bouton_e').setScrollFactor(0);
+        this.dial_bouton_e.visible = false;
+
 
         // --> Conversation avec la petite fille lorsqu'on essaie de récuperer le chien
         this.physics.add.overlap(this.player, this.petiteFille, function() {
+
+            this.ui_bouton_e.visible = true;
+
             if (this.keyE.isDown) {
 
                 if (!this.dialogueActif &&  !window.valeurs.pfParle4) {
@@ -177,6 +194,9 @@ export default class Parc extends Phaser.Scene {
                     window.valeurs.pfParle4 = true;
 
                     window.valeurs.pfParlee = true;
+                    this.dial_bouton_e.visible = true;
+
+                    this.cameras.main.shake(200, 0.01);
         
                     this.dial_petiteFille.visible = true;
                     this.dial_petiteFille.play('dial_petiteFille_3'); 
@@ -191,6 +211,7 @@ export default class Parc extends Phaser.Scene {
     
                     this.dial_petiteFille.visible = false;
                     this.petiteFille.visible = false;
+                    this.dial_bouton_e.visible = false;
     
                     setTimeout(() => {
                         this.dialogueActif = false;
@@ -203,11 +224,17 @@ export default class Parc extends Phaser.Scene {
 
         // --> Conversation avec la petite fille lorsque le joueur essaie de rentrer dans le parc
         this.physics.add.overlap(this.player, this.hitbox, function() {
+            if (!window.valeurs.pfParlee) {
+                this.ui_bouton_e.visible = true;
+            }
+            
+
             if (this.keyE.isDown && !window.valeurs.pfParlee) {
 
                 if (!this.dialogueActif &&  !window.valeurs.pfParle1) {
                     this.dialogueActif = true;
                     window.valeurs.pfParle1 = true;
+                    this.dial_bouton_e.visible = true;
         
                     this.dial_petiteFille.visible = true;
                     this.dial_petiteFille.play('dial_petiteFille_1'); 
@@ -221,6 +248,7 @@ export default class Parc extends Phaser.Scene {
                     window.valeurs.pfParle2 = true;
     
                     this.dial_petiteFille.play('dial_petiteFille_2'); 
+                    this.cameras.main.shake(200, 0.01);
     
                     setTimeout(() => {
                         this.dialogueActif = false;
@@ -231,6 +259,7 @@ export default class Parc extends Phaser.Scene {
 
                     this.dial_petiteFille.visible = false;
                     window.valeurs.pfParle3 = true;
+                    this.dial_bouton_e.visible = false;
 
                     setTimeout(() => {
                         this.dialogueActif = false;
@@ -275,6 +304,9 @@ export default class Parc extends Phaser.Scene {
 
         // Coup de canne sur les pigeons
         this.physics.add.overlap(this.player, this.ennemis, function() {
+            if (window.valeurs.aCanne) {
+                this.ui_bouton_z.visible = true;
+            }
             if (this.keyZ.isDown && window.valeurs.aCanne) {
                 //#TODO: changer ici car erreur
                 window.valeurs.attaque = true;
@@ -289,15 +321,14 @@ export default class Parc extends Phaser.Scene {
         // ----- AFFICHAGE DE L'UI -----
         this.dialogueActif = false;
 
-        this.ui_cadre = this.physics.add.sprite(512, 32, 'ui_cadre').setScrollFactor(0);
-        this.ui_fatigue = this.physics.add.sprite(64, 32, 'ui_fatigue').setScrollFactor(0);
-        this.ui_croquette = this.physics.add.sprite(128, 32, 'ui_croquette').setScrollFactor(0);
-        //this.ui_inventaire = this.physics.add.sprite(922, 300, 'ui_inventaire').setScrollFactor(0);
-        this.ui_cle = this.physics.add.sprite(192, 32, 'spr_cle').setScrollFactor(0);
-        this.ui_canne = this.physics.add.sprite(256, 32, 'ui_canne').setScrollFactor(0);
+        this.ui_fatigue = this.physics.add.sprite(96, 32, 'ui_fatigue').setScrollFactor(0);
+        this.ui_croquette = this.physics.add.sprite(64, 80, 'ui_croquette').setScrollFactor(0);
+        this.ui_cle = this.physics.add.sprite(128, 80, 'spr_cle').setScrollFactor(0);
+        this.ui_canne = this.physics.add.sprite(160, 80, 'ui_canne').setScrollFactor(0);
 
         this.ui_cle.visible = false;
         this.ui_canne.visible = false;
+        this.ui_croquette.visible = false;
 
         
 
@@ -413,13 +444,29 @@ export default class Parc extends Phaser.Scene {
     }
 
 
+
+    // -----------------------------------------------------------------------------------------
+    // ----------------------------------- FONCTION UPDATE -------------------------------------
+    // -----------------------------------------------------------------------------------------
     update() {
+
+        this.ui_bouton_e.x = this.player.x + 32;
+        this.ui_bouton_e.y = this.player.y - 48;
+
+        this.ui_bouton_z.x = this.player.x + 32;
+        this.ui_bouton_z.y = this.player.y - 48;
+
+        if(!this.player.body.wasTouching.none && this.player.body.touching.none){
+            this.ui_bouton_e.visible = false;
+            this.ui_bouton_z.visible = false;
+        }
 
         this.player.updateMouvement();
         
 
         if (window.valeurs.nbCroquettes == 1) {
             this.ui_croquette.play('croquette1');
+            this.ui_croquette.visible = true;
         }
         if (window.valeurs.nbCroquettes == 2) {
             this.ui_croquette.play('croquette2');

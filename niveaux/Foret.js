@@ -139,6 +139,10 @@ export default class Foret extends Phaser.Scene {
         // Ajout du personnage dans le jeu
         this.player = new Player(this, this.posX, this.posY, 'heros_idle_droite');
 
+        // Bouton E qui va suivre le joueur
+        this.ui_bouton_e = this.physics.add.sprite(this.player.x + 32, this.player.y - 48, 'ui_bouton_e');
+        this.ui_bouton_e.visible = false;
+
         // Ajout des collisions entre le personnage et les objets / murs / sortie
         this.physics.add.collider(this.player, collisionLayer);
 
@@ -166,15 +170,27 @@ export default class Foret extends Phaser.Scene {
             }
 
         }, null, this);
+
+
+
+        // Bouton E qui va s'afficher lors des dialogues
+        this.dial_bouton_e = this.physics.add.sprite(776, 516, 'ui_bouton_e').setScrollFactor(0);
+        this.dial_bouton_e.visible = false;
+
         
 
         // Que le joueur parle à la grand-mère, ou essaie de rentrer dans sa maison, l'interaction est la même
         this.physics.add.overlap(this.player, this.hitbox, function() {
+            if (!window.valeurs.pfParlee) {
+                this.ui_bouton_e.visible = true;
+            }
+
             if (this.keyE.isDown && !window.valeurs.pfParlee) {
 
                 if (!this.dialogueActif && !window.valeurs.queteMamie && !window.valeurs.gmParle1) {
                     this.dialogueActif = true;
                     window.valeurs.gmParle1 = true;
+                    this.dial_bouton_e.visible = true;
         
                     this.dial_grandMere.visible = true;
                     this.dial_grandMere.play('dial_grandMere_1'); 
@@ -210,6 +226,7 @@ export default class Foret extends Phaser.Scene {
                     this.dial_grandMere.visible = false;
                     window.valeurs.gmParle4 = true;
                     window.valeurs.gmParle3 = false;
+                    this.dial_bouton_e.visible = false;
     
                     window.valeurs.queteMamie = true;
     
@@ -224,6 +241,7 @@ export default class Foret extends Phaser.Scene {
     
                     this.dial_grandMere.play('dial_grandMere_4');
                     this.dial_grandMere.visible = true;
+                    this.dial_bouton_e.visible = true;
     
                     setTimeout(() => {
                         this.dialogueActif = false;
@@ -235,6 +253,7 @@ export default class Foret extends Phaser.Scene {
                     window.valeurs.gmParle5 = false;
     
                     this.dial_grandMere.visible = false;
+                    this.dial_bouton_e.visible = false;
     
                     setTimeout(() => {
                         this.dialogueActif = false;
@@ -246,6 +265,10 @@ export default class Foret extends Phaser.Scene {
         
 
         this.physics.add.overlap(this.player, this.grandmere, function() {
+            if (!window.valeurs.pfParlee) {
+                this.ui_bouton_e.visible = true;
+            }
+
             if (this.keyE.isDown && !window.valeurs.pfParlee) {
 
                 if (!this.dialogueActif && !window.valeurs.queteMamie && !window.valeurs.gmParle1) {
@@ -253,6 +276,7 @@ export default class Foret extends Phaser.Scene {
                     window.valeurs.gmParle1 = true;
         
                     this.dial_grandMere.visible = true;
+                    this.dial_bouton_e.visible = true;
                     this.dial_grandMere.play('dial_grandMere_1'); 
         
                     setTimeout(() => {
@@ -286,6 +310,7 @@ export default class Foret extends Phaser.Scene {
                     this.dial_grandMere.visible = false;
                     window.valeurs.gmParle4 = true;
                     window.valeurs.gmParle3 = false;
+                    this.dial_bouton_e.visible = false;
     
                     window.valeurs.queteMamie = true;
     
@@ -300,6 +325,7 @@ export default class Foret extends Phaser.Scene {
     
                     this.dial_grandMere.play('dial_grandMere_4');
                     this.dial_grandMere.visible = true;
+                    this.dial_bouton_e.visible = true;
     
                     setTimeout(() => {
                         this.dialogueActif = false;
@@ -311,6 +337,7 @@ export default class Foret extends Phaser.Scene {
                     window.valeurs.gmParle5 = false;
     
                     this.dial_grandMere.visible = false;
+                    this.dial_bouton_e.visible = false;
     
                     setTimeout(() => {
                         this.dialogueActif = false;
@@ -326,14 +353,14 @@ export default class Foret extends Phaser.Scene {
         // ----- AFFICHAGE DE L'UI -----
         this.dialogueActif = false;
 
-        this.ui_cadre = this.physics.add.sprite(512, 32, 'ui_cadre').setScrollFactor(0);
-        this.ui_fatigue = this.physics.add.sprite(64, 32, 'ui_fatigue').setScrollFactor(0);
-        this.ui_croquette = this.physics.add.sprite(128, 32, 'ui_croquette').setScrollFactor(0);
-        this.ui_cle = this.physics.add.sprite(192, 32, 'spr_cle').setScrollFactor(0);
-        this.ui_canne = this.physics.add.sprite(256, 32, 'ui_canne').setScrollFactor(0);
+        this.ui_fatigue = this.physics.add.sprite(96, 32, 'ui_fatigue').setScrollFactor(0);
+        this.ui_croquette = this.physics.add.sprite(64, 80, 'ui_croquette').setScrollFactor(0);
+        this.ui_cle = this.physics.add.sprite(128, 80, 'spr_cle').setScrollFactor(0);
+        this.ui_canne = this.physics.add.sprite(160, 80, 'ui_canne').setScrollFactor(0);
 
         this.ui_cle.visible = false;
         this.ui_canne.visible = false;
+        this.ui_croquette.visible = false;
 
         
 
@@ -450,23 +477,26 @@ export default class Foret extends Phaser.Scene {
 
     }
 
-    interactionGM() {
-
-        
-        
-        
 
 
-
-    }
-
+    // -----------------------------------------------------------------------------------------
+    // ----------------------------------- FONCTION UPDATE -------------------------------------
+    // -----------------------------------------------------------------------------------------
     update() {
+
+        this.ui_bouton_e.x = this.player.x + 32;
+        this.ui_bouton_e.y = this.player.y - 48;
+
+        if(!this.player.body.wasTouching.none && this.player.body.touching.none){
+            this.ui_bouton_e.visible = false;
+        }
        
         this.player.updateMouvement();
         
 
         if (window.valeurs.nbCroquettes == 1) {
             this.ui_croquette.play('croquette1');
+            this.ui_croquette.visible = true;
         }
         if (window.valeurs.nbCroquettes == 2) {
             this.ui_croquette.play('croquette2');

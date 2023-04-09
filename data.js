@@ -17,8 +17,28 @@ var valeurs = {
     aCanne: false,
     aCroquetteMaison: false,
     presencePigeonCroquette: true,
+    quetePrincipale: false,
     queteMamie: false,
     pfParlee: false,
+
+    ppParle1: false,
+    ppParle2: false,
+    ppParle3: false,
+
+    gmParle1: false,
+    gmParle2: false,
+    gmParle3: false,
+    gmParle4: false,
+    gmParle5: false,
+    gmParle6: false,
+    gmParle7: false,
+    gmParle8: false,
+
+    pfParle1: false,
+    pfParle2: false,
+    pfParle3: false,
+    pfParle4: false,
+    pfParle5: false,
 
     pnjMaisonParle1: false,
     pnjMaisonParle2: false,

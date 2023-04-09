@@ -29,6 +29,7 @@ export default class Menu extends Phaser.Scene {
         this.load.spritesheet('ui_fatigue', 'assets/ui_fatigue.png', {frameWidth: 128, frameHeight: 64});
         this.load.spritesheet('ui_cadre', 'assets/ui_cadre.png', {frameWidth: 1024, frameHeight: 64});
         this.load.spritesheet('ui_bouton_e', 'assets/ui_bouton_e.png', {frameWidth: 32, frameHeight: 32});
+        this.load.spritesheet('ui_bouton_z', 'assets/ui_bouton_z.png', {frameWidth: 32, frameHeight: 32});
 
 
         this.load.spritesheet('spr_attaque', 'assets/spr_attaque.png', {frameWidth: 64, frameHeight: 64});
@@ -65,7 +66,7 @@ export default class Menu extends Phaser.Scene {
 
 
     // -----------------------------------------------------------------------------------------
-    // ----------------------------------- FONCTION CREATE -------------------------------------
+    // ----------------------------------- FONCTION UPDATE -------------------------------------
     // -----------------------------------------------------------------------------------------
 
     update() {
