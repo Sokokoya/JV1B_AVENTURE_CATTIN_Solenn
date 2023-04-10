@@ -347,6 +347,15 @@ export default class Foret extends Phaser.Scene {
         }, null, this);
 
 
+        // ----- AJOUT DES OBJETS -----
+
+        this.croquetteFenetre = this.physics.add.sprite(304, 576, 'spr_croquette');
+
+        if (window.valeurs.pfFrapee) {
+            this.croquetteFenetre.visible = false;
+        }
+
+
 
 
 

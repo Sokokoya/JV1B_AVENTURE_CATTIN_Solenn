@@ -4,7 +4,7 @@
   <export target="map_parc.json" format="json"/>
  </editorsettings>
  <tileset firstgid="1" name="tileset_exterieur" tilewidth="32" tileheight="32" tilecount="196" columns="14">
-  <image source="../tileset_exterieur.png" width="448" height="448"/>
+  <image source="../../assets/tileset_exterieur.png" width="448" height="448"/>
   <tile id="5">
    <properties>
     <property name="estSolide" type="bool" value="true"/>

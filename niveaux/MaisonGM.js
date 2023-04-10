@@ -256,9 +256,42 @@ export default class MaisonGM extends Phaser.Scene {
 
                 //#TODO: rajouter qqchose pour faire comprendre qu'on a notre chien de retour
                 this.cameras.main.shake(200, 0.01);
+                window.valeurs.pfFrapee = true;
             }
         }, null, this);
 
+
+
+        // ----- AJOUT DES OBJETS ET INTERACTIONS -----
+
+        // Ajout du sprite de la croquette dans la maison
+        this.croquetteMaison = this.physics.add.sprite(288, 672, 'spr_croquette');
+
+        if (window.valeurs.aCroquetteGM) {
+            this.croquetteMaison.visible = false;
+        }
+
+        // Interaction avec la croquette
+        this.physics.add.overlap(this.player, this.croquetteMaison, function() {
+
+            if (!window.valeurs.aCroquetteGM) {
+
+                this.ui_bouton_e.visible = true;
+
+                if (Phaser.Input.Keyboard.JustDown(this.keyE)) {
+
+                    this.player.ajoutCroquette();
+
+                    this.croquetteMaison.visible = false;
+                }
+            }   
+        }, null, this);
+
+
+        // ----- AFFICHAGE DU CHIEN -----
+
+        this.chien = this.physics.add.sprite(432, 400, 'spr_chien');
+        this.chien.body.setImmovable(true);
 
 
 

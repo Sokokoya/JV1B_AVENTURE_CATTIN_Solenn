@@ -32,6 +32,7 @@ export default class Parc extends Phaser.Scene {
         // Chargement du sprite de la petite fille
         this.load.spritesheet('spr_petite_fille', 'assets/spr_petite_fille.png', {frameWidth: 32, frameHeight: 64});
         this.load.spritesheet('spr_pigeon', 'assets/spr_pigeon.png', {frameWidth: 32, frameHeight: 32});
+        this.load.spritesheet('spr_chien', 'assets/spr_chien.png', {frameWidth: 64, frameHeight: 32});
 
         this.load.spritesheet('spr_barriere', 'assets/spr_barriere.png', {frameWidth: 96, frameHeight: 32});
     }
@@ -317,6 +318,17 @@ export default class Parc extends Phaser.Scene {
         }, null, this);
 
 
+
+        // ----- AFFICHAGE DU CHIEN -----
+
+        this.chien = this.physics.add.sprite(320, 960, 'spr_chien');
+        this.chien.body.setImmovable(true);
+
+        if (window.valeurs.pfParlee) {
+            this.chien.visible = false;
+        }
+
+
         // ----- AFFICHAGE DE L'UI -----
         this.dialogueActif = false;
 
@@ -524,6 +536,10 @@ export default class Parc extends Phaser.Scene {
         }
         if (window.valeurs.aCanne) {
             this.ui_canne.visible = true;
+        }
+
+        if (window.valeurs.pfParlee) {
+            this.chien.visible = false;
         }
 
     }
